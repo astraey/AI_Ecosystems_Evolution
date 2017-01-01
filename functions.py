@@ -1,8 +1,5 @@
-from classes import *
-
-
-def tester():
-    print("WORKS")
+from plant import Plant
+from predator import Predator
 
 
 def addplant(plantlist, x, y):
@@ -19,14 +16,6 @@ def predatorgenerator(predatorlist):
 
 
 def plantgenerator(plantlist):
-
-    # for i in range(0, 1):
-    #     self.plantsList.append(Plant(50*i + 100, 50*i + 100))
-
-    # self.plantsList.append(Plant(0, 0))
-    # self.plantsList.append(Plant(self.width - 10, 0))
-    # self.plantsList.append(Plant(0, self.height - 10))
-    # self.plantsList.append(Plant(self.width - 10, self.height - 10))
 
     addplant(plantlist, 350, 350)
     addplant(plantlist, 350, 400)

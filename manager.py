@@ -1,4 +1,6 @@
-from classes import *
+from predator import Predator
+from plant import Plant
+from random import randint
 import functions
 
 NEGRO = (0, 0, 0)
