@@ -3,12 +3,12 @@ import pygame
 from random import randint
 
 
-class NewObject:
+class Predator:
 
     def __init__(self, x, y):
         self.xpos = x
         self.ypos = y
-        self.size = 10
+        self.size = 6
         self.counter = 0
 
         self.compass = randint(0,3)
@@ -18,11 +18,12 @@ class NewObject:
         self.biomaterial = 100
 
     def draw(self, screen):
-        pygame.draw.rect(screen, self.Red, [self.xpos, self.ypos, self.size, self.size])
+        # pygame.draw.rect(screen, self.Red, [self.xpos, self.ypos, self.size, self.size])
+        pygame.draw.circle(screen, self.Red, (int(self.xpos), int(self.ypos)), self.size)
 
     def move(self):
         self.counter +=1
-        #self.biomaterial += 1
+        # self.biomaterial += 1
         temp = randint(0,3)
         temp2 = randint(0,5)
         if temp != self.compass:
@@ -63,8 +64,8 @@ class Plant:
         pygame.draw.rect(screen, self.Green, [self.xpos, self.ypos, self.size, self.size])
 
     def grow(self):
-        self.biomaterial += 1
-        temp = randint(0,100)
+        # self.biomaterial += 1
+        temp = randint(0, 100)
 
         if temp == 0:
             self.readyToGrow = True
