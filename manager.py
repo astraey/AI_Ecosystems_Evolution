@@ -1,9 +1,7 @@
-from predator import Predator
-from plant import Plant
 from random import randint
+from classes.plant import Plant
+from classes.predator import Predator
 import functions
-
-NEGRO = (0, 0, 0)
 
 
 class Manager:
@@ -43,7 +41,7 @@ class Manager:
                 if temp == 0:
                     flag = True
                     for element in self.plantlist:
-                        if abs(element.xpos - self.plantlist[i].xpos - 10) < 15 and abs(element.ypos - self.plantlist[i].ypos + 10) < 15:
+                        if abs(element.xpos - self.plantlist[i].xpos) < 15 and abs(element.ypos - self.plantlist[i].ypos) < 15:
                             flag = False
 
                     if flag:
@@ -97,7 +95,8 @@ class Manager:
 
     def render_predators_plants(self):
 
-        self.screen.fill(NEGRO)
+        # (0, 0, 0) is the RGB codification of Black
+        self.screen.fill((0, 0, 0))
 
         for i in range(0, len(self.predatorlist)):
             self.predatorlist[i].draw(self.screen)

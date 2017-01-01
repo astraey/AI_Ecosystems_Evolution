@@ -1,18 +1,19 @@
-from plant import Plant
-from predator import Predator
+from classes.plant import Plant
+from classes.predator import Predator
 
 
 def addplant(plantlist, x, y):
     plantlist.append(Plant(x, y))
 
 
-def addpredator(predatorlist, x, y):
-    predatorlist.append(Predator(x, y))
+def addpredator(predatorlist, x, y, color):
+    predatorlist.append(Predator(x, y, color))
 
 
 def predatorgenerator(predatorlist):
 
-    addpredator(predatorlist, 400, 400)
+    addpredator(predatorlist, 400, 400, (255, 0, 0))
+    addpredator(predatorlist, 250, 250, (0, 0, 255))
 
 
 def plantgenerator(plantlist):
