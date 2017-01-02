@@ -1,10 +1,11 @@
 import pygame
+import os
 
 from manager import Manager
 
 NEGRO = (0, 0, 0)
 
-icon = pygame.image.load('media/icon.png')
+
 
 
 class App:
@@ -25,7 +26,12 @@ class App:
     def on_init(self):
 
         pygame.init()
+
+        icon = pygame.image.load('media/icon.png')
+
+        # Icon needs to be a Surface
         pygame.display.set_icon(icon)
+
         pygame.display.set_caption("Ecosystem Simulator")
 
         self._running = True
