@@ -1,5 +1,7 @@
 import pygame
+import sys
 from manager import Manager
+
 
 
 class App:
@@ -22,6 +24,7 @@ class App:
         self.manager.generator()
 
         self.masterClock = pygame.time.Clock()
+
 
     def on_init(self):
 
@@ -54,6 +57,9 @@ class App:
                 # self.manager.camera.move_up()
                 self.manager.camera.moving_up = True
 
+            if event.key == pygame.K_ESCAPE:
+                sys.exit()
+
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT:
                 # self.manager.cell_left(1)
@@ -85,11 +91,14 @@ class App:
 
         self.manager.camera_move()
 
+
     def on_render(self):
+
 
         self.manager.render_predators_plants()
 
         pygame.display.flip()
+
 
     def on_execute(self):
         if self.on_init() is False:
