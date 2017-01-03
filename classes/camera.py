@@ -9,7 +9,7 @@ class Camera:
         self.xpos = x
         self.ypos = y
 
-        self.moving_distance = 10
+        self.moving_distance = 20
 
         self.moving_right = False
         self.moving_left = False

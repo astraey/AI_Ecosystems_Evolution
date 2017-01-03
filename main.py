@@ -57,6 +57,9 @@ class App:
                 # self.manager.camera.move_up()
                 self.manager.camera.moving_up = True
 
+            if event.key == pygame.K_t:
+                self.manager.position_check()
+
             if event.key == pygame.K_ESCAPE:
                 sys.exit()
 

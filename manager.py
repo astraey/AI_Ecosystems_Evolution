@@ -38,6 +38,8 @@ class Manager:
 
     def plant_reproduce(self):
 
+        """
+
         for i in range(0, len(self.plantlist)):
             self.plantlist[i].grow()
             if self.plantlist[i].readyToGrow and 0 < self.plantlist[i].xpos < self.width and self.plantlist[i].ypos < self.height and self.plantlist[i].ypos > 0:
@@ -94,6 +96,45 @@ class Manager:
 
                 self.plantlist[i].readyToGrow = False
 
+        """
+
+        for element in self.plantlist:
+            element.grow()
+
+            if element.readyToGrow:
+                temp = randint(0, 3)
+                position_free = True
+                new_plant_xpos = 0
+                new_plant_ypos = 0
+
+                if temp == 0:
+                    new_plant_xpos = element.xpos + element.size
+                    new_plant_ypos = element.ypos + element.size
+
+                if temp == 1:
+                    new_plant_xpos = element.xpos - element.size
+                    new_plant_ypos = element.ypos + element.size
+
+                if temp == 2:
+                    new_plant_xpos = element.xpos + element.size
+                    new_plant_ypos = element.ypos - element.size
+
+                if temp == 3:
+                    new_plant_xpos = element.xpos - element.size
+                    new_plant_ypos = element.ypos - element.size
+
+                for element2 in self.plantlist:
+                    if abs(new_plant_xpos - element2.xpos) < 10 and abs(new_plant_ypos - element2.ypos) < 10:
+                        position_free = False
+
+
+                if position_free:
+                    self.addplant(new_plant_xpos, new_plant_ypos, self.camera)
+                    print("New Plant at " + str(new_plant_xpos) + ", " + str(new_plant_ypos) + "  No Plants: " + str(len(self.plantlist)))
+
+
+                element.readyToGrow = False
+
     def eating_manager(self):
 
         for i in range(0, len(self.predatorlist)):
@@ -138,11 +179,11 @@ class Manager:
         self.addplant(400, 350, self.camera)
         self.addplant(350, 450, self.camera)
         self.addplant(450, 350, self.camera)
-        self.addplant(350, 450, self.camera)
         self.addplant(550, 550, self.camera)
         self.addplant(300, 450, self.camera)
         self.addplant(200, 200, self.camera)
         self.addplant(500, 200, self.camera)
+        # self.addplant(1500, 1500, self.camera)
 
     def cell_up(self, index):
         self.predatorlist[index].ypos -= 15
@@ -156,6 +197,24 @@ class Manager:
     def cell_right(self, index):
         self.predatorlist[index].xpos += 15
 
+    def position_check(self):
+
+        print("Starting Position Test")
+
+        flag2 = False
+        for element in self.plantlist:
+            flag = 0
+            for element2 in self.plantlist:
+                if element.xpos == element2.xpos and element.ypos == element2.ypos:
+                    flag += 1
+
+            if flag >= 2:
+                print("ERROR DETECTED")
+                flag2 = True
 
 
+        if flag2:
+            print("Errors were Detected")
+        else:
+            print("No errors Were Detected")
 
