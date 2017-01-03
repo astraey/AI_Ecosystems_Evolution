@@ -38,70 +38,24 @@ class Manager:
 
     def plant_reproduce(self):
 
-        """
-
-        for i in range(0, len(self.plantlist)):
-            self.plantlist[i].grow()
-            if self.plantlist[i].readyToGrow and 0 < self.plantlist[i].xpos < self.width and self.plantlist[i].ypos < self.height and self.plantlist[i].ypos > 0:
-
-                print("No Plantas: " + str(len(self.plantlist)))
-                # print("Creator Plant: " + str(self.plantsList[i].xpos) + " , " + str(self.plantsList[i].ypos))
-
-                temp = randint(0, 3)
-
-                # Plant Grows south-west
-                if temp == 0:
-                    flag = True
-                    for element in self.plantlist:
-                        if abs(element.xpos - self.plantlist[i].xpos) < 15 and abs(element.ypos - self.plantlist[i].ypos) < 15:
-                            flag = False
-
-                    if flag:
-
-                        self.plantlist.append(Plant(self.plantlist[i].xpos - 10, self.plantlist[i].ypos + 10, self.camera))
-
-                # Plant Grows north-west
-                if temp == 1:
-
-                    flag = True
-                    for element in self.plantlist:
-                        if abs(element.xpos - self.plantlist[i].xpos - 10) < 10 and abs(element.ypos - self.plantlist[i].ypos - 10) < 10:
-                            flag = False
-
-                    if flag:
-
-                        self.plantlist.append(Plant(self.plantlist[i].xpos - 10, self.plantlist[i].ypos - 10, self.camera))
-
-                # Plant Grows south-east
-                if temp == 2:
-                    flag = True
-                    for element in self.plantlist:
-                        if abs(element.xpos - self.plantlist[i].xpos + 10) < 10 and abs(element.ypos - self.plantlist[i].ypos + 10) < 10:
-                            flag = False
-
-                    if flag:
-
-                        self.plantlist.append(Plant(self.plantlist[i].xpos + 10, self.plantlist[i].ypos + 10, self.camera))
-
-                # Plant Grows north-east
-                if temp == 3:
-                    flag = True
-                    for element in self.plantlist:
-                        if abs(element.xpos - self.plantlist[i].xpos + 10) < 10 and abs(element.ypos - self.plantlist[i].ypos - 10) < 10:
-                            flag = False
-
-                    if flag:
-
-                        self.plantlist.append(Plant(self.plantlist[i].xpos + 10, self.plantlist[i].ypos - 10, self.camera))
-
-                self.plantlist[i].readyToGrow = False
-
-        """
 
         for element in self.plantlist:
             element.grow()
 
-            if element.readyToGrow:
+            if element.readyToGrow and element.biomaterial >= 25:
+
+
+                if element.biomaterial < 40:
+                    element.biomaterial += 1
+
+                if element.biomaterial >= 40 and not element.wood:
+                    element.is_wood()
+                    if element.wood:
+                        element.color = (128, 64, 0)
+
+
+
+
                 temp = randint(0, 3)
                 position_free = True
                 new_plant_xpos = 0
@@ -135,14 +89,21 @@ class Manager:
 
                 element.readyToGrow = False
 
+            if element.readyToGrow and element.biomaterial < 25:
+                element.biomaterial += 1
+                if element.biomaterial == 25:
+                    element.color = (0, 77, 0)
+                element.readyToGrow = False
+
+
     def eating_manager(self):
 
-        for i in range(0, len(self.predatorlist)):
+        for predator in self.predatorlist:
             for element in self.plantlist:
-                if abs(self.predatorlist[i].xpos - element.xpos) < 10 and abs(self.predatorlist[i].ypos - element.ypos) < 10:
-                    self.predatorlist[i].biomaterial += 10
-                    # print("New element's biomaterial: " + str(self.predatorlist[i].biomaterial))
+                if abs(predator.xpos - element.xpos) < 10 and abs(predator.ypos - element.ypos) < 10 and not element.wood:
+                    predator.biomaterial += element.biomaterial
                     self.plantlist.remove(element)
+                    print("Predator's new Biomaterial: " + str(predator.biomaterial))
 
     def render_predators_plants(self):
 

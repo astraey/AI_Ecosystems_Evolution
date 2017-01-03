@@ -11,9 +11,10 @@ class Plant:
         self.size = 10
         self.readyToGrow = False
         self.camera = camera
-        self.color = (0, 255, 0)
-
-        self.biomaterial = 100
+        self.color = (0, 179, 0)
+        self.adult = False
+        self.biomaterial = 15
+        self.wood = False
 
     def draw(self, screen):
         # pygame.draw.rect(screen, self.color, [self.xpos + self.camera.xpos, self.ypos + self.camera.ypos, self.size, self.size])
@@ -27,3 +28,10 @@ class Plant:
         if temp == 0:
             self.readyToGrow = True
 
+
+    def is_wood(self):
+
+        temp = randint(0,1000)
+
+        if temp == 0:
+            self.wood = True
