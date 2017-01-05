@@ -3,7 +3,6 @@ import sys
 from manager import Manager
 
 
-
 class App:
     def __init__(self):
         self._running = True
@@ -24,7 +23,6 @@ class App:
         self.manager.generator()
 
         self.masterClock = pygame.time.Clock()
-
 
     def on_init(self):
 
