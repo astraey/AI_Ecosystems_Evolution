@@ -47,4 +47,4 @@ class Predator:
         if self.counter >= 250:
             self.counter = 0
             self.compass = randint(0, 3)
-            print("Compass has been changed")
+           #  print("Compass has been changed")

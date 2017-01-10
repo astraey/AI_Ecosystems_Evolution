@@ -138,7 +138,9 @@ class Manager:
         self.addplant(300, 450, self.camera)
         self.addplant(200, 200, self.camera)
         self.addplant(500, 200, self.camera)
-        # self.addplant(1500, 1500, self.camera)
+        self.addplant(1500, 1500, self.camera)
+        self.addplant(1300, 1300, self.camera)
+        self.addplant(1350, 1500, self.camera)
 
     def cell_up(self, index):
         self.predatorlist[index].ypos -= 15
