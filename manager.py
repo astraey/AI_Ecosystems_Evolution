@@ -53,9 +53,6 @@ class Manager:
                     if element.wood:
                         element.color = (128, 64, 0)
 
-
-
-
                 temp = randint(0, 3)
                 position_free = True
                 new_plant_xpos = 0
@@ -81,11 +78,9 @@ class Manager:
                     if abs(new_plant_xpos - element2.xpos) < 10 and abs(new_plant_ypos - element2.ypos) < 10:
                         position_free = False
 
-
                 if position_free:
                     self.addplant(new_plant_xpos, new_plant_ypos, self.camera)
                     print("New Plant at " + str(new_plant_xpos) + ", " + str(new_plant_ypos) + "  No Plants: " + str(len(self.plantlist)))
-
 
                 element.readyToGrow = False
 
@@ -94,7 +89,6 @@ class Manager:
                 if element.biomaterial == 25:
                     element.color = (0, 77, 0)
                 element.readyToGrow = False
-
 
     def eating_manager(self):
 
@@ -172,7 +166,6 @@ class Manager:
             if flag >= 2:
                 print("ERROR DETECTED")
                 flag2 = True
-
 
         if flag2:
             print("Errors were Detected")
