@@ -13,6 +13,8 @@ class Manager:
         self.height = height
         self.width = width
 
+        self.camera_focus = 0
+
         self.camera = Camera(0, 0)
 
     def predator_move_reproduce(self):
@@ -126,6 +128,7 @@ class Manager:
 
         self.addpredator(400, 400, (255, 0, 0), self.camera)
         self.addpredator(250, 250, (0, 0, 255), self.camera)
+        self.addpredator(300, 300, (204, 51, 255), self.camera)
 
     def plantgenerator(self):
 
@@ -173,4 +176,10 @@ class Manager:
             print("Errors were Detected")
         else:
             print("No errors Were Detected")
+
+    def camera_on_cell(self):
+        if self.camera_focus == 0:
+            self.camera.xpos = self.predatorlist[0].xpos - 250
+            self.camera.ypos = self.predatorlist[0].ypos - 250
+        print("Jumped to nextone")
 

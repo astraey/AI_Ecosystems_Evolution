@@ -62,6 +62,9 @@ class App:
             if event.key == pygame.K_t:
                 self.manager.position_check()
 
+            if event.key == pygame.K_c:
+                self.manager.camera_on_cell()
+
             if event.key == pygame.K_ESCAPE:
                 sys.exit()
 
