@@ -4,10 +4,7 @@ For Windows, download and install Python 2.7.13 from the official website. Then,
 and execute the command 'pip install pygame'. The version of Pygame should be 1.9.2.
 
 For Mac, because python is preinstalled, you only have to make sure that you are running Python 2.7.13 and pip 9.0.1
-To install Pygame execute the command pip install --user pygame. Make sure that is the version 1.9.2 of Pygame. For older
-versions of the operative system, execute 'brew install python' to install pip. Then, you will have more than one installation
-of python on your computer. Make sure that you select python 2.7.13, which is the one related to the new python installation
-that we just installed, that includes pygame.
+To install Pygame execute the command pip install --user pygame. Make sure that is the version 1.9.2 of Pygame.
 
 Not tested yet on any linux distribution.
 
