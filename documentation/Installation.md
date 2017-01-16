@@ -10,4 +10,4 @@ The version of Python is easy to check trhough the terminal, simply executing th
 verion of pip and Pygame, you can simply use an Interactive Developement Enviroment IDE like PyCharm. The versions are 
 under Settings, Project Interpreter.
 
-[Back to README.md](README.md)
+[Back to README.md](../README.md)
