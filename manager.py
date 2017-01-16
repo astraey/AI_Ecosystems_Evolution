@@ -177,9 +177,3 @@ class Manager:
         else:
             print("No errors Were Detected")
 
-    def camera_on_cell(self):
-        if self.camera_focus == 0:
-            self.camera.xpos = self.predatorlist[0].xpos - 250
-            self.camera.ypos = self.predatorlist[0].ypos - 250
-        print("Jumped to nextone")
-
