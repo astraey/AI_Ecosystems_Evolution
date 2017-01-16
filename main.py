@@ -29,6 +29,8 @@ class App:
 
         self._running = True
 
+        self.manager.test_array_objects()
+
     def on_event(self, event):
         if event.type == pygame.QUIT:
             self._running = False

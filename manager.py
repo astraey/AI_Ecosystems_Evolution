@@ -2,9 +2,11 @@ from random import randint
 from classes.plant import Plant
 from classes.predator import Predator
 from classes.camera import Camera
+from classes.cell import Cell
+
 import pygame
 import sys
-
+import numpy
 class Manager:
 
     def __init__(self, predatorlist, plantlist, screen, height, width):
@@ -111,11 +113,11 @@ class Manager:
 
         # (0, 0, 0) is the RGB codification for Black
 
-        for i in range(0, len(self.predatorlist)):
-            self.predatorlist[i].draw(self.screen)
-
         for i in range(0, len(self.plantlist)):
             self.plantlist[i].draw(self.screen)
+
+        for i in range(0, len(self.predatorlist)):
+            self.predatorlist[i].draw(self.screen)
 
     def generator(self):
 
@@ -254,4 +256,40 @@ class Manager:
             point1y += 20
             # point2x += 20
             point2y += 20
+
+    def test_array_objects(self):
+        """
+        my_objects = []
+        my_objects2 = []
+        my_objects3 = []
+
+        for i in range(100):
+            my_objects.append(Cell(i))
+
+        for i in range(200):
+            my_objects2.append(Cell(i))
+
+        for i in range(300):
+            my_objects3.append(Cell(i))
+
+        general = []
+        general = [my_objects, my_objects2, my_objects3]
+
+        # later
+
+        for obj in my_objects:
+            obj.printer()
+
+        for obj in general[1]:
+            obj.printer()
+        """
+
+        A = numpy.matrix([[1, 2, 3], [11, 12, 13], [21, 22, 23]])
+        B = [ [1, 2, 3, 0], [4, 5, 6, 0], [7, 8, 9, 0] ]
+        C = [[Cell(69), Cell(2), Cell(3), Cell(4)], [Cell(1), Cell(2), Cell(3), Cell(4)], [Cell(1), Cell(2), Cell(3), Cell(4)]]
+        print(A)
+        print("Second Print")
+        print(B[0][0])
+        C[0][0].printer()
+        print(C)
 
