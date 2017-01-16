@@ -30,6 +30,9 @@ class App:
         self._running = True
 
     def on_event(self, event):
+        if event.type == pygame.QUIT:
+            self._running = False
+
         self.manager.event_management(event)
 
 
@@ -46,6 +49,9 @@ class App:
 
     def on_render(self):
 
+        self.manager.fill_screen_black()
+
+        self.manager.render_grid()
 
         self.manager.render_predators_plants()
 

@@ -23,6 +23,7 @@ class Predator:
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, (int(self.xpos + self.camera.xpos), int(self.ypos + self.camera.ypos)), self.size)
 
+
     def move(self):
         self.counter +=1
         # self.biomaterial += 1

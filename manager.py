@@ -14,6 +14,8 @@ class Manager:
         self.height = height
         self.width = width
 
+        self.grey = (100, 100, 100)
+
         self.camera_focus = 0
 
         self.camera = Camera(0, 0)
@@ -102,10 +104,12 @@ class Manager:
                     self.plantlist.remove(element)
                     print("Predator's new Biomaterial: " + str(predator.biomaterial))
 
+    def fill_screen_black(self):
+        self.screen.fill((0,0,0))
+
     def render_predators_plants(self):
 
         # (0, 0, 0) is the RGB codification for Black
-        self.screen.fill((0, 0, 0))
 
         for i in range(0, len(self.predatorlist)):
             self.predatorlist[i].draw(self.screen)
@@ -180,8 +184,6 @@ class Manager:
 
 
     def event_management(self, event):
-        if event.type == pygame.QUIT:
-            self._running = False
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
@@ -216,22 +218,40 @@ class Manager:
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT:
-                # self.manager.cell_left(1)
-                # self.manager.camera.move_right()
                 self.camera.moving_right = False
 
             if event.key == pygame.K_RIGHT:
-                # self.manager.cell_right(1)
-                # self.manager.camera.move_left()
                 self.camera.moving_left = False
 
             if event.key == pygame.K_UP:
-                # self.manager.cell_up(1)
-                # self.manager.camera.move_down()
                 self.camera.moving_down = False
 
             if event.key == pygame.K_DOWN:
-                # self.manager.cell_down(1)
-                # self.manager.camera.move_up()
                 self.camera.moving_up = False
+
+
+    def render_grid(self):
+        point1x = 0 + self.camera.xpos
+        point1y = 0 + self.camera.ypos
+        point2x = 0 + self.camera.xpos
+        point2y = self.height + self.camera.ypos
+        for i in range (0,41):
+            pygame.draw.line(self.screen, self.grey, (point1x, point1y), (point2x, point2y))
+            point1x += 20
+            # point1y += 20
+            point2x += 20
+            # point2y += 20
+
+        point1x = 0 + self.camera.xpos
+        point1y = 0 + self.camera.ypos
+        point2x = self.width + self.camera.xpos
+        point2y = 0 + self.camera.ypos
+
+        for i in range(0, 41):
+            pygame.draw.line(self.screen, self.grey, (point1x, point1y), (point2x, point2y))
+
+            # point1x += 20
+            point1y += 20
+            # point2x += 20
+            point2y += 20
 

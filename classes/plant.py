@@ -17,8 +17,6 @@ class Plant:
         self.wood = False
 
     def draw(self, screen):
-        # pygame.draw.rect(screen, self.color, [self.xpos + self.camera.xpos, self.ypos + self.camera.ypos, self.size, self.size])
-
         pygame.draw.circle(screen, self.color, (int(self.xpos + self.camera.xpos), int(self.ypos + self.camera.ypos)), self.size)
 
 
