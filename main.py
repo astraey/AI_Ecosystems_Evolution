@@ -1,5 +1,4 @@
 import pygame
-import sys
 from manager import Manager
 
 
@@ -31,60 +30,8 @@ class App:
         self._running = True
 
     def on_event(self, event):
-        if event.type == pygame.QUIT:
-            self._running = False
+        self.manager.event_management(event)
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                self.manager.camera.moving_right = True
-
-            if event.key == pygame.K_RIGHT:
-                self.manager.camera.moving_left = True
-
-            if event.key == pygame.K_UP:
-                self.manager.camera.moving_down = True
-
-            if event.key == pygame.K_DOWN:
-                self.manager.camera.moving_up = True
-
-            if event.key == pygame.K_a:
-                self.manager.cell_left(1)
-
-            if event.key == pygame.K_d:
-                self.manager.cell_right(1)
-
-            if event.key == pygame.K_w:
-                self.manager.cell_up(1)
-
-            if event.key == pygame.K_s:
-                self.manager.cell_down(1)
-
-            if event.key == pygame.K_t:
-                self.manager.position_check()
-
-            if event.key == pygame.K_ESCAPE:
-                sys.exit()
-
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT:
-                # self.manager.cell_left(1)
-                # self.manager.camera.move_right()
-                self.manager.camera.moving_right = False
-
-            if event.key == pygame.K_RIGHT:
-                # self.manager.cell_right(1)
-                # self.manager.camera.move_left()
-                self.manager.camera.moving_left = False
-
-            if event.key == pygame.K_UP:
-                # self.manager.cell_up(1)
-                # self.manager.camera.move_down()
-                self.manager.camera.moving_down = False
-
-            if event.key == pygame.K_DOWN:
-                # self.manager.cell_down(1)
-                # self.manager.camera.move_up()
-                self.manager.camera.moving_up = False
 
     def on_loop(self):
 

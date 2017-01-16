@@ -2,7 +2,8 @@ from random import randint
 from classes.plant import Plant
 from classes.predator import Predator
 from classes.camera import Camera
-
+import pygame
+import sys
 
 class Manager:
 
@@ -176,4 +177,61 @@ class Manager:
             print("Errors were Detected")
         else:
             print("No errors Were Detected")
+
+
+    def event_management(self, event):
+        if event.type == pygame.QUIT:
+            self._running = False
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                self.camera.moving_right = True
+
+            if event.key == pygame.K_RIGHT:
+                self.camera.moving_left = True
+
+            if event.key == pygame.K_UP:
+                self.camera.moving_down = True
+
+            if event.key == pygame.K_DOWN:
+                self.camera.moving_up = True
+
+            if event.key == pygame.K_a:
+                self.cell_left(1)
+
+            if event.key == pygame.K_d:
+                self.cell_right(1)
+
+            if event.key == pygame.K_w:
+                self.cell_up(1)
+
+            if event.key == pygame.K_s:
+                self.cell_down(1)
+
+            if event.key == pygame.K_t:
+                self.position_check()
+
+            if event.key == pygame.K_ESCAPE:
+                sys.exit()
+
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT:
+                # self.manager.cell_left(1)
+                # self.manager.camera.move_right()
+                self.camera.moving_right = False
+
+            if event.key == pygame.K_RIGHT:
+                # self.manager.cell_right(1)
+                # self.manager.camera.move_left()
+                self.camera.moving_left = False
+
+            if event.key == pygame.K_UP:
+                # self.manager.cell_up(1)
+                # self.manager.camera.move_down()
+                self.camera.moving_down = False
+
+            if event.key == pygame.K_DOWN:
+                # self.manager.cell_down(1)
+                # self.manager.camera.move_up()
+                self.camera.moving_up = False
 
