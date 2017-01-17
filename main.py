@@ -37,7 +37,6 @@ class App:
 
         self.manager.event_management(event)
 
-
     def on_loop(self):
 
         self.manager.predator_move_reproduce()
@@ -48,7 +47,6 @@ class App:
 
         self.manager.camera_move()
 
-
     def on_render(self):
 
         self.manager.fill_screen_black()
@@ -58,7 +56,6 @@ class App:
         self.manager.render_predators_plants()
 
         pygame.display.flip()
-
 
     def on_execute(self):
         if self.on_init() is False:
