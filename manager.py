@@ -286,10 +286,14 @@ class Manager:
 
         A = numpy.matrix([[1, 2, 3], [11, 12, 13], [21, 22, 23]])
         B = [ [1, 2, 3, 0], [4, 5, 6, 0], [7, 8, 9, 0] ]
-        C = [[Cell(69), Cell(2), Cell(3), Cell(4)], [Cell(1), Cell(2), Cell(3), Cell(4)], [Cell(1), Cell(2), Cell(3), Cell(4)]]
+        C = [[Cell(69), 0, 0, 0], [0, 0, Cell(3), Cell(4)], [Cell(1), Cell(2), Cell(3), Cell(4)]]
+        print("First Print")
         print(A)
         print("Second Print")
         print(B[0][0])
+        print("Definitive Print")
         C[0][0].printer()
-        print(C)
-
+        C[0][0] = Cell(99)
+        C[0][0].printer()
+        C[0][0] = "hola"
+        
