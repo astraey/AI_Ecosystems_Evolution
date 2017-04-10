@@ -1,7 +1,9 @@
 class Cell:
 
-    def __init__(self, test):
-        self.test = test
+    def __init__(self, xPos, yPos):
+        self.xPos = xPos
+        self.yPos = yPos
+        self.occupant = 0
 
     def printer(self):
-        print("This is my number: " + str(self.test))
+        print("I am at ("+str(self.xPos)+", "+str(self.yPos)+")\n")

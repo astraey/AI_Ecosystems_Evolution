@@ -3,15 +3,16 @@ from classes.plant import Plant
 from classes.predator import Predator
 from classes.camera import Camera
 from classes.cell import Cell
+from classes.grid import Grid
 
 import pygame
 import sys
 import numpy
 class Manager:
 
-    def __init__(self, predatorlist, plantlist, screen, height, width):
-        self.predatorlist = predatorlist
-        self.plantlist = plantlist
+    def __init__(self, screen, height, width):
+        self.predatorlist = []
+        self.plantlist = []
         self.screen = screen
         self.height = height
         self.width = width
@@ -21,6 +22,9 @@ class Manager:
         self.camera_focus = 0
 
         self.camera = Camera(0, 0)
+
+        # We declare a grid of 30*30
+        self.grid = Grid(30, self.camera, self.screen)
 
     def predator_move_reproduce(self):
         for element in self.predatorlist:
@@ -184,7 +188,6 @@ class Manager:
         else:
             print("No errors Were Detected")
 
-
     def event_management(self, event):
 
         if event.type == pygame.KEYDOWN:
@@ -231,69 +234,20 @@ class Manager:
             if event.key == pygame.K_DOWN:
                 self.camera.moving_up = False
 
-
-    def render_grid(self):
-        point1x = 0 + self.camera.xpos
-        point1y = 0 + self.camera.ypos
-        point2x = 0 + self.camera.xpos
-        point2y = self.height + self.camera.ypos
-        for i in range (0,41):
-            pygame.draw.line(self.screen, self.grey, (point1x, point1y), (point2x, point2y))
-            point1x += 20
-            # point1y += 20
-            point2x += 20
-            # point2y += 20
-
-        point1x = 0 + self.camera.xpos
-        point1y = 0 + self.camera.ypos
-        point2x = self.width + self.camera.xpos
-        point2y = 0 + self.camera.ypos
-
-        for i in range(0, 41):
-            pygame.draw.line(self.screen, self.grey, (point1x, point1y), (point2x, point2y))
-
-            # point1x += 20
-            point1y += 20
-            # point2x += 20
-            point2y += 20
-
     def test_array_objects(self):
-        """
-        my_objects = []
-        my_objects2 = []
-        my_objects3 = []
+        #self.grid.testFunction()
+        self.add_agent(Predator(self.grid.grid[1][1].xPos, self.grid.grid[1][1].xPos, (54,111,200), self.camera), 1, 1)
+        self.add_agent(Predator(self.grid.grid[2][2].xPos, self.grid.grid[2][2].xPos, (54,111,200), self.camera), 2, 2)
 
-        for i in range(100):
-            my_objects.append(Cell(i))
 
-        for i in range(200):
-            my_objects2.append(Cell(i))
 
-        for i in range(300):
-            my_objects3.append(Cell(i))
+    def draw_grid(self):
+        self.grid.draw()
 
-        general = []
-        general = [my_objects, my_objects2, my_objects3]
+    def draw_agents(self):
+        for agent in self.grid.agents:
+            agent.draw(self.screen)
 
-        # later
-
-        for obj in my_objects:
-            obj.printer()
-
-        for obj in general[1]:
-            obj.printer()
-        """
-
-        A = numpy.matrix([[1, 2, 3], [11, 12, 13], [21, 22, 23]])
-        B = [ [1, 2, 3, 0], [4, 5, 6, 0], [7, 8, 9, 0] ]
-        C = [[Cell(69), 0, 0, 0], [0, 0, Cell(3), Cell(4)], [Cell(1), Cell(2), Cell(3), Cell(4)]]
-        print("First Print")
-        print(A)
-        print("Second Print")
-        print(B[0][0])
-        print("Definitive Print")
-        C[0][0].printer()
-        C[0][0] = Cell(99)
-        C[0][0].printer()
-        C[0][0] = "hola"
-        
+    def add_agent(self, agent, xPos, yPos):
+        self.grid.agents.append(agent)
+        self.grid.grid[xPos][yPos].occupant = agent

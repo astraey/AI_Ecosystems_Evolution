@@ -11,7 +11,7 @@ class App:
 
         display = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
 
-        self.manager = Manager([], [], display, self.height, self.width)
+        self.manager = Manager(display, self.height, self.width)
 
         icon = pygame.image.load('media/icon.png')
 
@@ -19,7 +19,7 @@ class App:
 
         pygame.display.set_caption("Ecosystem Simulator")
 
-        self.manager.generator()
+        #self.manager.generator()
 
         self.masterClock = pygame.time.Clock()
 
@@ -51,9 +51,12 @@ class App:
 
         self.manager.fill_screen_black()
 
-        self.manager.render_grid()
+        self.manager.draw_grid()
+
+        self.manager.draw_agents()
 
         self.manager.render_predators_plants()
+
 
         pygame.display.flip()
 
