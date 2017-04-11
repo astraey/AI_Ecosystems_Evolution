@@ -27,7 +27,7 @@ class Grid:
         for i in range(0, self.size):
             temp = []
             for j in range(0, self.size):
-                temp.append(Cell(i * self.distance, j * self.distance))
+                temp.append(Cell(i, j, i * self.distance, j * self.distance))
             self.grid.append(temp)
 
 

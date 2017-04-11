@@ -5,12 +5,13 @@ from random import randint
 
 class Predator:
 
-    def __init__(self, x, y, color, camera):
-        self.xpos = x
-        self.ypos = y
+    def __init__(self, x, y, cell, color, camera):
+        self.xPos = x
+        self.yPos = y
         self.size = 6
         self.counter = 0
         self.color = color
+        self.cell = cell
 
         self.camera = camera
 
@@ -21,7 +22,7 @@ class Predator:
         self.biomaterial = 100
 
     def draw(self, screen):
-        pygame.draw.circle(screen, self.color, (int(self.xpos + self.camera.xpos), int(self.ypos + self.camera.ypos)), self.size)
+        pygame.draw.circle(screen, self.color, (int(self.xPos + self.camera.xpos), int(self.yPos + self.camera.ypos)), self.size)
 
 
     def move(self):

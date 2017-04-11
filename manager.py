@@ -129,44 +129,90 @@ class Manager:
 
         self.plantgenerator()
 
-    def addplant(self, x, y, camera):
-        self.plantlist.append(Plant(x, y, camera))
 
-    def addpredator(self, x, y, color, camera):
-        self.predatorlist.append(Predator(x, y, color, camera))
+    def entity_up(self, index):
 
-    def predatorgenerator(self):
+        xIndex = self.grid.agents[index].cell.xIndex
+        yIndex = self.grid.agents[index].cell.yIndex -1
 
-        self.addpredator(400, 400, (255, 0, 0), self.camera)
-        self.addpredator(250, 250, (0, 0, 255), self.camera)
-        self.addpredator(300, 300, (204, 51, 255), self.camera)
+        print("xIndex: "+ str(xIndex)+"\n")
+        print("yIndex: "+ str(yIndex)+"\n\n")
 
-    def plantgenerator(self):
+        self.grid.grid[xIndex][yIndex].occupant = self.grid.agents[index]
+        self.grid.agents[index].cell.occupant = 0
+        self.grid.agents[index].cell = self.grid.grid[xIndex][yIndex]
 
-        self.addplant(350, 350, self.camera)
-        self.addplant(350, 400, self.camera)
-        self.addplant(400, 350, self.camera)
-        self.addplant(350, 450, self.camera)
-        self.addplant(450, 350, self.camera)
-        self.addplant(550, 550, self.camera)
-        self.addplant(300, 450, self.camera)
-        self.addplant(200, 200, self.camera)
-        self.addplant(500, 200, self.camera)
-        self.addplant(1500, 1500, self.camera)
-        self.addplant(1300, 1300, self.camera)
-        self.addplant(1350, 1500, self.camera)
+        print("old Xpos: "+ str(self.grid.agents[index].xPos)+"\n")
+        print("old Ypos: "+ str(self.grid.agents[index].yPos)+"\n\n")
 
-    def cell_up(self, index):
-        self.predatorlist[index].ypos -= 15
+        self.grid.agents[index].xPos = self.grid.grid[xIndex][yIndex].xPos
+        self.grid.agents[index].yPos = self.grid.grid[xIndex][yIndex].yPos
 
-    def cell_down(self, index):
-        self.predatorlist[index].ypos += 15
+        print("new Xpos: "+ str(self.grid.agents[index].xPos)+"\n")
+        print("new Ypos: "+ str(self.grid.agents[index].yPos)+"\n\n")
 
-    def cell_left(self, index):
-        self.predatorlist[index].xpos -= 15
+    def entity_down(self, index):
 
-    def cell_right(self, index):
-        self.predatorlist[index].xpos += 15
+        xIndex = self.grid.agents[index].cell.xIndex
+        yIndex = self.grid.agents[index].cell.yIndex +1
+
+        print("xIndex: "+ str(xIndex)+"\n")
+        print("yIndex: "+ str(yIndex)+"\n\n")
+
+        self.grid.grid[xIndex][yIndex].occupant = self.grid.agents[index]
+        self.grid.agents[index].cell.occupant = 0
+        self.grid.agents[index].cell = self.grid.grid[xIndex][yIndex]
+
+        print("old Xpos: "+ str(self.grid.agents[index].xPos)+"\n")
+        print("old Ypos: "+ str(self.grid.agents[index].yPos)+"\n\n")
+
+        self.grid.agents[index].xPos = self.grid.grid[xIndex][yIndex].xPos
+        self.grid.agents[index].yPos = self.grid.grid[xIndex][yIndex].yPos
+
+        print("new Xpos: "+ str(self.grid.agents[index].xPos)+"\n")
+        print("new Ypos: "+ str(self.grid.agents[index].yPos)+"\n\n")
+
+    def entity_left(self, index):
+
+        xIndex = self.grid.agents[index].cell.xIndex -1
+        yIndex = self.grid.agents[index].cell.yIndex
+
+        print("xIndex: "+ str(xIndex)+"\n")
+        print("yIndex: "+ str(yIndex)+"\n\n")
+
+        self.grid.grid[xIndex][yIndex].occupant = self.grid.agents[index]
+        self.grid.agents[index].cell.occupant = 0
+        self.grid.agents[index].cell = self.grid.grid[xIndex][yIndex]
+
+        print("old Xpos: "+ str(self.grid.agents[index].xPos)+"\n")
+        print("old Ypos: "+ str(self.grid.agents[index].yPos)+"\n\n")
+
+        self.grid.agents[index].xPos = self.grid.grid[xIndex][yIndex].xPos
+        self.grid.agents[index].yPos = self.grid.grid[xIndex][yIndex].yPos
+
+        print("new Xpos: "+ str(self.grid.agents[index].xPos)+"\n")
+        print("new Ypos: "+ str(self.grid.agents[index].yPos)+"\n\n")
+
+    def entity_right(self, index):
+
+        xIndex = self.grid.agents[index].cell.xIndex +1
+        yIndex = self.grid.agents[index].cell.yIndex
+
+        print("xIndex: "+ str(xIndex)+"\n")
+        print("yIndex: "+ str(yIndex)+"\n\n")
+
+        self.grid.grid[xIndex][yIndex].occupant = self.grid.agents[index]
+        self.grid.agents[index].cell.occupant = 0
+        self.grid.agents[index].cell = self.grid.grid[xIndex][yIndex]
+
+        print("old Xpos: "+ str(self.grid.agents[index].xPos)+"\n")
+        print("old Ypos: "+ str(self.grid.agents[index].yPos)+"\n\n")
+
+        self.grid.agents[index].xPos = self.grid.grid[xIndex][yIndex].xPos
+        self.grid.agents[index].yPos = self.grid.grid[xIndex][yIndex].yPos
+
+        print("new Xpos: "+ str(self.grid.agents[index].xPos)+"\n")
+        print("new Ypos: "+ str(self.grid.agents[index].yPos)+"\n\n")
 
     def position_check(self):
 
@@ -204,16 +250,16 @@ class Manager:
                 self.camera.moving_up = True
 
             if event.key == pygame.K_a:
-                self.cell_left(1)
+                self.entity_left(1)
 
             if event.key == pygame.K_d:
-                self.cell_right(1)
+                self.entity_right(1)
 
             if event.key == pygame.K_w:
-                self.cell_up(1)
+                self.entity_up(1)
 
             if event.key == pygame.K_s:
-                self.cell_down(1)
+                self.entity_down(1)
 
             if event.key == pygame.K_t:
                 self.position_check()
@@ -236,8 +282,9 @@ class Manager:
 
     def test_array_objects(self):
         #self.grid.testFunction()
-        self.add_agent(Predator(self.grid.grid[1][1].xPos, self.grid.grid[1][1].xPos, (54,111,200), self.camera), 1, 1)
-        self.add_agent(Predator(self.grid.grid[2][2].xPos, self.grid.grid[2][2].xPos, (54,111,200), self.camera), 2, 2)
+        self.add_agent(Predator(self.grid.grid[1][1].xPos, self.grid.grid[1][1].xPos, self.grid.grid[1][1], (54,111,200), self.camera), 1, 1)
+        self.add_agent(Predator(self.grid.grid[2][2].xPos, self.grid.grid[2][2].xPos, self.grid.grid[2][2], (54,111,200), self.camera), 2, 2)
+        self.add_agent(Predator(self.grid.grid[28][28].xPos, self.grid.grid[28][28].xPos, self.grid.grid[28][28], (54,111,200), self.camera), 28, 28)
 
 
 
