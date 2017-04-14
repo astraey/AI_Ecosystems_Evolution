@@ -57,3 +57,43 @@ class Grid:
         self.grid[0][0].occupant = temp
         self.agents.append(temp)
         #self.grid[0][0].occupant.draw(self.screen)
+
+    def top_cell(self, cell):
+
+        if cell.yIndex > 0:
+            xIndex = cell.xIndex
+            yIndex = cell.yIndex - 1
+
+            return self.grid[xIndex][yIndex]
+        else:
+            return 9
+
+    def bottom_cell(self, cell):
+
+        if cell.yIndex < self.size - 1:
+            xIndex = cell.xIndex
+            yIndex = cell.yIndex + 1
+
+            return self.grid[xIndex][yIndex]
+        else:
+            return 9
+
+    def right_cell(self, cell):
+
+        if cell.xIndex < self.size - 1:
+            xIndex = cell.xIndex + 1
+            yIndex = cell.yIndex
+
+            return self.grid[xIndex][yIndex]
+        else:
+            return 9
+
+    def left_cell(self, cell):
+
+        if cell.xIndex > 0:
+            xIndex = cell.xIndex - 1
+            yIndex = cell.yIndex
+
+            return self.grid[xIndex][yIndex]
+        else:
+            return 9

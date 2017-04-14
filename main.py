@@ -39,13 +39,18 @@ class App:
 
     def on_loop(self):
 
+        #old
         self.manager.predator_move_reproduce()
 
+        #old
         self.manager.plant_reproduce()
 
+        #old
         self.manager.eating_manager()
 
         self.manager.camera_move()
+
+        self.manager.move_agents()
 
     def on_render(self):
 

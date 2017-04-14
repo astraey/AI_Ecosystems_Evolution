@@ -24,7 +24,7 @@ class Manager:
         self.camera = Camera(0, 0)
 
         # We declare a grid of 30*30
-        self.grid = Grid(30, self.camera, self.screen)
+        self.grid = Grid(10, self.camera, self.screen)
 
     def predator_move_reproduce(self):
         for element in self.predatorlist:
@@ -45,7 +45,6 @@ class Manager:
 
         if self.camera.moving_left:
             self.camera.xpos -= self.camera.moving_distance
-
 
     def plant_reproduce(self):
 
@@ -128,7 +127,6 @@ class Manager:
         self.predatorgenerator()
 
         self.plantgenerator()
-
 
     def entity_up(self, index):
 
@@ -214,6 +212,90 @@ class Manager:
         print("new Xpos: "+ str(self.grid.agents[index].xPos)+"\n")
         print("new Ypos: "+ str(self.grid.agents[index].yPos)+"\n\n")
 
+    def agent_up(self, agent):
+
+        xIndex = agent.cell.xIndex
+        yIndex = agent.cell.yIndex -1
+
+        print("xIndex: "+ str(xIndex)+"\n")
+        print("yIndex: "+ str(yIndex)+"\n\n")
+
+        self.grid.grid[xIndex][yIndex].occupant = agent
+        agent.cell.occupant = 0
+        agent.cell = self.grid.grid[xIndex][yIndex]
+
+        print("old Xpos: "+ str(agent.xPos)+"\n")
+        print("old Ypos: "+ str(agent.yPos)+"\n\n")
+
+        agent.xPos = self.grid.grid[xIndex][yIndex].xPos
+        agent.yPos = self.grid.grid[xIndex][yIndex].yPos
+
+        print("new Xpos: "+ str(agent.xPos)+"\n")
+        print("new Ypos: "+ str(agent.yPos)+"\n\n")
+
+    def agent_down(self, agent):
+
+        xIndex = agent.cell.xIndex
+        yIndex = agent.cell.yIndex +1
+
+        print("xIndex: "+ str(xIndex)+"\n")
+        print("yIndex: "+ str(yIndex)+"\n\n")
+
+        self.grid.grid[xIndex][yIndex].occupant = agent
+        agent.cell.occupant = 0
+        agent.cell = self.grid.grid[xIndex][yIndex]
+
+        print("old Xpos: "+ str(agent.xPos)+"\n")
+        print("old Ypos: "+ str(agent.yPos)+"\n\n")
+
+        agent.xPos = self.grid.grid[xIndex][yIndex].xPos
+        agent.yPos = self.grid.grid[xIndex][yIndex].yPos
+
+        print("new Xpos: "+ str(agent.xPos)+"\n")
+        print("new Ypos: "+ str(agent.yPos)+"\n\n")
+
+    def agent_left(self, agent):
+
+        xIndex = agent.cell.xIndex -1
+        yIndex = agent.cell.yIndex
+
+        print("xIndex: "+ str(xIndex)+"\n")
+        print("yIndex: "+ str(yIndex)+"\n\n")
+
+        self.grid.grid[xIndex][yIndex].occupant = agent
+        agent.cell.occupant = 0
+        agent.cell = self.grid.grid[xIndex][yIndex]
+
+        print("old Xpos: "+ str(agent.xPos)+"\n")
+        print("old Ypos: "+ str(agent.yPos)+"\n\n")
+
+        agent.xPos = self.grid.grid[xIndex][yIndex].xPos
+        agent.yPos = self.grid.grid[xIndex][yIndex].yPos
+
+        print("new Xpos: "+ str(agent.xPos)+"\n")
+        print("new Ypos: "+ str(agent.yPos)+"\n\n")
+
+    def agent_right(self, agent):
+
+        xIndex = agent.cell.xIndex +1
+        yIndex = agent.cell.yIndex
+
+        print("xIndex: "+ str(xIndex)+"\n")
+        print("yIndex: "+ str(yIndex)+"\n\n")
+
+        self.grid.grid[xIndex][yIndex].occupant = agent
+        agent.cell.occupant = 0
+        agent.cell = self.grid.grid[xIndex][yIndex]
+
+        print("old Xpos: "+ str(agent.xPos)+"\n")
+        print("old Ypos: "+ str(agent.yPos)+"\n\n")
+
+        agent.xPos = self.grid.grid[xIndex][yIndex].xPos
+        agent.yPos = self.grid.grid[xIndex][yIndex].yPos
+
+        print("new Xpos: "+ str(agent.xPos)+"\n")
+        print("new Ypos: "+ str(agent.yPos)+"\n\n")
+
     def position_check(self):
 
         print("Starting Position Test")
@@ -282,10 +364,9 @@ class Manager:
 
     def test_array_objects(self):
         #self.grid.testFunction()
-        self.add_agent(Predator(self.grid.grid[1][1].xPos, self.grid.grid[1][1].xPos, self.grid.grid[1][1], (54,111,200), self.camera), 1, 1)
-        self.add_agent(Predator(self.grid.grid[2][2].xPos, self.grid.grid[2][2].xPos, self.grid.grid[2][2], (54,111,200), self.camera), 2, 2)
-        self.add_agent(Predator(self.grid.grid[28][28].xPos, self.grid.grid[28][28].xPos, self.grid.grid[28][28], (54,111,200), self.camera), 28, 28)
-
+        self.add_agent(Predator(self.grid.grid[1][1].xPos, self.grid.grid[1][1].xPos, self.grid.grid[1][1], (244, 78, 66), self.camera), 1, 1)
+        self.add_agent(Predator(self.grid.grid[2][2].xPos, self.grid.grid[2][2].xPos, self.grid.grid[2][2], (113, 209, 62), self.camera), 2, 2)
+        self.add_agent(Predator(self.grid.grid[8][8].xPos, self.grid.grid[8][8].xPos, self.grid.grid[8][8], (54,111,200), self.camera), 8, 8)
 
 
     def draw_grid(self):
@@ -298,3 +379,21 @@ class Manager:
     def add_agent(self, agent, xPos, yPos):
         self.grid.agents.append(agent)
         self.grid.grid[xPos][yPos].occupant = agent
+
+    def agent_mover(self, agent):
+
+        temp = agent.move()
+
+        if temp == 0 and agent.cell.yIndex > 0 and self.grid.top_cell(agent.cell).occupant == 0:
+            self.agent_up(agent)
+        elif temp == 1 and agent.cell.yIndex < self.grid.size - 1 and self.grid.bottom_cell(agent.cell).occupant == 0:
+            self.agent_down(agent)
+        elif temp == 2 and agent.cell.xIndex < self.grid.size - 1 and self.grid.right_cell(agent.cell).occupant == 0:
+            self.agent_right(agent)
+        elif temp == 3 and agent.cell.xIndex > 0 and self.grid.left_cell(agent.cell).occupant == 0:
+            self.agent_left(agent)
+
+    def move_agents(self):
+        for agent in self.grid.agents:
+            print("Return: "+str(agent.move()))
+            self.agent_mover(agent)

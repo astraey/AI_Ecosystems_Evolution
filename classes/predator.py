@@ -27,26 +27,24 @@ class Predator:
 
     def move(self):
         self.counter +=1
-        # self.biomaterial += 1
+
         temp = randint(0,3)
-        temp2 = randint(0,5)
         if temp != self.compass:
             temp = randint(0,3)
-
-        # Cell goes right
-        if temp == 0:
-            self.xpos = self.xpos + temp2
-        # Cell goes left
-        if temp == 1:
-            self.xpos = self.xpos - temp2
-        # Cell goes
-        if temp == 2:
-            self.ypos = self.ypos + temp2
-        # Cell goes
-        if temp == 3:
-            self.ypos = self.ypos - temp2
 
         if self.counter >= 250:
             self.counter = 0
             self.compass = randint(0, 3)
+
+        # Cell goes right
+        if temp == 0:
+            return 0        # Cell goes left
+        if temp == 1:
+            return 1        # Cell goes
+        if temp == 2:
+            return 2        # Cell goes
+        if temp == 3:
+            return 3
+
+
            #  print("Compass has been changed")
