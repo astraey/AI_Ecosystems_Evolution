@@ -10,11 +10,12 @@ class Grid:
         self.plantlist = []
         self.agents = []
         self.size = size
-        self.distance = 50
-        self.cellSize = 50
+        self.distance = 20
+        self.cellSize = 20
         self.cellHalfSize = self.cellSize/2
         self.cellBorder = 1
         self.color = (100, 100, 100)
+        self.colorhighlight = (255,255,250)
         self.camera = camera
         self.screen = screen
         self.grid = []
@@ -45,6 +46,17 @@ class Grid:
                 pygame.draw.rect(self.screen, self.color, position, self.cellBorder)
 
 
+                #Highlights the occupied cells
+                """
+                if self.grid[i][j].occupant == 0:
+
+                    pygame.draw.rect(self.screen, self.color, position, self.cellBorder)
+
+                else:
+
+                    pygame.draw.rect(self.screen, self.colorhighlight, position, self.cellBorder)
+
+                """
 
     def testFunction(self):
 

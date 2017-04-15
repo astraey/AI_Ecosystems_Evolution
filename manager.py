@@ -24,7 +24,7 @@ class Manager:
         self.camera = Camera(0, 0)
 
         # We declare a grid of 30*30
-        self.grid = Grid(10, self.camera, self.screen)
+        self.grid = Grid(30, self.camera, self.screen)
 
     def predator_move_reproduce(self):
         for element in self.predatorlist:
@@ -367,6 +367,10 @@ class Manager:
         self.add_agent(Predator(self.grid.grid[1][1].xPos, self.grid.grid[1][1].xPos, self.grid.grid[1][1], (244, 78, 66), self.camera), 1, 1)
         self.add_agent(Predator(self.grid.grid[2][2].xPos, self.grid.grid[2][2].xPos, self.grid.grid[2][2], (113, 209, 62), self.camera), 2, 2)
         self.add_agent(Predator(self.grid.grid[8][8].xPos, self.grid.grid[8][8].xPos, self.grid.grid[8][8], (54,111,200), self.camera), 8, 8)
+        self.add_agent(Predator(self.grid.grid[9][9].xPos, self.grid.grid[9][9].xPos, self.grid.grid[9][9], (255, 250, 0), self.camera), 9, 9)
+        self.add_agent(Predator(self.grid.grid[7][7].xPos, self.grid.grid[7][7].xPos, self.grid.grid[7][7], (200, 56, 200), self.camera), 7, 7)
+
+
 
 
     def draw_grid(self):
