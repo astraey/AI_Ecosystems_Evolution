@@ -133,168 +133,100 @@ class Manager:
         xIndex = self.grid.agents[index].cell.xIndex
         yIndex = self.grid.agents[index].cell.yIndex -1
 
-        print("xIndex: "+ str(xIndex)+"\n")
-        print("yIndex: "+ str(yIndex)+"\n\n")
-
         self.grid.grid[xIndex][yIndex].occupant = self.grid.agents[index]
         self.grid.agents[index].cell.occupant = 0
         self.grid.agents[index].cell = self.grid.grid[xIndex][yIndex]
 
-        print("old Xpos: "+ str(self.grid.agents[index].xPos)+"\n")
-        print("old Ypos: "+ str(self.grid.agents[index].yPos)+"\n\n")
-
         self.grid.agents[index].xPos = self.grid.grid[xIndex][yIndex].xPos
         self.grid.agents[index].yPos = self.grid.grid[xIndex][yIndex].yPos
-
-        print("new Xpos: "+ str(self.grid.agents[index].xPos)+"\n")
-        print("new Ypos: "+ str(self.grid.agents[index].yPos)+"\n\n")
 
     def entity_down(self, index):
 
         xIndex = self.grid.agents[index].cell.xIndex
         yIndex = self.grid.agents[index].cell.yIndex +1
 
-        print("xIndex: "+ str(xIndex)+"\n")
-        print("yIndex: "+ str(yIndex)+"\n\n")
-
         self.grid.grid[xIndex][yIndex].occupant = self.grid.agents[index]
         self.grid.agents[index].cell.occupant = 0
         self.grid.agents[index].cell = self.grid.grid[xIndex][yIndex]
 
-        print("old Xpos: "+ str(self.grid.agents[index].xPos)+"\n")
-        print("old Ypos: "+ str(self.grid.agents[index].yPos)+"\n\n")
-
         self.grid.agents[index].xPos = self.grid.grid[xIndex][yIndex].xPos
         self.grid.agents[index].yPos = self.grid.grid[xIndex][yIndex].yPos
-
-        print("new Xpos: "+ str(self.grid.agents[index].xPos)+"\n")
-        print("new Ypos: "+ str(self.grid.agents[index].yPos)+"\n\n")
 
     def entity_left(self, index):
 
         xIndex = self.grid.agents[index].cell.xIndex -1
         yIndex = self.grid.agents[index].cell.yIndex
 
-        print("xIndex: "+ str(xIndex)+"\n")
-        print("yIndex: "+ str(yIndex)+"\n\n")
-
         self.grid.grid[xIndex][yIndex].occupant = self.grid.agents[index]
         self.grid.agents[index].cell.occupant = 0
         self.grid.agents[index].cell = self.grid.grid[xIndex][yIndex]
 
-        print("old Xpos: "+ str(self.grid.agents[index].xPos)+"\n")
-        print("old Ypos: "+ str(self.grid.agents[index].yPos)+"\n\n")
-
         self.grid.agents[index].xPos = self.grid.grid[xIndex][yIndex].xPos
         self.grid.agents[index].yPos = self.grid.grid[xIndex][yIndex].yPos
-
-        print("new Xpos: "+ str(self.grid.agents[index].xPos)+"\n")
-        print("new Ypos: "+ str(self.grid.agents[index].yPos)+"\n\n")
 
     def entity_right(self, index):
 
         xIndex = self.grid.agents[index].cell.xIndex +1
         yIndex = self.grid.agents[index].cell.yIndex
 
-        print("xIndex: "+ str(xIndex)+"\n")
-        print("yIndex: "+ str(yIndex)+"\n\n")
-
         self.grid.grid[xIndex][yIndex].occupant = self.grid.agents[index]
         self.grid.agents[index].cell.occupant = 0
         self.grid.agents[index].cell = self.grid.grid[xIndex][yIndex]
 
-        print("old Xpos: "+ str(self.grid.agents[index].xPos)+"\n")
-        print("old Ypos: "+ str(self.grid.agents[index].yPos)+"\n\n")
-
         self.grid.agents[index].xPos = self.grid.grid[xIndex][yIndex].xPos
         self.grid.agents[index].yPos = self.grid.grid[xIndex][yIndex].yPos
-
-        print("new Xpos: "+ str(self.grid.agents[index].xPos)+"\n")
-        print("new Ypos: "+ str(self.grid.agents[index].yPos)+"\n\n")
 
     def agent_up(self, agent):
 
         xIndex = agent.cell.xIndex
         yIndex = agent.cell.yIndex -1
 
-        print("xIndex: "+ str(xIndex)+"\n")
-        print("yIndex: "+ str(yIndex)+"\n\n")
-
         self.grid.grid[xIndex][yIndex].occupant = agent
         agent.cell.occupant = 0
         agent.cell = self.grid.grid[xIndex][yIndex]
 
-        print("old Xpos: "+ str(agent.xPos)+"\n")
-        print("old Ypos: "+ str(agent.yPos)+"\n\n")
-
         agent.xPos = self.grid.grid[xIndex][yIndex].xPos
         agent.yPos = self.grid.grid[xIndex][yIndex].yPos
-
-        print("new Xpos: "+ str(agent.xPos)+"\n")
-        print("new Ypos: "+ str(agent.yPos)+"\n\n")
 
     def agent_down(self, agent):
 
         xIndex = agent.cell.xIndex
         yIndex = agent.cell.yIndex +1
 
-        print("xIndex: "+ str(xIndex)+"\n")
-        print("yIndex: "+ str(yIndex)+"\n\n")
-
         self.grid.grid[xIndex][yIndex].occupant = agent
         agent.cell.occupant = 0
         agent.cell = self.grid.grid[xIndex][yIndex]
 
-        print("old Xpos: "+ str(agent.xPos)+"\n")
-        print("old Ypos: "+ str(agent.yPos)+"\n\n")
 
         agent.xPos = self.grid.grid[xIndex][yIndex].xPos
         agent.yPos = self.grid.grid[xIndex][yIndex].yPos
-
-        print("new Xpos: "+ str(agent.xPos)+"\n")
-        print("new Ypos: "+ str(agent.yPos)+"\n\n")
 
     def agent_left(self, agent):
 
         xIndex = agent.cell.xIndex -1
         yIndex = agent.cell.yIndex
 
-        print("xIndex: "+ str(xIndex)+"\n")
-        print("yIndex: "+ str(yIndex)+"\n\n")
-
         self.grid.grid[xIndex][yIndex].occupant = agent
         agent.cell.occupant = 0
         agent.cell = self.grid.grid[xIndex][yIndex]
 
-        print("old Xpos: "+ str(agent.xPos)+"\n")
-        print("old Ypos: "+ str(agent.yPos)+"\n\n")
-
         agent.xPos = self.grid.grid[xIndex][yIndex].xPos
         agent.yPos = self.grid.grid[xIndex][yIndex].yPos
 
-        print("new Xpos: "+ str(agent.xPos)+"\n")
-        print("new Ypos: "+ str(agent.yPos)+"\n\n")
 
     def agent_right(self, agent):
 
         xIndex = agent.cell.xIndex +1
         yIndex = agent.cell.yIndex
 
-        print("xIndex: "+ str(xIndex)+"\n")
-        print("yIndex: "+ str(yIndex)+"\n\n")
 
         self.grid.grid[xIndex][yIndex].occupant = agent
         agent.cell.occupant = 0
         agent.cell = self.grid.grid[xIndex][yIndex]
 
-        print("old Xpos: "+ str(agent.xPos)+"\n")
-        print("old Ypos: "+ str(agent.yPos)+"\n\n")
-
         agent.xPos = self.grid.grid[xIndex][yIndex].xPos
         agent.yPos = self.grid.grid[xIndex][yIndex].yPos
 
-        print("new Xpos: "+ str(agent.xPos)+"\n")
-        print("new Ypos: "+ str(agent.yPos)+"\n\n")
 
     def position_check(self):
 
@@ -399,5 +331,4 @@ class Manager:
 
     def move_agents(self):
         for agent in self.grid.agents:
-            print("Return: "+str(agent.move()))
             self.agent_mover(agent)
