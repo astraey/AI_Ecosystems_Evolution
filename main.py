@@ -13,13 +13,7 @@ class App:
 
         self.manager = Manager(display, self.height, self.width)
 
-        icon = pygame.image.load('media/icon.png')
-
-        pygame.display.set_icon(icon)
-
-        pygame.display.set_caption("Ecosystem Simulator")
-
-        #self.manager.generator()
+        self.manager.icon_setter()
 
         self.masterClock = pygame.time.Clock()
 
@@ -29,7 +23,7 @@ class App:
 
         self._running = True
 
-        self.manager.test_array_objects()
+        self.manager.test_add_predators()
 
     def on_event(self, event):
         if event.type == pygame.QUIT:
@@ -40,32 +34,37 @@ class App:
     def on_loop(self):
 
         #old
-        self.manager.predator_move_reproduce()
+        #self.manager.predator_move_reproduce()
 
         #old
-        self.manager.plant_reproduce()
+        #self.manager.plant_reproduce()
 
         #old
-        self.manager.eating_manager()
+        #self.manager.eating_manager()
 
-        self.manager.camera_move()
+        if not self.manager.pause:
 
-        self.manager.move_agents()
+            self.manager.camera_move()
+
+            self.manager.move_agents()
+
+            self.manager.agent_attacker()
 
     def on_render(self):
 
-        self.manager.fill_screen_black()
+        self.manager.paint_screen_black()
 
         self.manager.draw_grid()
 
         self.manager.draw_agents()
 
-        self.manager.render_predators_plants()
-
+        #old
+        #self.manager.render_predators_plants()
 
         pygame.display.flip()
 
     def on_execute(self):
+
         if self.on_init() is False:
             self._running = False
 

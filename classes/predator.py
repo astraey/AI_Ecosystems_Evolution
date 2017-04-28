@@ -47,4 +47,9 @@ class Predator:
             return 3
 
 
-           #  print("Compass has been changed")
+    def attack_agent(self, defender_agent):
+
+        self.biomaterial -= 5
+        defender_agent.biomaterial -= 15
+        print("[Attacker Agent Biomaterial] "+ str(self.biomaterial))
+        print("[Defender Agent Biomaterial] "+ str(defender_agent.biomaterial))

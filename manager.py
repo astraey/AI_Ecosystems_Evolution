@@ -16,6 +16,7 @@ class Manager:
         self.screen = screen
         self.height = height
         self.width = width
+        self.pause = False
 
         self.grey = (100, 100, 100)
 
@@ -25,6 +26,14 @@ class Manager:
 
         # We declare a grid of 30*30
         self.grid = Grid(30, self.camera, self.screen)
+
+    def icon_setter(self):
+
+        icon = pygame.image.load('media/icon.png')
+
+        pygame.display.set_icon(icon)
+
+        pygame.display.set_caption("Ecosystem Simulator")
 
     def predator_move_reproduce(self):
         for element in self.predatorlist:
@@ -109,24 +118,10 @@ class Manager:
                     self.plantlist.remove(element)
                     print("Predator's new Biomaterial: " + str(predator.biomaterial))
 
-    def fill_screen_black(self):
+    def paint_screen_black(self):
         self.screen.fill((0,0,0))
 
-    def render_predators_plants(self):
-
-        # (0, 0, 0) is the RGB codification for Black
-
-        for i in range(0, len(self.plantlist)):
-            self.plantlist[i].draw(self.screen)
-
-        for i in range(0, len(self.predatorlist)):
-            self.predatorlist[i].draw(self.screen)
-
-    def generator(self):
-
-        self.predatorgenerator()
-
-        self.plantgenerator()
+    # entity_dir receives an index corresponding to an agent in the agent list and moves it
 
     def entity_up(self, index):
 
@@ -176,6 +171,8 @@ class Manager:
         self.grid.agents[index].xPos = self.grid.grid[xIndex][yIndex].xPos
         self.grid.agents[index].yPos = self.grid.grid[xIndex][yIndex].yPos
 
+    # agent_dir receives an agent as a parameter and moves it in the grid
+
     def agent_up(self, agent):
 
         xIndex = agent.cell.xIndex
@@ -213,7 +210,6 @@ class Manager:
         agent.xPos = self.grid.grid[xIndex][yIndex].xPos
         agent.yPos = self.grid.grid[xIndex][yIndex].yPos
 
-
     def agent_right(self, agent):
 
         xIndex = agent.cell.xIndex +1
@@ -227,26 +223,10 @@ class Manager:
         agent.xPos = self.grid.grid[xIndex][yIndex].xPos
         agent.yPos = self.grid.grid[xIndex][yIndex].yPos
 
-
-    def position_check(self):
-
-        print("Starting Position Test")
-
-        flag2 = False
-        for element in self.plantlist:
-            flag = 0
-            for element2 in self.plantlist:
-                if element.xpos == element2.xpos and element.ypos == element2.ypos:
-                    flag += 1
-
-            if flag >= 2:
-                print("ERROR DETECTED")
-                flag2 = True
-
-        if flag2:
-            print("Errors were Detected")
-        else:
-            print("No errors Were Detected")
+    def agent_remove(self, agent):
+        if agent in self.grid.agents:
+            agent.cell.occupant = 0
+            self.grid.agents.remove(agent)
 
     def event_management(self, event):
 
@@ -275,8 +255,12 @@ class Manager:
             if event.key == pygame.K_s:
                 self.entity_down(1)
 
-            if event.key == pygame.K_t:
-                self.position_check()
+            if event.key == pygame.K_e:
+                self.agent_remove(self.grid.agents[0])
+                print("Agent Deleted")
+
+            if event.key == pygame.K_p:
+                self.pause_button()
 
             if event.key == pygame.K_ESCAPE:
                 sys.exit()
@@ -294,8 +278,8 @@ class Manager:
             if event.key == pygame.K_DOWN:
                 self.camera.moving_up = False
 
-    def test_array_objects(self):
-        #self.grid.testFunction()
+    def test_add_predators(self):
+
         self.add_agent(Predator(self.grid.grid[1][1].xPos, self.grid.grid[1][1].xPos, self.grid.grid[1][1], (244, 78, 66), self.camera), 1, 1)
         self.add_agent(Predator(self.grid.grid[2][2].xPos, self.grid.grid[2][2].xPos, self.grid.grid[2][2], (113, 209, 62), self.camera), 2, 2)
         self.add_agent(Predator(self.grid.grid[8][8].xPos, self.grid.grid[8][8].xPos, self.grid.grid[8][8], (54,111,200), self.camera), 8, 8)
@@ -303,10 +287,12 @@ class Manager:
         self.add_agent(Predator(self.grid.grid[7][7].xPos, self.grid.grid[7][7].xPos, self.grid.grid[7][7], (200, 56, 200), self.camera), 7, 7)
 
 
-
-
     def draw_grid(self):
-        self.grid.draw()
+
+        #Highlights occupied cells
+        self.grid.draw_highlighted()
+
+        #self.grid.draw()
 
     def draw_agents(self):
         for agent in self.grid.agents:
@@ -318,17 +304,31 @@ class Manager:
 
     def agent_mover(self, agent):
 
-        temp = agent.move()
+        compass = agent.move()
 
-        if temp == 0 and agent.cell.yIndex > 0 and self.grid.top_cell(agent.cell).occupant == 0:
+        if compass == 0 and agent.cell.yIndex > 0 and self.grid.top_cell(agent.cell).occupant == 0:
             self.agent_up(agent)
-        elif temp == 1 and agent.cell.yIndex < self.grid.size - 1 and self.grid.bottom_cell(agent.cell).occupant == 0:
+        elif compass == 1 and agent.cell.yIndex < self.grid.size - 1 and self.grid.bottom_cell(agent.cell).occupant == 0:
             self.agent_down(agent)
-        elif temp == 2 and agent.cell.xIndex < self.grid.size - 1 and self.grid.right_cell(agent.cell).occupant == 0:
+        elif compass == 2 and agent.cell.xIndex < self.grid.size - 1 and self.grid.right_cell(agent.cell).occupant == 0:
             self.agent_right(agent)
-        elif temp == 3 and agent.cell.xIndex > 0 and self.grid.left_cell(agent.cell).occupant == 0:
+        elif compass == 3 and agent.cell.xIndex > 0 and self.grid.left_cell(agent.cell).occupant == 0:
             self.agent_left(agent)
 
     def move_agents(self):
         for agent in self.grid.agents:
             self.agent_mover(agent)
+
+    def agent_attacker(self):
+        for agent in self.grid.agents:
+            self.grid.neighbour_agent(agent)
+
+    def pause_button(self):
+
+
+        if not self.pause:
+            print("Game has been paused")
+        else:
+            print("Game has been resumed")
+
+        self.pause = not self.pause
