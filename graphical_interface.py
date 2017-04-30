@@ -40,7 +40,7 @@ title.pack(title_opt)
 runButton = Button(root, text='Start Simulation',  highlightbackground=backgroundColor, command=runSimulator)
 runButton.pack(button1_opt)
 
-openButton = Button(root, text='Select ', highlightbackground=backgroundColor, command=selectIndividuals)
+openButton = Button(root, text='Select Specimens', highlightbackground=backgroundColor, command=selectIndividuals)
 openButton.pack(pb_opt)
 
 

@@ -13,11 +13,10 @@ class Predator:
         self.color = color
         self.cell = cell
 
+
         self.camera = camera
 
         self.compass = randint(0,3)
-
-        self.Red = (255, 0, 0)
 
         self.biomaterial = 100
 
@@ -49,7 +48,15 @@ class Predator:
 
     def attack_agent(self, defender_agent):
 
-        self.biomaterial -= 5
-        defender_agent.biomaterial -= 15
-        print("[Attacker Agent Biomaterial] "+ str(self.biomaterial))
-        print("[Defender Agent Biomaterial] "+ str(defender_agent.biomaterial))
+        if self.biomaterial > 0:
+            taken_biomaterial = randint(0,20)
+
+            if defender_agent.biomaterial >= taken_biomaterial:
+                self.biomaterial += taken_biomaterial
+                defender_agent.biomaterial -= taken_biomaterial
+            else:
+                self.biomaterial += defender_agent.biomaterial
+                defender_agent.biomaterial = 0
+
+            #print("[Attacker Agent Biomaterial] "+ str(self.biomaterial))
+            #print("[Defender Agent Biomaterial] "+ str(defender_agent.biomaterial))

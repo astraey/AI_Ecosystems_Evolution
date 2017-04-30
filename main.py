@@ -23,7 +23,9 @@ class App:
 
         self._running = True
 
-        self.manager.test_add_predators()
+        # self.manager.test_add_predators()
+
+        self.manager.random_add_predators(250)
 
     def on_event(self, event):
         if event.type == pygame.QUIT:
@@ -49,6 +51,12 @@ class App:
             self.manager.move_agents()
 
             self.manager.agent_attacker()
+
+            self.manager.agent_killer()
+
+            self.manager.agent_reproducer()
+
+            print(str(len(self.manager.grid.agents)))
 
     def on_render(self):
 

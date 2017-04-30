@@ -18,14 +18,18 @@ class Manager:
         self.width = width
         self.pause = False
 
+        self.counter = 0
+
         self.grey = (100, 100, 100)
 
         self.camera_focus = 0
 
         self.camera = Camera(0, 0)
 
+        self.grid_size = 35
+
         # We declare a grid of 30*30
-        self.grid = Grid(30, self.camera, self.screen)
+        self.grid = Grid(self.grid_size, self.camera, self.screen)
 
     def icon_setter(self):
 
@@ -227,6 +231,8 @@ class Manager:
         if agent in self.grid.agents:
             agent.cell.occupant = 0
             self.grid.agents.remove(agent)
+            print("Agent KILLED")
+
 
     def event_management(self, event):
 
@@ -280,11 +286,36 @@ class Manager:
 
     def test_add_predators(self):
 
-        self.add_agent(Predator(self.grid.grid[1][1].xPos, self.grid.grid[1][1].xPos, self.grid.grid[1][1], (244, 78, 66), self.camera), 1, 1)
-        self.add_agent(Predator(self.grid.grid[2][2].xPos, self.grid.grid[2][2].xPos, self.grid.grid[2][2], (113, 209, 62), self.camera), 2, 2)
-        self.add_agent(Predator(self.grid.grid[8][8].xPos, self.grid.grid[8][8].xPos, self.grid.grid[8][8], (54,111,200), self.camera), 8, 8)
-        self.add_agent(Predator(self.grid.grid[9][9].xPos, self.grid.grid[9][9].xPos, self.grid.grid[9][9], (255, 250, 0), self.camera), 9, 9)
-        self.add_agent(Predator(self.grid.grid[7][7].xPos, self.grid.grid[7][7].xPos, self.grid.grid[7][7], (200, 56, 200), self.camera), 7, 7)
+        self.add_agent(Predator(self.grid.grid[1][1].xPos, self.grid.grid[1][1].yPos, self.grid.grid[1][1], (244, 78, 66), self.camera), 1, 1)
+        self.add_agent(Predator(self.grid.grid[2][2].xPos, self.grid.grid[2][2].yPos, self.grid.grid[2][2], (113, 209, 62), self.camera), 2, 2)
+        self.add_agent(Predator(self.grid.grid[8][8].xPos, self.grid.grid[8][8].yPos, self.grid.grid[8][8], (54,111,200), self.camera), 8, 8)
+        self.add_agent(Predator(self.grid.grid[9][9].xPos, self.grid.grid[9][9].yPos, self.grid.grid[9][9], (255, 250, 0), self.camera), 9, 9)
+        self.add_agent(Predator(self.grid.grid[7][7].xPos, self.grid.grid[7][7].yPos, self.grid.grid[7][7], (200, 56, 200), self.camera), 7, 7)
+        self.add_agent(Predator(self.grid.grid[4][4].xPos, self.grid.grid[4][4].yPos, self.grid.grid[4][4], (3, 54, 34), self.camera), 4, 4)
+
+    def random_add_predators(self, amount):
+
+        print("Llegamos aqui")
+
+        for i in range(1, amount):
+            xIndex = randint(0, self.grid_size -1)
+            yIndex = randint(0, self.grid_size -1)
+
+            print("Llegamos aqui 2")
+
+
+            if self.grid.grid[xIndex][yIndex].occupant != 0:
+
+                continue
+
+            targetCell = self.grid.grid[xIndex][yIndex]
+
+            color = (randint(0,255),randint(0,255),randint(0,255))
+
+            self.add_agent(Predator(targetCell.xPos, targetCell.yPos, targetCell, color, self.camera), xIndex, yIndex)
+
+            print("Llegamos aqui 3, añadimos un agente")
+
 
 
     def draw_grid(self):
@@ -292,6 +323,7 @@ class Manager:
         #Highlights occupied cells
         self.grid.draw_highlighted()
 
+        #Doesn't highlight occupied cells
         #self.grid.draw()
 
     def draw_agents(self):
@@ -301,6 +333,7 @@ class Manager:
     def add_agent(self, agent, xPos, yPos):
         self.grid.agents.append(agent)
         self.grid.grid[xPos][yPos].occupant = agent
+        print("Agent has been added at[" + str(agent.cell.xIndex)+", "+str(agent.cell.yIndex)+"]")
 
     def agent_mover(self, agent):
 
@@ -315,13 +348,46 @@ class Manager:
         elif compass == 3 and agent.cell.xIndex > 0 and self.grid.left_cell(agent.cell).occupant == 0:
             self.agent_left(agent)
 
+        # Moving Cost
+        """
+        if self.counter > 20:
+
+            agent.biomaterial -= 1
+            self.counter = 0
+        else:
+
+            self.counter += 1
+        """
+
     def move_agents(self):
         for agent in self.grid.agents:
             self.agent_mover(agent)
 
     def agent_attacker(self):
         for agent in self.grid.agents:
-            self.grid.neighbour_agent(agent)
+            neighbours = self.grid.neighbour_agent(agent)
+            if neighbours != []:
+                agent.attack_agent(neighbours[randint(0,len(neighbours)-1)])
+            for neighbour in neighbours:
+                agent.attack_agent(neighbour)
+
+    def agent_killer(self):
+        for agent in self.grid.agents:
+            if agent.biomaterial <= 0:
+                self.agent_remove(agent)
+
+    def agent_reproducer(self):
+        for agent in self.grid.agents:
+            if agent.biomaterial >= 200:
+
+                free_cells = self.grid.free_cell(agent)
+
+                # Returns true if list is not empty
+                if free_cells == []:
+                    print("***********************************************************************")
+                if free_cells != []:
+                    agent.biomaterial -= 100
+                    self.add_agent(Predator(free_cells[0].xPos, free_cells[0].yPos, free_cells[0], agent.color, self.camera), free_cells[0].xIndex, free_cells[0].yIndex)
 
     def pause_button(self):
 
