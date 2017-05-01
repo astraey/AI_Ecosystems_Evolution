@@ -39,13 +39,6 @@ class Manager:
 
         pygame.display.set_caption("Ecosystem Simulator")
 
-    def predator_move_reproduce(self):
-        for element in self.predatorlist:
-            element.move()
-            if element.biomaterial > 200:
-                element.biomaterial -= 100
-                self.predatorlist.append(Predator(element.xpos, element.ypos, element.color, self.camera))
-
     def camera_move(self):
         if self.camera.moving_down:
             self.camera.ypos += self.camera.moving_distance
@@ -59,71 +52,9 @@ class Manager:
         if self.camera.moving_left:
             self.camera.xpos -= self.camera.moving_distance
 
-    def plant_reproduce(self):
-
-
-        for element in self.plantlist:
-            element.grow()
-
-            if element.readyToGrow and element.biomaterial >= 25:
-
-
-                if element.biomaterial < 40:
-                    element.biomaterial += 1
-
-                if element.biomaterial >= 40 and not element.wood:
-                    element.is_wood()
-                    if element.wood:
-                        element.color = (128, 64, 0)
-
-                temp = randint(0, 3)
-                position_free = True
-                new_plant_xpos = 0
-                new_plant_ypos = 0
-
-                if temp == 0:
-                    new_plant_xpos = element.xpos + element.size
-                    new_plant_ypos = element.ypos + element.size
-
-                if temp == 1:
-                    new_plant_xpos = element.xpos - element.size
-                    new_plant_ypos = element.ypos + element.size
-
-                if temp == 2:
-                    new_plant_xpos = element.xpos + element.size
-                    new_plant_ypos = element.ypos - element.size
-
-                if temp == 3:
-                    new_plant_xpos = element.xpos - element.size
-                    new_plant_ypos = element.ypos - element.size
-
-                for element2 in self.plantlist:
-                    if abs(new_plant_xpos - element2.xpos) < 10 and abs(new_plant_ypos - element2.ypos) < 10:
-                        position_free = False
-
-                if position_free:
-                    self.addplant(new_plant_xpos, new_plant_ypos, self.camera)
-                    print("New Plant at " + str(new_plant_xpos) + ", " + str(new_plant_ypos) + "  No Plants: " + str(len(self.plantlist)))
-
-                element.readyToGrow = False
-
-            if element.readyToGrow and element.biomaterial < 25:
-                element.biomaterial += 1
-                if element.biomaterial == 25:
-                    element.color = (0, 77, 0)
-                element.readyToGrow = False
-
-    def eating_manager(self):
-
-        for predator in self.predatorlist:
-            for element in self.plantlist:
-                if abs(predator.xpos - element.xpos) < 10 and abs(predator.ypos - element.ypos) < 10 and not element.wood:
-                    predator.biomaterial += element.biomaterial
-                    self.plantlist.remove(element)
-                    print("Predator's new Biomaterial: " + str(predator.biomaterial))
-
     def paint_screen_black(self):
         self.screen.fill((0,0,0))
+
 
     # entity_dir receives an index corresponding to an agent in the agent list and moves it
 
@@ -231,8 +162,7 @@ class Manager:
         if agent in self.grid.agents:
             agent.cell.occupant = 0
             self.grid.agents.remove(agent)
-            print("Agent KILLED")
-
+            #print("Agent KILLED")
 
     def event_management(self, event):
 
@@ -263,7 +193,7 @@ class Manager:
 
             if event.key == pygame.K_e:
                 self.agent_remove(self.grid.agents[0])
-                print("Agent Deleted")
+                #print("Agent Deleted")
 
             if event.key == pygame.K_p:
                 self.pause_button()
@@ -284,6 +214,8 @@ class Manager:
             if event.key == pygame.K_DOWN:
                 self.camera.moving_up = False
 
+    #Predators added manually
+
     def test_add_predators(self):
 
         self.add_agent(Predator(self.grid.grid[1][1].xPos, self.grid.grid[1][1].yPos, self.grid.grid[1][1], (244, 78, 66), self.camera), 1, 1)
@@ -295,14 +227,9 @@ class Manager:
 
     def random_add_predators(self, amount):
 
-        print("Llegamos aqui")
-
         for i in range(1, amount):
             xIndex = randint(0, self.grid_size -1)
             yIndex = randint(0, self.grid_size -1)
-
-            print("Llegamos aqui 2")
-
 
             if self.grid.grid[xIndex][yIndex].occupant != 0:
 
@@ -313,8 +240,6 @@ class Manager:
             color = (randint(0,255),randint(0,255),randint(0,255))
 
             self.add_agent(Predator(targetCell.xPos, targetCell.yPos, targetCell, color, self.camera), xIndex, yIndex)
-
-            print("Llegamos aqui 3, añadimos un agente")
 
 
 
@@ -333,7 +258,7 @@ class Manager:
     def add_agent(self, agent, xPos, yPos):
         self.grid.agents.append(agent)
         self.grid.grid[xPos][yPos].occupant = agent
-        print("Agent has been added at[" + str(agent.cell.xIndex)+", "+str(agent.cell.yIndex)+"]")
+        #print("Agent has been added at[" + str(agent.cell.xIndex)+", "+str(agent.cell.yIndex)+"]")
 
     def agent_mover(self, agent):
 
@@ -382,15 +307,12 @@ class Manager:
 
                 free_cells = self.grid.free_cell(agent)
 
-                # Returns true if list is not empty
-                if free_cells == []:
-                    print("***********************************************************************")
+                # Returns true if list is not empty, if there are no contiguous free cells
                 if free_cells != []:
                     agent.biomaterial -= 100
                     self.add_agent(Predator(free_cells[0].xPos, free_cells[0].yPos, free_cells[0], agent.color, self.camera), free_cells[0].xIndex, free_cells[0].yIndex)
 
     def pause_button(self):
-
 
         if not self.pause:
             print("Game has been paused")

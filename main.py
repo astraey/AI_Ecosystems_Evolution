@@ -35,15 +35,6 @@ class App:
 
     def on_loop(self):
 
-        #old
-        #self.manager.predator_move_reproduce()
-
-        #old
-        #self.manager.plant_reproduce()
-
-        #old
-        #self.manager.eating_manager()
-
         if not self.manager.pause:
 
             self.manager.camera_move()
@@ -56,7 +47,8 @@ class App:
 
             self.manager.agent_reproducer()
 
-            print(str(len(self.manager.grid.agents)))
+            #Prints the number of agents alive in the simulation
+            #print(str(len(self.manager.grid.agents)))
 
     def on_render(self):
 
