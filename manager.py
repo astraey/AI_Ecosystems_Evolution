@@ -26,7 +26,8 @@ class Manager:
 
         self.camera = Camera(0, 0)
 
-        self.grid_size = 35
+        #Defines the size of the grid
+        self.grid_size = 37
 
         # We declare a grid of 30*30
         self.grid = Grid(self.grid_size, self.camera, self.screen)
