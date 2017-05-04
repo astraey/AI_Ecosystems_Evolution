@@ -23,9 +23,10 @@ class App:
 
         self._running = True
 
-        # self.manager.test_add_predators()
 
-        self.manager.random_add_predators(250)
+        self.manager.random_add_predators(2)
+
+        self.manager.random_add_plants(10)
 
     def on_event(self, event):
         if event.type == pygame.QUIT:
@@ -35,9 +36,10 @@ class App:
 
     def on_loop(self):
 
+        self.manager.camera_move()
+
         if not self.manager.pause:
 
-            self.manager.camera_move()
 
             self.manager.move_agents()
 
@@ -46,6 +48,8 @@ class App:
             self.manager.agent_killer()
 
             self.manager.agent_reproducer()
+
+            #self.manager.checker()
 
             #Prints the number of agents alive in the simulation
             #print(str(len(self.manager.grid.agents)))

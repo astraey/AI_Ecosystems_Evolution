@@ -2,23 +2,24 @@ import pygame
 
 from random import randint
 
-
 class Predator:
 
-    def __init__(self, x, y, cell, color, camera):
-        self.xPos = x
-        self.yPos = y
+    def __init__(self, cell, color, camera):
+        self.xPos = cell.xPos
+        self.yPos = cell.yPos
         self.size = 6
         self.counter = 0
         self.color = color
         self.cell = cell
 
+        self.isPlant = False
 
         self.camera = camera
 
         self.compass = randint(0,3)
 
         self.biomaterial = 100
+
 
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, (int(self.xPos + self.camera.xpos), int(self.yPos + self.camera.ypos)), self.size)

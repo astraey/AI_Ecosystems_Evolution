@@ -143,6 +143,7 @@ class Grid:
         return return_data
 
     def free_cell(self, agent):
+
         return_data = []
 
         xIndex = agent.cell.xIndex
@@ -157,7 +158,7 @@ class Grid:
             #print("Found a free cell at the top ["+ str(xIndex) +", "+ str(yIndex-1) +"]")
             return_data.append(self.grid[xIndex][yIndex-1])
 
-        if  0 < yIndex and xIndex < self.size -1 and self.grid[xIndex+1][yIndex-1].occupant != 0:
+        if  0 < yIndex and xIndex < self.size -1 and self.grid[xIndex+1][yIndex-1].occupant == 0:
             #print("Found a free cell at the top right corner ["+ str(xIndex+1) +", "+ str(yIndex-1) +"]")
             return_data.append(self.grid[xIndex+1][yIndex-1])
 

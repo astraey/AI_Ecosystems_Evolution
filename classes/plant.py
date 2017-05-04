@@ -2,29 +2,40 @@ import pygame
 
 from random import randint
 
-
 class Plant:
 
-    def __init__(self, x, y, camera):
-        self.xpos = x
-        self.ypos = y
-        self.size = 10
-        self.readyToGrow = False
+    def __init__(self, cell, camera):
+        self.xPos = cell.xPos
+        self.yPos = cell.yPos
+        self.size = 6
+        self.counter = 0
+        self.color = (0, 153, 0)
+        self.cell = cell
+
+        self.isPlant = True
+
+
         self.camera = camera
-        self.color = (0, 179, 0)
-        self.adult = False
-        self.biomaterial = 15
-        self.wood = False
+
+        self.compass = randint(0,3)
+
+        self.biomaterial = 20
+
 
     def draw(self, screen):
-        pygame.draw.circle(screen, self.color, (int(self.xpos + self.camera.xpos), int(self.ypos + self.camera.ypos)), self.size)
+        pygame.draw.circle(screen, self.color, (int(self.xPos + self.camera.xpos), int(self.yPos + self.camera.ypos)), self.size)
 
+    def move(self):
+        return False
+
+    def attack_agent(self, defender_agent):
+        return False
 
     def grow(self):
-        temp = randint(0, 100)
+        temp = randint(0, 20)
 
         if temp == 0:
-            self.readyToGrow = True
+            self.biomaterial +=5
 
 
     def is_wood(self):
