@@ -24,7 +24,7 @@ class App:
         self._running = True
 
 
-        self.manager.random_add_predators(3)
+        self.manager.random_add_predators(0)
 
         self.manager.random_add_plants(20)
 
@@ -49,10 +49,8 @@ class App:
 
             self.manager.agent_reproducer()
 
-            #self.manager.checker()
-
             #Prints the number of agents alive in the simulation
-            print(str(len(self.manager.grid.agents)))
+            #print(str(len(self.manager.grid.agents)))
 
     def on_render(self):
 
@@ -66,8 +64,6 @@ class App:
 
         self.manager.draw_agents()
 
-        #old
-        #self.manager.render_predators_plants()
 
         pygame.display.flip()
 

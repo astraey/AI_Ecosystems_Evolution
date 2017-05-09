@@ -181,20 +181,22 @@ class Manager:
                 self.camera.moving_up = True
 
             if event.key == pygame.K_a:
-                self.entity_left(1)
+                self.entity_left(0)
 
             if event.key == pygame.K_d:
-                self.entity_right(1)
+                self.entity_right(0)
 
             if event.key == pygame.K_w:
-                self.entity_up(1)
+                self.entity_up(0)
 
             if event.key == pygame.K_s:
-                self.entity_down(1)
+                self.entity_down(0)
 
             if event.key == pygame.K_e:
                 self.agent_remove(self.grid.agents[0])
                 #print("Agent Deleted")
+            if event.key == pygame.K_r:
+                self.random_add_predators(1)
 
             if event.key == pygame.K_p:
                 self.pause_button()
@@ -295,6 +297,9 @@ class Manager:
 
                 self.counter += 1
 
+    def update_radar(self, agent):
+        return True
+
 
     def move_agents(self):
         for agent in self.grid.agents:
@@ -328,7 +333,10 @@ class Manager:
                     randomFreeCellIndex = 0
 
                     agent.biomaterial -= 100
-                    self.add_agent(Predator(free_cells[randomFreeCellIndex], agent.color, self.camera), free_cells[randomFreeCellIndex].xIndex, free_cells[randomFreeCellIndex].yIndex)
+
+                    newColor = self.generateNewColor(agent.color)
+
+                    self.add_agent(Predator(free_cells[randomFreeCellIndex], newColor, self.camera), free_cells[randomFreeCellIndex].xIndex, free_cells[randomFreeCellIndex].yIndex)
 
 
             elif agent.biomaterial >= 20 and agent.isPlant:
@@ -343,6 +351,38 @@ class Manager:
                     self.add_agent(Plant(free_cells[randomFreeCellIndex], self.camera), free_cells[randomFreeCellIndex].xIndex, free_cells[randomFreeCellIndex].yIndex)
 
 
+    def generateNewColor(self, baseColor):
+        red = baseColor[0]
+        green = baseColor[1]
+        blue = baseColor[2]
+
+        redVariation = randint(-10,10)
+        greenVariation = randint(-10,10)
+        blueVariation = randint(-10,10)
+
+        finalRed = red - redVariation
+        finalGreen = green - greenVariation
+        finalBlue = blue - blueVariation
+
+        if red - redVariation < 0:
+            finalRed = 0
+        if green - greenVariation < 0:
+            finalGreen = 0
+        if blue - blueVariation < 0:
+            finalBlue = 0
+
+        if red - redVariation > 255:
+            finalRed = 255
+        if green - greenVariation > 255:
+            finalGreen = 255
+        if blue - blueVariation > 255:
+            finalBlue = 255
+
+
+        return (finalRed, finalGreen, finalBlue)
+
+
+
     def pause_button(self):
 
         if not self.pause:
@@ -351,19 +391,3 @@ class Manager:
             print("Game has been resumed")
 
         self.pause = not self.pause
-
-    def checker(self):
-        print("***************")
-        for i in range(0, self.grid_size):
-            for j in range(0, self.grid_size):
-                if self.grid.grid[i][j].occupant == 0:
-                    print("["+str(i)+", "+str(j)+"] FREE")
-                else:
-                    print("["+str(i)+", "+str(j)+"] Not Free")
-
-        print("***************")
-
-        for agent in self.grid.agents:
-            print("Agent at ["+str(agent.cell.xIndex)+", "+str(agent.cell.yIndex)+"]")
-
-        print("***************")

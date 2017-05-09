@@ -21,6 +21,11 @@ class Predator:
 
         self.biomaterial = 100
 
+        self.predatorNorth
+        self.predatorSouth
+        self.predatorEast
+        self.predatorWest
+
 
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, (int(self.xPos + self.camera.xpos), int(self.yPos + self.camera.ypos)), self.size)
