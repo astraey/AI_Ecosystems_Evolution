@@ -11,6 +11,7 @@ class Plant:
         self.counter = 0
         self.color = (0, 153, 0)
         self.cell = cell
+        self.wood = False
 
         self.isPlant = True
 
@@ -39,6 +40,7 @@ class Plant:
 
             if temp == 0:
                 self.biomaterial +=2
+                self.is_wood()
 
 
     def is_wood(self):
@@ -47,3 +49,4 @@ class Plant:
 
         if temp == 0:
             self.wood = True
+            self.color = (102, 81, 0)

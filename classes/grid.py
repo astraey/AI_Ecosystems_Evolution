@@ -6,8 +6,7 @@ from classes.predator import Predator
 class Grid:
 
     def __init__(self, size, camera, screen):
-        self.predatorlist = []
-        self.plantlist = []
+
         self.agents = []
         self.size = size
         self.cellSize = 5
@@ -72,6 +71,7 @@ class Grid:
 
                     pygame.draw.rect(self.screen, self.colorhighlight, position, self.cellBorder)
 
+    """
     def draw_grid_frame(self):
 
         for i in range(0, self.size):
@@ -85,6 +85,22 @@ class Grid:
                                  self.cellSize]
 
                     pygame.draw.rect(self.screen, self.color, position, self.cellBorder)
+
+    """
+    
+    def draw_grid_frame(self):
+
+        top_left_corner_coordinates_frame = (self.grid[0][0].xPos - self.cellSize + self.camera.xpos, self.grid[0][0].yPos - self.cellSize + self.camera.ypos)
+        top_right_corner_coordinates_frame = (self.grid[self.size-1][0].xPos + self.cellSize + self.camera.xpos, self.grid[self.size-1][0].yPos - self.cellSize + self.camera.ypos)
+        bottom_left_corner_coordinates_frame = (self.grid[0][self.size -1].xPos - self.cellSize + self.camera.xpos, self.grid[0][self.size -1].yPos + self.cellSize + self.camera.ypos)
+        bottom_right_corner_coordinates_frame = (self.grid[self.size -1][self.size -1].xPos + self.cellSize + self.camera.xpos, self.grid[self.size -1][self.size -1].yPos + self.cellSize + self.camera.ypos)
+
+
+        pygame.draw.line(self.screen, self.color, top_left_corner_coordinates_frame, top_right_corner_coordinates_frame, int(self.cellHalfSize))
+        pygame.draw.line(self.screen, self.color, top_left_corner_coordinates_frame, bottom_left_corner_coordinates_frame, int(self.cellHalfSize))
+        pygame.draw.line(self.screen, self.color, bottom_left_corner_coordinates_frame, bottom_right_corner_coordinates_frame, int(self.cellHalfSize))
+        pygame.draw.line(self.screen, self.color, bottom_right_corner_coordinates_frame, top_right_corner_coordinates_frame, int(self.cellHalfSize))
+
 
 
     def top_cell(self, cell):

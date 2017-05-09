@@ -260,6 +260,7 @@ class Manager:
     def draw_grid_frame(self):
 
         self.grid.draw_grid_frame()
+        #self.grid.draw_grid_frame2()
 
     def draw_agents(self):
         for agent in self.grid.agents:

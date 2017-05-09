@@ -24,7 +24,7 @@ class App:
         self._running = True
 
 
-        self.manager.random_add_predators(6)
+        self.manager.random_add_predators(3)
 
         self.manager.random_add_plants(20)
 

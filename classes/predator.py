@@ -13,6 +13,7 @@ class Predator:
         self.cell = cell
 
         self.isPlant = False
+        self.wood = False
 
         self.camera = camera
 
@@ -49,15 +50,17 @@ class Predator:
 
     def attack_agent(self, defender_agent):
 
-        if self.biomaterial > 0:
-            taken_biomaterial = randint(0,20)
+        if not defender_agent.wood:
 
-            if defender_agent.biomaterial >= taken_biomaterial:
-                self.biomaterial += taken_biomaterial
-                defender_agent.biomaterial -= taken_biomaterial
-            else:
-                self.biomaterial += defender_agent.biomaterial
-                defender_agent.biomaterial = 0
+            if self.biomaterial > 0:
+                taken_biomaterial = randint(0,20)
+
+                if defender_agent.biomaterial >= taken_biomaterial:
+                    self.biomaterial += taken_biomaterial
+                    defender_agent.biomaterial -= taken_biomaterial
+                else:
+                    self.biomaterial += defender_agent.biomaterial
+                    defender_agent.biomaterial = 0
 
             #print("[Attacker Agent Biomaterial] "+ str(self.biomaterial))
             #print("[Defender Agent Biomaterial] "+ str(defender_agent.biomaterial))
