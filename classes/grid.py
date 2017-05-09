@@ -10,7 +10,7 @@ class Grid:
         self.plantlist = []
         self.agents = []
         self.size = size
-        self.cellSize = 20
+        self.cellSize = 5
         self.distance = self.cellSize
         self.cellSize = self.cellSize
         self.cellHalfSize = self.cellSize/2
@@ -71,6 +71,21 @@ class Grid:
                 else:
 
                     pygame.draw.rect(self.screen, self.colorhighlight, position, self.cellBorder)
+
+    def draw_grid_frame(self):
+
+        for i in range(0, self.size):
+            for j in range(0, self.size):
+
+                if i == 0 or j == 0 or i == self.size - 1 or j == self.size - 1:
+
+                    position = [ int(self.grid[i][j].xPos - self.cellHalfSize + self.camera.xpos),
+                                 int(self.grid[i][j].yPos - self.cellHalfSize + self.camera.ypos),
+                                 self.cellSize,
+                                 self.cellSize]
+
+                    pygame.draw.rect(self.screen, self.color, position, self.cellBorder)
+
 
     def top_cell(self, cell):
 

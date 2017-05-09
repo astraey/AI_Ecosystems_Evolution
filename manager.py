@@ -26,7 +26,7 @@ class Manager:
         self.camera = Camera(0, 0)
 
         #Defines the size of the grid
-        self.grid_size = 37
+        self.grid_size = 195
 
 
         # We declare a grid of 30*30
@@ -257,6 +257,10 @@ class Manager:
         #Doesn't highlight occupied cells
         #self.grid.draw()
 
+    def draw_grid_frame(self):
+
+        self.grid.draw_grid_frame()
+
     def draw_agents(self):
         for agent in self.grid.agents:
             agent.draw(self.screen)
@@ -326,7 +330,7 @@ class Manager:
                     self.add_agent(Predator(free_cells[randomFreeCellIndex], agent.color, self.camera), free_cells[randomFreeCellIndex].xIndex, free_cells[randomFreeCellIndex].yIndex)
 
 
-            elif agent.biomaterial >= 40 and agent.isPlant:
+            elif agent.biomaterial >= 20 and agent.isPlant:
 
                 free_cells = self.grid.free_cell(agent)
 
@@ -334,7 +338,7 @@ class Manager:
 
                     randomFreeCellIndex = 0
 
-                    agent.biomaterial -= 20
+                    agent.biomaterial -= 10
                     self.add_agent(Plant(free_cells[randomFreeCellIndex], self.camera), free_cells[randomFreeCellIndex].xIndex, free_cells[randomFreeCellIndex].yIndex)
 
 

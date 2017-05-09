@@ -7,7 +7,7 @@ class App:
         self._running = True
         self._display_surf = None
 
-        self.size = self.width, self.height = 800, 800
+        self.size = self.width, self.height = 1010, 1010
 
         display = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
 
@@ -24,9 +24,9 @@ class App:
         self._running = True
 
 
-        self.manager.random_add_predators(2)
+        self.manager.random_add_predators(6)
 
-        self.manager.random_add_plants(10)
+        self.manager.random_add_plants(20)
 
     def on_event(self, event):
         if event.type == pygame.QUIT:
@@ -52,13 +52,17 @@ class App:
             #self.manager.checker()
 
             #Prints the number of agents alive in the simulation
-            #print(str(len(self.manager.grid.agents)))
+            print(str(len(self.manager.grid.agents)))
 
     def on_render(self):
 
         self.manager.paint_screen_black()
 
-        self.manager.draw_grid()
+        #Draws the whole grid
+        #self.manager.draw_grid()
+
+        #Draws just the exterior frame of the grid
+        self.manager.draw_grid_frame()
 
         self.manager.draw_agents()
 

@@ -7,7 +7,7 @@ class Predator:
     def __init__(self, cell, color, camera):
         self.xPos = cell.xPos
         self.yPos = cell.yPos
-        self.size = 6
+        self.size = 2
         self.counter = 0
         self.color = color
         self.cell = cell

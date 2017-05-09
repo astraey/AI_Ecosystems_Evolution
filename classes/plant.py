@@ -7,7 +7,7 @@ class Plant:
     def __init__(self, cell, camera):
         self.xPos = cell.xPos
         self.yPos = cell.yPos
-        self.size = 6
+        self.size = 3
         self.counter = 0
         self.color = (0, 153, 0)
         self.cell = cell
@@ -19,7 +19,7 @@ class Plant:
 
         self.compass = randint(0,3)
 
-        self.biomaterial = 20
+        self.biomaterial = 10
 
 
     def draw(self, screen):
@@ -32,10 +32,13 @@ class Plant:
         return False
 
     def grow(self):
-        temp = randint(0, 20)
 
-        if temp == 0:
-            self.biomaterial +=5
+        if self.biomaterial < 25:
+
+            temp = randint(0, 60)
+
+            if temp == 0:
+                self.biomaterial +=2
 
 
     def is_wood(self):
