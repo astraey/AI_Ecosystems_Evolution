@@ -5,26 +5,28 @@ from random import randint
 class Predator:
 
     def __init__(self, cell, color, camera):
+
         self.xPos = cell.xPos
         self.yPos = cell.yPos
         self.size = 2
         self.counter = 0
         self.color = color
         self.cell = cell
-
         self.isPlant = False
         self.wood = False
-
-        self.camera = camera
-
         self.compass = randint(0,3)
-
         self.biomaterial = 100
+        self.camera = camera
 
         self.predatorNorth
         self.predatorSouth
         self.predatorEast
         self.predatorWest
+
+        self.plantNorth
+        self.planSouth
+        self.plantEast
+        self.plantWest
 
 
     def draw(self, screen):
