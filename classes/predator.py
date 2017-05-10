@@ -18,15 +18,15 @@ class Predator:
         self.biomaterial = 100
         self.camera = camera
 
-        self.predatorNorth
-        self.predatorSouth
-        self.predatorEast
-        self.predatorWest
+        self.predatorNorth = False
+        self.predatorSouth = False
+        self.predatorEast = False
+        self.predatorWest = False
 
-        self.plantNorth
-        self.planSouth
-        self.plantEast
-        self.plantWest
+        self.plantNorth = False
+        self.planSouth = False
+        self.plantEast = False
+        self.plantWest = False
 
 
     def draw(self, screen):
