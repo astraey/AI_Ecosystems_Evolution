@@ -10,6 +10,7 @@ class Predator:
         self.yPos = cell.yPos
         self.size = 2
         self.counter = 0
+        self.movementCounter = 0
         self.color = color
         self.cell = cell
         self.isPlant = False

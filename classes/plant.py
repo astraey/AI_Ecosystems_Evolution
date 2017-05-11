@@ -13,7 +13,6 @@ class Plant:
         self.color = (0, 153, 0)
         self.cell = cell
         self.wood = False
-
         self.isPlant = True
 
 
@@ -37,10 +36,4 @@ class Plant:
 
         if self.biomaterial < 25:
 
-            temp = randint(0, 60)
-
-            global currentWoods
-            global maxWoods
-
-            if temp == 0:
-                self.biomaterial +=2
+            self.biomaterial += randint(0, 5)

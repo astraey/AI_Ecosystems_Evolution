@@ -25,9 +25,9 @@ class App:
         self._running = True
 
 
-        self.manager.random_add_predators(1)
+        self.manager.random_add_predators(0)
 
-        self.manager.random_add_plants(20)
+        self.manager.random_add_plants(200)
 
     def on_event(self, event):
         if event.type == pygame.QUIT:
@@ -41,12 +41,12 @@ class App:
 
         if not self.manager.pause:
 
-
             self.manager.move_agents()
 
             self.manager.predator_attacker()
 
-            self.manager.plant_grower()
+            #self.manager.plant_grower()
+            self.manager.plant_optimized_grower()
 
             self.manager.agent_killer()
 

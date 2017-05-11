@@ -21,7 +21,7 @@ class Manager:
         self.width = width
         self.pause = False
 
-        self.counter = 0
+        self.growingCounter = 0
 
         self.grey = (100, 100, 100)
 
@@ -171,6 +171,7 @@ class Manager:
         if agent in self.grid.agents:
             agent.cell.occupant = 0
             self.grid.agents.remove(agent)
+
             if agent.isPlant:
                 self.grid.plants.remove(agent)
             else:
@@ -308,13 +309,16 @@ class Manager:
 
         # Moving Cost
 
-        if self.counter > 10:
-
+        if agent.movementCounter > 15:
             agent.biomaterial -= 1
-            self.counter = 0
-        else:
+            agent.movementCounter = 0
 
-            self.counter += 1
+        else:
+            agent.movementCounter += 1
+
+    def movement_cost(self):
+
+        return True
 
     def update_radar(self, agent):
 
@@ -328,28 +332,41 @@ class Manager:
     def predator_attacker(self):
         for agent in self.grid.predators:
 
-
             neighbours = self.grid.neighbour_agent(agent)
+
             if neighbours != []:
                 agent.attack_agent(neighbours[randint(0,len(neighbours)-1)])
             for neighbour in neighbours:
                 agent.attack_agent(neighbour)
 
-    def plant_grower(self):
-        for agent in self.grid.plants:
-            agent.grow()
+
+    #Everu 20 iterations, it coumputes a list of random indexes that correspond to the plants that will grow
+    def plant_optimized_grower(self):
+        if self.growingCounter > 20:
+
+            self.growingCounter = 0
+            randomIndexList = []
+
+            #The lenght of the randomIndexList will deternime the amount of plants that will grow every time this function is executed
+            for i in range(0, int(len(self.grid.plants) / 5) + 1):
+                randomIndexList.append(randint(0, len(self.grid.plants)-1))
+            for j in randomIndexList:
+                self.grid.plants[j].grow()
+
+
+        else:
+            self.growingCounter += 1
+
 
     def wood_manager(self):
         if self.currentWoods < self.maxWoods:
 
             if randint(0,200) == 0:
-                randIndex = randint(0,len(self.grid.plants))
+                randIndex = randint(0,len(self.grid.plants) - 1)
                 if not self.grid.plants[randIndex].wood:
                     self.grid.plants[randIndex].wood = True
                     self.grid.plants[randIndex].color = (102, 81, 0)
                     self.currentWoods += 1
-
-
 
 
     def agent_killer(self):
@@ -360,9 +377,23 @@ class Manager:
 
     def agent_reproducer(self):
         for agent in self.grid.agents:
-            if agent.biomaterial >= 200 and not agent.isPlant:
+
+            if agent.biomaterial >= 20 and agent.isPlant:
 
                 free_cells = self.grid.free_cell(agent)
+
+                if free_cells != []:
+
+                    randomFreeCellIndex = 0
+
+                    agent.biomaterial -= 10
+                    self.add_agent_plant(Plant(free_cells[randomFreeCellIndex], self.camera), free_cells[randomFreeCellIndex].xIndex, free_cells[randomFreeCellIndex].yIndex)
+
+
+            elif agent.biomaterial >= 200 and not agent.isPlant:
+
+                free_cells = self.grid.free_cell(agent)
+
 
                 if free_cells != []:
 
@@ -375,16 +406,6 @@ class Manager:
                     self.add_agent_predator(Predator(free_cells[randomFreeCellIndex], newColor, self.camera), free_cells[randomFreeCellIndex].xIndex, free_cells[randomFreeCellIndex].yIndex)
 
 
-            elif agent.biomaterial >= 20 and agent.isPlant:
-
-                free_cells = self.grid.free_cell(agent)
-
-                if free_cells != []:
-
-                    randomFreeCellIndex = 0
-
-                    agent.biomaterial -= 10
-                    self.add_agent_plant(Plant(free_cells[randomFreeCellIndex], self.camera), free_cells[randomFreeCellIndex].xIndex, free_cells[randomFreeCellIndex].yIndex)
 
 
     def generateNewColor(self, baseColor):
