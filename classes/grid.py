@@ -8,6 +8,8 @@ class Grid:
     def __init__(self, size, camera, screen):
 
         self.agents = []
+        self.predators = []
+        self.plants = []
         self.size = size
         self.cellSize = 5
         self.distance = self.cellSize
@@ -87,7 +89,7 @@ class Grid:
                     pygame.draw.rect(self.screen, self.color, position, self.cellBorder)
 
     """
-    
+
     def draw_grid_frame(self):
 
         top_left_corner_coordinates_frame = (self.grid[0][0].xPos - self.cellSize + self.camera.xpos, self.grid[0][0].yPos - self.cellSize + self.camera.ypos)

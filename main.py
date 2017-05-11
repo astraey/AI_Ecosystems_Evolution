@@ -2,6 +2,7 @@ import pygame
 from manager import Manager
 
 
+
 class App:
     def __init__(self):
         self._running = True
@@ -24,7 +25,7 @@ class App:
         self._running = True
 
 
-        self.manager.random_add_predators(0)
+        self.manager.random_add_predators(1)
 
         self.manager.random_add_plants(20)
 
@@ -43,14 +44,18 @@ class App:
 
             self.manager.move_agents()
 
-            self.manager.agent_attacker()
+            self.manager.predator_attacker()
+
+            self.manager.plant_grower()
 
             self.manager.agent_killer()
 
             self.manager.agent_reproducer()
 
+            self.manager.wood_manager()
+
             #Prints the number of agents alive in the simulation
-            #print(str(len(self.manager.grid.agents)))
+            print("Agents: "+str(len(self.manager.grid.agents))+", Predators: "+str(len(self.manager.grid.predators))+", Plants: "+str(len(self.manager.grid.plants)))
 
     def on_render(self):
 

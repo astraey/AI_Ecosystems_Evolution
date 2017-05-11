@@ -17,6 +17,7 @@ class Predator:
         self.compass = randint(0,3)
         self.biomaterial = 100
         self.camera = camera
+        self.radarRange = 20
 
         self.predatorNorth = False
         self.predatorSouth = False

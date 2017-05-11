@@ -8,6 +8,10 @@ from classes.grid import Grid
 import pygame
 import sys
 import numpy
+
+
+
+
 class Manager:
 
     def __init__(self, screen, height, width):
@@ -27,6 +31,10 @@ class Manager:
 
         #Defines the size of the grid
         self.grid_size = 195
+
+
+        self.maxWoods = self.grid_size / 2
+        self.currentWoods = 0
 
 
         # We declare a grid of 30*30
@@ -163,6 +171,10 @@ class Manager:
         if agent in self.grid.agents:
             agent.cell.occupant = 0
             self.grid.agents.remove(agent)
+            if agent.isPlant:
+                self.grid.plants.remove(agent)
+            else:
+                self.grid.predators.remove(agent)
             #print("Agent KILLED")
 
     def event_management(self, event):
@@ -232,7 +244,7 @@ class Manager:
 
             color = (randint(0,255),randint(0,255),randint(0,255))
 
-            self.add_agent(Predator(targetCell, color, self.camera), xIndex, yIndex)
+            self.add_agent_predator(Predator(targetCell, color, self.camera), xIndex, yIndex)
 
     def random_add_plants(self, amount):
 
@@ -247,7 +259,7 @@ class Manager:
             targetCell = self.grid.grid[xIndex][yIndex]
 
 
-            self.add_agent(Plant(targetCell, self.camera), xIndex, yIndex)
+            self.add_agent_plant(Plant(targetCell, self.camera), xIndex, yIndex)
 
 
 
@@ -268,59 +280,83 @@ class Manager:
         for agent in self.grid.agents:
             agent.draw(self.screen)
 
-    def add_agent(self, agent, xPos, yPos):
+    def add_agent_plant(self, agent, xPos, yPos):
 
         self.grid.grid[xPos][yPos].occupant = agent
         self.grid.agents.append(agent)
+        self.grid.plants.append(agent)
+
+    def add_agent_predator(self, agent, xPos, yPos):
+
+        self.grid.grid[xPos][yPos].occupant = agent
+        self.grid.agents.append(agent)
+        self.grid.predators.append(agent)
+
 
     def agent_mover(self, agent):
 
-        if not agent.isPlant:
-            compass = agent.move()
+        compass = agent.move()
 
-            if compass == 0 and agent.cell.yIndex > 0 and self.grid.top_cell(agent.cell).occupant == 0:
-                self.agent_up(agent)
-            elif compass == 1 and agent.cell.yIndex < self.grid.size - 1 and self.grid.bottom_cell(agent.cell).occupant == 0:
-                self.agent_down(agent)
-            elif compass == 2 and agent.cell.xIndex < self.grid.size - 1 and self.grid.right_cell(agent.cell).occupant == 0:
-                self.agent_right(agent)
-            elif compass == 3 and agent.cell.xIndex > 0 and self.grid.left_cell(agent.cell).occupant == 0:
-                self.agent_left(agent)
+        if compass == 0 and agent.cell.yIndex > 0 and self.grid.top_cell(agent.cell).occupant == 0:
+            self.agent_up(agent)
+        elif compass == 1 and agent.cell.yIndex < self.grid.size - 1 and self.grid.bottom_cell(agent.cell).occupant == 0:
+            self.agent_down(agent)
+        elif compass == 2 and agent.cell.xIndex < self.grid.size - 1 and self.grid.right_cell(agent.cell).occupant == 0:
+            self.agent_right(agent)
+        elif compass == 3 and agent.cell.xIndex > 0 and self.grid.left_cell(agent.cell).occupant == 0:
+            self.agent_left(agent)
 
-            # Moving Cost
+        # Moving Cost
 
-            if self.counter > 10:
+        if self.counter > 10:
 
-                agent.biomaterial -= 1
-                self.counter = 0
-            else:
+            agent.biomaterial -= 1
+            self.counter = 0
+        else:
 
-                self.counter += 1
+            self.counter += 1
 
     def update_radar(self, agent):
+
         return True
 
 
     def move_agents(self):
-        for agent in self.grid.agents:
+        for agent in self.grid.predators:
             self.agent_mover(agent)
 
-    def agent_attacker(self):
-        for agent in self.grid.agents:
+    def predator_attacker(self):
+        for agent in self.grid.predators:
 
-            if not agent.isPlant:
-                neighbours = self.grid.neighbour_agent(agent)
-                if neighbours != []:
-                    agent.attack_agent(neighbours[randint(0,len(neighbours)-1)])
-                for neighbour in neighbours:
-                    agent.attack_agent(neighbour)
-            else:
-                agent.grow()
+
+            neighbours = self.grid.neighbour_agent(agent)
+            if neighbours != []:
+                agent.attack_agent(neighbours[randint(0,len(neighbours)-1)])
+            for neighbour in neighbours:
+                agent.attack_agent(neighbour)
+
+    def plant_grower(self):
+        for agent in self.grid.plants:
+            agent.grow()
+
+    def wood_manager(self):
+        if self.currentWoods < self.maxWoods:
+
+            if randint(0,200) == 0:
+                randIndex = randint(0,len(self.grid.plants))
+                if not self.grid.plants[randIndex].wood:
+                    self.grid.plants[randIndex].wood = True
+                    self.grid.plants[randIndex].color = (102, 81, 0)
+                    self.currentWoods += 1
+
+
+
 
     def agent_killer(self):
         for agent in self.grid.agents:
             if agent.biomaterial <= 0:
                 self.agent_remove(agent)
+
 
     def agent_reproducer(self):
         for agent in self.grid.agents:
@@ -336,7 +372,7 @@ class Manager:
 
                     newColor = self.generateNewColor(agent.color)
 
-                    self.add_agent(Predator(free_cells[randomFreeCellIndex], newColor, self.camera), free_cells[randomFreeCellIndex].xIndex, free_cells[randomFreeCellIndex].yIndex)
+                    self.add_agent_predator(Predator(free_cells[randomFreeCellIndex], newColor, self.camera), free_cells[randomFreeCellIndex].xIndex, free_cells[randomFreeCellIndex].yIndex)
 
 
             elif agent.biomaterial >= 20 and agent.isPlant:
@@ -348,7 +384,7 @@ class Manager:
                     randomFreeCellIndex = 0
 
                     agent.biomaterial -= 10
-                    self.add_agent(Plant(free_cells[randomFreeCellIndex], self.camera), free_cells[randomFreeCellIndex].xIndex, free_cells[randomFreeCellIndex].yIndex)
+                    self.add_agent_plant(Plant(free_cells[randomFreeCellIndex], self.camera), free_cells[randomFreeCellIndex].xIndex, free_cells[randomFreeCellIndex].yIndex)
 
 
     def generateNewColor(self, baseColor):

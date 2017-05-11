@@ -2,6 +2,7 @@ import pygame
 
 from random import randint
 
+
 class Plant:
 
     def __init__(self, cell, camera):
@@ -38,15 +39,8 @@ class Plant:
 
             temp = randint(0, 60)
 
+            global currentWoods
+            global maxWoods
+
             if temp == 0:
                 self.biomaterial +=2
-                self.is_wood()
-
-
-    def is_wood(self):
-
-        temp = randint(0,1000)
-
-        if temp == 0:
-            self.wood = True
-            self.color = (102, 81, 0)
