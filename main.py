@@ -28,9 +28,9 @@ class App:
         self._running = True
 
 
-        self.manager.random_add_predators(0)
+        self.manager.random_add_predators(2)
 
-        self.manager.random_add_plants(200)
+        self.manager.random_add_plants(40)
 
     def on_event(self, event):
         if event.type == pygame.QUIT:
@@ -59,7 +59,7 @@ class App:
 
             self.manager.update_predators_radar()
 
-            #self.stats_printer()
+            self.stats_printer()
 
 
 

@@ -26,7 +26,7 @@ class Predator:
         self.predatorWest = False
 
         self.plantNorth = False
-        self.planSouth = False
+        self.plantSouth = False
         self.plantEast = False
         self.plantWest = False
 
@@ -36,9 +36,28 @@ class Predator:
 
 
     def move(self):
+
+        caosVar = randint(0,10)
+        if caosVar != 0:
+
+            # Predator goes North
+            if self.plantNorth:
+                return 0
+            # Predator goes South
+            elif self.plantSouth:
+                return 1
+            # Predator goes East
+            elif self.plantEast:
+                return 2
+            # Predator goes West
+            elif self.plantWest:
+                return 3
+
+
         self.counter +=1
 
         temp = randint(0,3)
+
         if temp != self.compass:
             temp = randint(0,3)
 
@@ -46,15 +65,7 @@ class Predator:
             self.counter = 0
             self.compass = randint(0, 3)
 
-        # Cell goes right
-        if temp == 0:
-            return 0        # Cell goes left
-        if temp == 1:
-            return 1        # Cell goes
-        if temp == 2:
-            return 2        # Cell goes
-        if temp == 3:
-            return 3
+        return temp
 
 
     def attack_agent(self, defender_agent):

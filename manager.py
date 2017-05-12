@@ -71,51 +71,51 @@ class Manager:
 
     def entity_up(self, index):
 
-        xIndex = self.grid.agents[index].cell.xIndex
-        yIndex = self.grid.agents[index].cell.yIndex -1
+        xIndex = self.grid.predators[index].cell.xIndex
+        yIndex = self.grid.predators[index].cell.yIndex -1
 
-        self.grid.grid[xIndex][yIndex].occupant = self.grid.agents[index]
-        self.grid.agents[index].cell.occupant = 0
-        self.grid.agents[index].cell = self.grid.grid[xIndex][yIndex]
+        self.grid.grid[xIndex][yIndex].occupant = self.grid.predators[index]
+        self.grid.predators[index].cell.occupant = 0
+        self.grid.predators[index].cell = self.grid.grid[xIndex][yIndex]
 
-        self.grid.agents[index].xPos = self.grid.grid[xIndex][yIndex].xPos
-        self.grid.agents[index].yPos = self.grid.grid[xIndex][yIndex].yPos
+        self.grid.predators[index].xPos = self.grid.grid[xIndex][yIndex].xPos
+        self.grid.predators[index].yPos = self.grid.grid[xIndex][yIndex].yPos
 
     def entity_down(self, index):
 
-        xIndex = self.grid.agents[index].cell.xIndex
-        yIndex = self.grid.agents[index].cell.yIndex +1
+        xIndex = self.grid.predators[index].cell.xIndex
+        yIndex = self.grid.predators[index].cell.yIndex +1
 
-        self.grid.grid[xIndex][yIndex].occupant = self.grid.agents[index]
-        self.grid.agents[index].cell.occupant = 0
-        self.grid.agents[index].cell = self.grid.grid[xIndex][yIndex]
+        self.grid.grid[xIndex][yIndex].occupant = self.grid.predators[index]
+        self.grid.predators[index].cell.occupant = 0
+        self.grid.predators[index].cell = self.grid.grid[xIndex][yIndex]
 
-        self.grid.agents[index].xPos = self.grid.grid[xIndex][yIndex].xPos
-        self.grid.agents[index].yPos = self.grid.grid[xIndex][yIndex].yPos
+        self.grid.predators[index].xPos = self.grid.grid[xIndex][yIndex].xPos
+        self.grid.predators[index].yPos = self.grid.grid[xIndex][yIndex].yPos
 
     def entity_left(self, index):
 
-        xIndex = self.grid.agents[index].cell.xIndex -1
-        yIndex = self.grid.agents[index].cell.yIndex
+        xIndex = self.grid.predators[index].cell.xIndex -1
+        yIndex = self.grid.predators[index].cell.yIndex
 
-        self.grid.grid[xIndex][yIndex].occupant = self.grid.agents[index]
-        self.grid.agents[index].cell.occupant = 0
-        self.grid.agents[index].cell = self.grid.grid[xIndex][yIndex]
+        self.grid.grid[xIndex][yIndex].occupant = self.grid.predators[index]
+        self.grid.predators[index].cell.occupant = 0
+        self.grid.predators[index].cell = self.grid.grid[xIndex][yIndex]
 
-        self.grid.agents[index].xPos = self.grid.grid[xIndex][yIndex].xPos
-        self.grid.agents[index].yPos = self.grid.grid[xIndex][yIndex].yPos
+        self.grid.predators[index].xPos = self.grid.grid[xIndex][yIndex].xPos
+        self.grid.predators[index].yPos = self.grid.grid[xIndex][yIndex].yPos
 
     def entity_right(self, index):
 
-        xIndex = self.grid.agents[index].cell.xIndex +1
-        yIndex = self.grid.agents[index].cell.yIndex
+        xIndex = self.grid.predators[index].cell.xIndex +1
+        yIndex = self.grid.predators[index].cell.yIndex
 
-        self.grid.grid[xIndex][yIndex].occupant = self.grid.agents[index]
-        self.grid.agents[index].cell.occupant = 0
-        self.grid.agents[index].cell = self.grid.grid[xIndex][yIndex]
+        self.grid.grid[xIndex][yIndex].occupant = self.grid.predators[index]
+        self.grid.predators[index].cell.occupant = 0
+        self.grid.predators[index].cell = self.grid.grid[xIndex][yIndex]
 
-        self.grid.agents[index].xPos = self.grid.grid[xIndex][yIndex].xPos
-        self.grid.agents[index].yPos = self.grid.grid[xIndex][yIndex].yPos
+        self.grid.predators[index].xPos = self.grid.grid[xIndex][yIndex].xPos
+        self.grid.predators[index].yPos = self.grid.grid[xIndex][yIndex].yPos
 
     # agent_dir receives an agent as a parameter and moves it in the grid
 
@@ -324,7 +324,7 @@ class Manager:
 
     def update_predators_radar(self):
 
-        if self.radarCounter > 30:
+        if self.radarCounter >= 1:
 
             self.radarCounter = 0
 
@@ -335,7 +335,7 @@ class Manager:
         else:
             self.radarCounter += 1
 
-    #PENDING: dont check a cell when it surpasses the limits of the grid 
+
     def update_predator_radar(self, agent):
         #The closest of each type should be selected.
         xIndex = agent.cell.xIndex
@@ -348,8 +348,8 @@ class Manager:
         closestPlantDirection = (False, False, False, False)
 
 
-        print("*******************Predator North Radar Update STARTED*******************")
-        print("Starting pos: ["+str(xIndex)+", "+str(yIndex)+"]")
+        #print("*******************Predator North Radar Update STARTED*******************")
+        #print("Starting pos: ["+str(xIndex)+", "+str(yIndex)+"]")
 
 
         #North
@@ -362,31 +362,36 @@ class Manager:
             #Right
             for j in range(0,i):
                 targetXIndex = xIndex + j
-                print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
-                if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
-                    if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant:
-                        print("We have detected a plant!!!")
-                        dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
-                        if closestPlantDistance > dist:
-                            print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
-                            closestPlantDirection = (True, False, False, False)
+                if 0 <= targetXIndex < self.grid_size and 0 <= targetYIndex < self.grid_size:
+                    #print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
+                    if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant and not self.grid.grid[targetXIndex][targetYIndex].occupant.wood:
+                            #print("We have detected a plant!!!")
+                            dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                            if closestPlantDistance > dist:
+                                #print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestPlantDirection = (True, False, False, False)
+                                closestPlantDistance = dist
 
             #Left, starts from 1 instad of 0 so it doesn't check the middle cell again
             for j in range(1,i):
                 targetXIndex = xIndex - j
-                print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
-                if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
-                    if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant:
-                        print("We have detected a plant!!!")
-                        dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
-                        if closestPlantDistance > dist:
-                            print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
-                            closestPlantDirection = (True, False, False, False)
+                if 0 <= targetXIndex < self.grid_size and 0 <= targetYIndex < self.grid_size:
+                    #print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
+                    if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant and not self.grid.grid[targetXIndex][targetYIndex].occupant.wood:
+                            #print("We have detected a plant!!!")
+                            dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                            if closestPlantDistance > dist:
+                                #print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestPlantDirection = (True, False, False, False)
+                                closestPlantDistance = dist
 
-        print("*******************Predator North Radar Update FINISHED*******************\n")
 
-        print("*******************Predator South Radar Update STARTED*******************")
-        print("Starting pos: ["+str(xIndex)+", "+str(yIndex)+"]")
+        #print("*******************Predator North Radar Update FINISHED*******************\n")
+
+        #print("*******************Predator South Radar Update STARTED*******************")
+        #print("Starting pos: ["+str(xIndex)+", "+str(yIndex)+"]")
 
 
         #South
@@ -399,31 +404,37 @@ class Manager:
             #Right
             for j in range(0,i):
                 targetXIndex = xIndex + j
-                print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
-                if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
-                    if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant:
-                        print("We have detected a plant!!!")
-                        dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
-                        if closestPlantDistance > dist:
-                            print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
-                            closestPlantDirection = (False, True, False, False)
+                if 0 <= targetXIndex < self.grid_size and 0 <= targetYIndex < self.grid_size:
+                    #print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
+                    if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant and not self.grid.grid[targetXIndex][targetYIndex].occupant.wood:
+                            #print("We have detected a plant!!!")
+                            dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                            if closestPlantDistance > dist:
+                                #print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestPlantDirection = (False, True, False, False)
+                                closestPlantDistance = dist
+
 
             #Left, starts from 1 instad of 0 so it doesn't check the middle cell again
             for j in range(1,i):
                 targetXIndex = xIndex - j
-                print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
-                if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
-                    if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant:
-                        print("We have detected a plant!!!")
-                        dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
-                        if closestPlantDistance > dist:
-                            print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
-                            closestPlantDirection = (False, True, False, False)
+                if 0 <= targetXIndex < self.grid_size and 0 <= targetYIndex < self.grid_size:
+                    #print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
+                    if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant and not self.grid.grid[targetXIndex][targetYIndex].occupant.wood:
+                            #print("We have detected a plant!!!")
+                            dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                            if closestPlantDistance > dist:
+                                #print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestPlantDirection = (False, True, False, False)
+                                closestPlantDistance = dist
 
-        print("*******************Predator South Radar Update FINISHED*******************\n")
 
-        print("*******************Predator East Radar Update STARTED*******************")
-        print("Starting pos: ["+str(xIndex)+", "+str(yIndex)+"]")
+        #print("*******************Predator South Radar Update FINISHED*******************\n")
+
+        #print("*******************Predator East Radar Update STARTED*******************")
+        #print("Starting pos: ["+str(xIndex)+", "+str(yIndex)+"]")
 
 
         #East
@@ -436,31 +447,37 @@ class Manager:
             #Down
             for j in range(0,i):
                 targetYIndex = yIndex + j
-                print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
-                if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
-                    if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant:
-                        print("We have detected a plant!!!")
-                        dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
-                        if closestPlantDistance > dist:
-                            print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
-                            closestPlantDirection = (False, False, True, False)
+                if 0 <= targetXIndex < self.grid_size and 0 <= targetYIndex < self.grid_size:
+                    #print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
+                    if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant and not self.grid.grid[targetXIndex][targetYIndex].occupant.wood:
+                            #print("We have detected a plant!!!")
+                            dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                            if closestPlantDistance > dist:
+                                #print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestPlantDirection = (False, False, True, False)
+                                closestPlantDistance = dist
+
 
             #Up, starts from 1 instad of 0 so it doesn't check the middle cell again
             for j in range(1,i):
                 targetYIndex = yIndex - j
-                print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
-                if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
-                    if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant:
-                        print("We have detected a plant!!!")
-                        dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
-                        if closestPlantDistance > dist:
-                            print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
-                            closestPlantDirection = (False, False, True, False)
+                if 0 <= targetXIndex < self.grid_size and 0 <= targetYIndex < self.grid_size:
+                    #print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
+                    if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant and not self.grid.grid[targetXIndex][targetYIndex].occupant.wood:
+                            #print("We have detected a plant!!!")
+                            dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                            if closestPlantDistance > dist:
+                                #print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestPlantDirection = (False, False, True, False)
+                                closestPlantDistance = dist
 
-        print("*******************Predator East Radar Update FINISHED*******************\n")
 
-        print("*******************Predator West Radar Update STARTED*******************")
-        print("Starting pos: ["+str(xIndex)+", "+str(yIndex)+"]")
+        #print("*******************Predator East Radar Update FINISHED*******************\n")
+
+        #print("*******************Predator West Radar Update STARTED*******************")
+        #print("Starting pos: ["+str(xIndex)+", "+str(yIndex)+"]")
 
 
         #West
@@ -473,59 +490,65 @@ class Manager:
             #Down
             for j in range(0,i):
                 targetYIndex = yIndex + j
-                print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
-                if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
-                    if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant:
-                        print("We have detected a plant!!!")
-                        dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
-                        if closestPlantDistance > dist:
-                            print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
-                            closestPlantDirection = (False, False, False, True)
+                if 0 <= targetXIndex < self.grid_size and 0 <= targetYIndex < self.grid_size:
+                    #print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
+                    if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant and not self.grid.grid[targetXIndex][targetYIndex].occupant.wood:
+                            #print("We have detected a plant!!!")
+                            dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                            if closestPlantDistance > dist:
+                                #print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestPlantDirection = (False, False, False, True)
+                                closestPlantDistance = dist
+
             #Up, starts from 1 instad of 0 so it doesn't check the middle cell again
             for j in range(1,i):
                 targetYIndex = yIndex - j
-                print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
-                if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
-                    if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant:
-                        print("We have detected a plant!!!")
-                        dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
-                        if closestPlantDistance > dist:
-                            print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
-                            closestPlantDirection = (False, False, False, True)
+                if 0 <= targetXIndex < self.grid_size and 0 <= targetYIndex < self.grid_size:
+                    #print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
+                    if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant and not self.grid.grid[targetXIndex][targetYIndex].occupant.wood:
+                            #print("We have detected a plant!!!")
+                            dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                            if closestPlantDistance > dist:
+                                #print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestPlantDirection = (False, False, False, True)
+                                closestPlantDistance = dist
 
 
-        print("*******************Predator West Radar Update FINISHED*******************\n")
+
+        #print("*******************Predator West Radar Update FINISHED*******************\n")
 
         if closestPlantDirection[0]:
             agent.plantNorth = True
             agent.plantSouth = False
             agent.plantEast = False
             agent.plantWest = False
-            print("------------------RESULTS: North")
+            #print("------------------RESULTS: North")
         elif closestPlantDirection[1]:
             agent.plantNorth = False
             agent.plantSouth = True
             agent.plantEast = False
             agent.plantWest = False
-            print("------------------RESULTS: South")
+            #print("------------------RESULTS: South")
         elif closestPlantDirection[2]:
             agent.plantNorth = False
             agent.plantSouth = False
             agent.plantEast = True
             agent.plantWest = False
-            print("------------------RESULTS: East")
+            #print("------------------RESULTS: East")
         elif closestPlantDirection[3]:
             agent.plantNorth = False
             agent.plantSouth = False
             agent.plantEast = False
             agent.plantWest = True
-            print("------------------RESULTS: West")
+            #print("------------------RESULTS: West")
         else:
             agent.plantNorth = False
             agent.plantSouth = False
             agent.plantEast = False
             agent.plantWest = False
-            print("------------------RESULTS: NO NEARBY PLANTS")
+            #print("------------------RESULTS: NO NEARBY PLANTS")
 
 
 
@@ -570,7 +593,7 @@ class Manager:
     def wood_manager(self):
         if self.currentWoods < self.maxWoods:
 
-            if randint(0,200) == 0:
+            if randint(0,100) == 0:
                 randIndex = randint(0,len(self.grid.plants) - 1)
                 if not self.grid.plants[randIndex].wood:
                     self.grid.plants[randIndex].wood = True
