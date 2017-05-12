@@ -1,10 +1,13 @@
-import pygame
+import pygame, time
 from manager import Manager
 
 
 
 class App:
     def __init__(self):
+
+        self.start_time = time.time()
+
         self._running = True
         self._display_surf = None
 
@@ -54,8 +57,11 @@ class App:
 
             self.manager.wood_manager()
 
-            #Prints the number of agents alive in the simulation
-            print("Agents: "+str(len(self.manager.grid.agents))+", Predators: "+str(len(self.manager.grid.predators))+", Plants: "+str(len(self.manager.grid.plants)))
+            self.manager.update_predators_radar()
+
+            #self.stats_printer()
+
+
 
     def on_render(self):
 
@@ -88,6 +94,18 @@ class App:
             self.masterClock.tick(15)
 
         pygame.quit()
+
+    def stats_printer(self):
+
+        #Prints the number of agents alive in the simulation
+
+        print("Agents: %d, Predators: %d, Plants: %d" %(len(self.manager.grid.agents), len(self.manager.grid.predators), len(self.manager.grid.plants)))
+
+
+        m, s = divmod((time.time() - self.start_time), 60)
+        h, m = divmod(m, 60)
+        d, h = divmod(h, 24)
+        print("[%d days - %02d hours - %02d min - %02d sec]\n" % (d, h, m, s))
 
 
 if __name__ == "__main__":

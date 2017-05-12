@@ -22,6 +22,8 @@ class Manager:
         self.pause = False
 
         self.growingCounter = 0
+        self.radarCounter = 0
+        self.predator_range = 10
 
         self.grey = (100, 100, 100)
 
@@ -320,9 +322,217 @@ class Manager:
 
         return True
 
-    def update_radar(self, agent):
+    def update_predators_radar(self):
 
-        return True
+        if self.radarCounter > 30:
+
+            self.radarCounter = 0
+
+            for predator in self.grid.predators:
+                #update predators radars
+                self.update_predator_radar(predator)
+
+        else:
+            self.radarCounter += 1
+
+    #PENDING: dont check a cell when it surpasses the limits of the grid 
+    def update_predator_radar(self, agent):
+        #The closest of each type should be selected.
+        xIndex = agent.cell.xIndex
+        yIndex = agent.cell.yIndex
+
+        #A base distance, so big that doesn't interfere with the algorithm
+        closestPlantDistance = 300
+
+        #Each position correspond to the directions North, South, East and West respectively
+        closestPlantDirection = (False, False, False, False)
+
+
+        print("*******************Predator North Radar Update STARTED*******************")
+        print("Starting pos: ["+str(xIndex)+", "+str(yIndex)+"]")
+
+
+        #North
+        for i in range(1, self.predator_range + 1):
+
+
+            targetXIndex = xIndex
+            targetYIndex = yIndex - i
+
+            #Right
+            for j in range(0,i):
+                targetXIndex = xIndex + j
+                print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
+                if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+                    if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant:
+                        print("We have detected a plant!!!")
+                        dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                        if closestPlantDistance > dist:
+                            print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                            closestPlantDirection = (True, False, False, False)
+
+            #Left, starts from 1 instad of 0 so it doesn't check the middle cell again
+            for j in range(1,i):
+                targetXIndex = xIndex - j
+                print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
+                if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+                    if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant:
+                        print("We have detected a plant!!!")
+                        dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                        if closestPlantDistance > dist:
+                            print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                            closestPlantDirection = (True, False, False, False)
+
+        print("*******************Predator North Radar Update FINISHED*******************\n")
+
+        print("*******************Predator South Radar Update STARTED*******************")
+        print("Starting pos: ["+str(xIndex)+", "+str(yIndex)+"]")
+
+
+        #South
+        for i in range(1, self.predator_range + 1):
+
+
+            targetXIndex = xIndex
+            targetYIndex = yIndex + i
+
+            #Right
+            for j in range(0,i):
+                targetXIndex = xIndex + j
+                print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
+                if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+                    if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant:
+                        print("We have detected a plant!!!")
+                        dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                        if closestPlantDistance > dist:
+                            print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                            closestPlantDirection = (False, True, False, False)
+
+            #Left, starts from 1 instad of 0 so it doesn't check the middle cell again
+            for j in range(1,i):
+                targetXIndex = xIndex - j
+                print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
+                if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+                    if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant:
+                        print("We have detected a plant!!!")
+                        dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                        if closestPlantDistance > dist:
+                            print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                            closestPlantDirection = (False, True, False, False)
+
+        print("*******************Predator South Radar Update FINISHED*******************\n")
+
+        print("*******************Predator East Radar Update STARTED*******************")
+        print("Starting pos: ["+str(xIndex)+", "+str(yIndex)+"]")
+
+
+        #East
+        for i in range(1, self.predator_range + 1):
+
+
+            targetXIndex = xIndex + i
+            targetYIndex = yIndex
+
+            #Down
+            for j in range(0,i):
+                targetYIndex = yIndex + j
+                print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
+                if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+                    if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant:
+                        print("We have detected a plant!!!")
+                        dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                        if closestPlantDistance > dist:
+                            print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                            closestPlantDirection = (False, False, True, False)
+
+            #Up, starts from 1 instad of 0 so it doesn't check the middle cell again
+            for j in range(1,i):
+                targetYIndex = yIndex - j
+                print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
+                if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+                    if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant:
+                        print("We have detected a plant!!!")
+                        dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                        if closestPlantDistance > dist:
+                            print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                            closestPlantDirection = (False, False, True, False)
+
+        print("*******************Predator East Radar Update FINISHED*******************\n")
+
+        print("*******************Predator West Radar Update STARTED*******************")
+        print("Starting pos: ["+str(xIndex)+", "+str(yIndex)+"]")
+
+
+        #West
+        for i in range(1, self.predator_range + 1):
+
+
+            targetXIndex = xIndex - i
+            targetYIndex = yIndex
+
+            #Down
+            for j in range(0,i):
+                targetYIndex = yIndex + j
+                print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
+                if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+                    if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant:
+                        print("We have detected a plant!!!")
+                        dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                        if closestPlantDistance > dist:
+                            print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                            closestPlantDirection = (False, False, False, True)
+            #Up, starts from 1 instad of 0 so it doesn't check the middle cell again
+            for j in range(1,i):
+                targetYIndex = yIndex - j
+                print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
+                if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+                    if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant:
+                        print("We have detected a plant!!!")
+                        dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                        if closestPlantDistance > dist:
+                            print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                            closestPlantDirection = (False, False, False, True)
+
+
+        print("*******************Predator West Radar Update FINISHED*******************\n")
+
+        if closestPlantDirection[0]:
+            agent.plantNorth = True
+            agent.plantSouth = False
+            agent.plantEast = False
+            agent.plantWest = False
+            print("------------------RESULTS: North")
+        elif closestPlantDirection[1]:
+            agent.plantNorth = False
+            agent.plantSouth = True
+            agent.plantEast = False
+            agent.plantWest = False
+            print("------------------RESULTS: South")
+        elif closestPlantDirection[2]:
+            agent.plantNorth = False
+            agent.plantSouth = False
+            agent.plantEast = True
+            agent.plantWest = False
+            print("------------------RESULTS: East")
+        elif closestPlantDirection[3]:
+            agent.plantNorth = False
+            agent.plantSouth = False
+            agent.plantEast = False
+            agent.plantWest = True
+            print("------------------RESULTS: West")
+        else:
+            agent.plantNorth = False
+            agent.plantSouth = False
+            agent.plantEast = False
+            agent.plantWest = False
+            print("------------------RESULTS: NO NEARBY PLANTS")
+
+
+
+
+
+
+
 
 
     def move_agents(self):
@@ -352,7 +562,6 @@ class Manager:
                 randomIndexList.append(randint(0, len(self.grid.plants)-1))
             for j in randomIndexList:
                 self.grid.plants[j].grow()
-
 
         else:
             self.growingCounter += 1
