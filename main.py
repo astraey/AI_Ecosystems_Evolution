@@ -11,6 +11,9 @@ class App:
         self._running = True
         self._display_surf = None
 
+        #Times that the loop is executed every second
+        self.masterLoopController = 30
+
         self.size = self.width, self.height = 1010, 1010
 
         display = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
@@ -28,9 +31,9 @@ class App:
         self._running = True
 
 
-        self.manager.random_add_predators(2)
+        self.manager.random_add_predators(0)
 
-        self.manager.random_add_plants(40)
+        self.manager.random_add_plants(400)
 
     def on_event(self, event):
         if event.type == pygame.QUIT:
@@ -91,7 +94,7 @@ class App:
             self.on_render()
 
             # Limits the number of times that the loop is executed in a second
-            self.masterClock.tick(15)
+            self.masterClock.tick(self.masterLoopController)
 
         pygame.quit()
 

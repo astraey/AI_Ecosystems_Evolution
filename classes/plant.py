@@ -14,6 +14,7 @@ class Plant:
         self.cell = cell
         self.wood = False
         self.isPlant = True
+        self.isPredator = False
 
 
         self.camera = camera

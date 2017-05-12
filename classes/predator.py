@@ -14,6 +14,7 @@ class Predator:
         self.color = color
         self.cell = cell
         self.isPlant = False
+        self.isPredator = True
         self.wood = False
         self.compass = randint(0,3)
         self.biomaterial = 100
@@ -52,6 +53,19 @@ class Predator:
             # Predator goes West
             elif self.plantWest:
                 return 3
+
+            # Predator goes South
+            if self.predatorNorth:
+                return 1
+            # Predator goes North
+            elif self.predatorSouth:
+                    return 0
+            # Predator goes West
+            elif self.predatorEast:
+                    return 3
+            # Predator goes East
+            elif self.predatorWest:
+                    return 2
 
 
         self.counter +=1

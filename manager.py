@@ -22,7 +22,7 @@ class Manager:
         self.pause = False
 
         self.growingCounter = 0
-        self.radarCounter = 0
+
         self.predator_range = 10
 
         self.grey = (100, 100, 100)
@@ -208,7 +208,7 @@ class Manager:
                 self.entity_down(0)
 
             if event.key == pygame.K_e:
-                self.agent_remove(self.grid.agents[0])
+                self.agent_remove(self.grid.predators[0])
                 #print("Agent Deleted")
             if event.key == pygame.K_r:
                 self.random_add_predators(1)
@@ -324,16 +324,9 @@ class Manager:
 
     def update_predators_radar(self):
 
-        if self.radarCounter >= 1:
-
-            self.radarCounter = 0
-
-            for predator in self.grid.predators:
-                #update predators radars
-                self.update_predator_radar(predator)
-
-        else:
-            self.radarCounter += 1
+        for predator in self.grid.predators:
+            #update predators radars
+            self.update_predator_radar(predator)
 
 
     def update_predator_radar(self, agent):
@@ -343,9 +336,11 @@ class Manager:
 
         #A base distance, so big that doesn't interfere with the algorithm
         closestPlantDistance = 300
+        closestPredatorDistance = 300
 
         #Each position correspond to the directions North, South, East and West respectively
         closestPlantDirection = (False, False, False, False)
+        closestPredatorDirection = (False, False, False, False)
 
 
         #print("*******************Predator North Radar Update STARTED*******************")
@@ -365,6 +360,8 @@ class Manager:
                 if 0 <= targetXIndex < self.grid_size and 0 <= targetYIndex < self.grid_size:
                     #print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
                     if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+
+
                         if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant and not self.grid.grid[targetXIndex][targetYIndex].occupant.wood:
                             #print("We have detected a plant!!!")
                             dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
@@ -373,12 +370,22 @@ class Manager:
                                 closestPlantDirection = (True, False, False, False)
                                 closestPlantDistance = dist
 
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPredator:
+                            #print("We have detected a predator!!!")
+                            dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                            if closestPredatorDistance > dist:
+                                #print("++++++++++++NEW CLOSEST PREDATOR AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestPredatorDirection = (True, False, False, False)
+                                closestPredatorDistance = dist
+
             #Left, starts from 1 instad of 0 so it doesn't check the middle cell again
             for j in range(1,i):
                 targetXIndex = xIndex - j
                 if 0 <= targetXIndex < self.grid_size and 0 <= targetYIndex < self.grid_size:
                     #print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
                     if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+
+
                         if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant and not self.grid.grid[targetXIndex][targetYIndex].occupant.wood:
                             #print("We have detected a plant!!!")
                             dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
@@ -386,6 +393,14 @@ class Manager:
                                 #print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
                                 closestPlantDirection = (True, False, False, False)
                                 closestPlantDistance = dist
+
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPredator:
+                            #print("We have detected a predator!!!")
+                            dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                            if closestPredatorDistance > dist:
+                                #print("++++++++++++NEW CLOSEST PREDATOR AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestPredatorDirection = (True, False, False, False)
+                                closestPredatorDistance = dist
 
 
         #print("*******************Predator North Radar Update FINISHED*******************\n")
@@ -407,6 +422,8 @@ class Manager:
                 if 0 <= targetXIndex < self.grid_size and 0 <= targetYIndex < self.grid_size:
                     #print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
                     if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+
+
                         if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant and not self.grid.grid[targetXIndex][targetYIndex].occupant.wood:
                             #print("We have detected a plant!!!")
                             dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
@@ -414,6 +431,14 @@ class Manager:
                                 #print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
                                 closestPlantDirection = (False, True, False, False)
                                 closestPlantDistance = dist
+
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPredator:
+                            #print("We have detected a predator!!!")
+                            dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                            if closestPredatorDistance > dist:
+                                #print("++++++++++++NEW CLOSEST PREDATOR AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestPredatorDirection = (False, True, False, False)
+                                closestPredatorDistance = dist
 
 
             #Left, starts from 1 instad of 0 so it doesn't check the middle cell again
@@ -422,6 +447,8 @@ class Manager:
                 if 0 <= targetXIndex < self.grid_size and 0 <= targetYIndex < self.grid_size:
                     #print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
                     if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+
+
                         if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant and not self.grid.grid[targetXIndex][targetYIndex].occupant.wood:
                             #print("We have detected a plant!!!")
                             dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
@@ -429,6 +456,14 @@ class Manager:
                                 #print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
                                 closestPlantDirection = (False, True, False, False)
                                 closestPlantDistance = dist
+
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPredator:
+                            #print("We have detected a predator!!!")
+                            dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                            if closestPredatorDistance > dist:
+                                #print("++++++++++++NEW CLOSEST PREDATOR AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestPredatorDirection = (False, True, False, False)
+                                closestPredatorDistance = dist
 
 
         #print("*******************Predator South Radar Update FINISHED*******************\n")
@@ -450,6 +485,8 @@ class Manager:
                 if 0 <= targetXIndex < self.grid_size and 0 <= targetYIndex < self.grid_size:
                     #print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
                     if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+
+
                         if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant and not self.grid.grid[targetXIndex][targetYIndex].occupant.wood:
                             #print("We have detected a plant!!!")
                             dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
@@ -457,6 +494,14 @@ class Manager:
                                 #print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
                                 closestPlantDirection = (False, False, True, False)
                                 closestPlantDistance = dist
+
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPredator:
+                            #print("We have detected a predator!!!")
+                            dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                            if closestPredatorDistance > dist:
+                                #print("++++++++++++NEW CLOSEST PREDATOR AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestPredatorDirection = (False, False, True, False)
+                                closestPredatorDistance = dist
 
 
             #Up, starts from 1 instad of 0 so it doesn't check the middle cell again
@@ -465,6 +510,8 @@ class Manager:
                 if 0 <= targetXIndex < self.grid_size and 0 <= targetYIndex < self.grid_size:
                     #print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
                     if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+
+
                         if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant and not self.grid.grid[targetXIndex][targetYIndex].occupant.wood:
                             #print("We have detected a plant!!!")
                             dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
@@ -472,6 +519,14 @@ class Manager:
                                 #print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
                                 closestPlantDirection = (False, False, True, False)
                                 closestPlantDistance = dist
+
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPredator:
+                            #print("We have detected a predator!!!")
+                            dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                            if closestPredatorDistance > dist:
+                                #print("++++++++++++NEW CLOSEST PREDATOR AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestPredatorDirection = (False, False, True, False)
+                                closestPredatorDistance = dist
 
 
         #print("*******************Predator East Radar Update FINISHED*******************\n")
@@ -493,6 +548,8 @@ class Manager:
                 if 0 <= targetXIndex < self.grid_size and 0 <= targetYIndex < self.grid_size:
                     #print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
                     if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+
+
                         if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant and not self.grid.grid[targetXIndex][targetYIndex].occupant.wood:
                             #print("We have detected a plant!!!")
                             dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
@@ -501,12 +558,22 @@ class Manager:
                                 closestPlantDirection = (False, False, False, True)
                                 closestPlantDistance = dist
 
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPredator:
+                            #print("We have detected a predator!!!")
+                            dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                            if closestPredatorDistance > dist:
+                                #print("++++++++++++NEW CLOSEST PREDATOR AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestPredatorDirection = (False, False, False, True)
+                                closestPredatorDistance = dist
+
             #Up, starts from 1 instad of 0 so it doesn't check the middle cell again
             for j in range(1,i):
                 targetYIndex = yIndex - j
                 if 0 <= targetXIndex < self.grid_size and 0 <= targetYIndex < self.grid_size:
                     #print("Cheking pos: ["+str(targetXIndex)+", "+str(targetYIndex)+"]")
                     if self.grid.grid[targetXIndex][targetYIndex].occupant != 0:
+
+
                         if self.grid.grid[targetXIndex][targetYIndex].occupant.isPlant and not self.grid.grid[targetXIndex][targetYIndex].occupant.wood:
                             #print("We have detected a plant!!!")
                             dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
@@ -514,6 +581,14 @@ class Manager:
                                 #print("++++++++++++NEW CLOSEST PLANT AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
                                 closestPlantDirection = (False, False, False, True)
                                 closestPlantDistance = dist
+
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPredator:
+                            #print("We have detected a predator!!!")
+                            dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
+                            if closestPredatorDistance > dist:
+                                #print("++++++++++++NEW CLOSEST PREDATOR AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestPredatorDirection = (False, False, False, True)
+                                closestPredatorDistance = dist
 
 
 
@@ -552,8 +627,36 @@ class Manager:
 
 
 
-
-
+        if closestPredatorDirection[0]:
+            agent.predatorNorth = True
+            agent.predatorSouth = False
+            agent.predatorEast = False
+            agent.predatorWest = False
+            #print("------------------RESULTS: North")
+        elif closestPredatorDirection[1]:
+            agent.predatorNorth = False
+            agent.predatorSouth = True
+            agent.predatorEast = False
+            agent.predatorWest = False
+            #print("------------------RESULTS: South")
+        elif closestPredatorDirection[2]:
+            agent.predatorNorth = False
+            agent.predatorSouth = False
+            agent.predatorEast = True
+            agent.predatorWest = False
+            #print("------------------RESULTS: East")
+        elif closestPredatorDirection[3]:
+            agent.predatorNorth = False
+            agent.predatorSouth = False
+            agent.predatorEast = False
+            agent.predatorWest = True
+            #print("------------------RESULTS: West")
+        else:
+            agent.predatorNorth = False
+            agent.predatorSouth = False
+            agent.predatorEast = False
+            agent.predatorWest = False
+            #print("------------------RESULTS: NO NEARBY PREDATORS")
 
 
 
