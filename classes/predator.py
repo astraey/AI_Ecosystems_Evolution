@@ -4,7 +4,7 @@ from random import randint
 
 class Predator:
 
-    def __init__(self, cell, color, camera):
+    def __init__(self, cell, color, camera, generation, genome):
 
         self.xPos = cell.xPos
         self.yPos = cell.yPos
@@ -20,6 +20,9 @@ class Predator:
         self.biomaterial = 100
         self.camera = camera
         self.radarRange = 20
+
+        self.generation = generation
+        self.genome = genome
 
         self.predatorNorth = False
         self.predatorSouth = False

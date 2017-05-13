@@ -4,6 +4,7 @@ from classes.predator import Predator
 from classes.camera import Camera
 from classes.cell import Cell
 from classes.grid import Grid
+from classes.genome import Genome
 
 import pygame
 import sys
@@ -37,6 +38,8 @@ class Manager:
 
         self.maxWoods = self.grid_size / 2
         self.currentWoods = 0
+
+        self.generations = 0
 
 
         # We declare a grid of 30*30
@@ -247,7 +250,7 @@ class Manager:
 
             color = (randint(0,255),randint(0,255),randint(0,255))
 
-            self.add_agent_predator(Predator(targetCell, color, self.camera), xIndex, yIndex)
+            self.add_agent_predator(Predator(targetCell, color, self.camera, 0, Genome()), xIndex, yIndex)
 
     def random_add_plants(self, amount):
 
@@ -677,7 +680,7 @@ class Manager:
 
 
     #Everu 20 iterations, it coumputes a list of random indexes that correspond to the plants that will grow
-    def plant_optimized_grower(self):
+    def plant_grower(self):
         if self.growingCounter > 20:
 
             self.growingCounter = 0
@@ -710,36 +713,36 @@ class Manager:
                 self.agent_remove(agent)
 
 
-    def agent_reproducer(self):
-        for agent in self.grid.agents:
+    def plant_reproducer(self):
 
-            if agent.biomaterial >= 20 and agent.isPlant:
+        for agent in self.grid.plants:
+
+            if agent.biomaterial >= 20:
 
                 free_cells = self.grid.free_cell(agent)
 
                 if free_cells != []:
-
                     randomFreeCellIndex = 0
-
                     agent.biomaterial -= 10
                     self.add_agent_plant(Plant(free_cells[randomFreeCellIndex], self.camera), free_cells[randomFreeCellIndex].xIndex, free_cells[randomFreeCellIndex].yIndex)
 
+    def predator_reproducer(self):
 
-            elif agent.biomaterial >= 200 and not agent.isPlant:
+        for agent in self.grid.predators:
+
+            if agent.biomaterial >= 200:
 
                 free_cells = self.grid.free_cell(agent)
 
-
                 if free_cells != []:
-
                     randomFreeCellIndex = 0
-
                     agent.biomaterial -= 100
-
                     newColor = self.generateNewColor(agent.color)
+                    self.add_agent_predator(Predator(free_cells[randomFreeCellIndex], newColor, self.camera, agent.generation + 1, agent.genome.mutate_genome()), free_cells[randomFreeCellIndex].xIndex, free_cells[randomFreeCellIndex].yIndex)
+                    if agent.generation + 1 > self.generations:
 
-                    self.add_agent_predator(Predator(free_cells[randomFreeCellIndex], newColor, self.camera), free_cells[randomFreeCellIndex].xIndex, free_cells[randomFreeCellIndex].yIndex)
-
+                        #print("Generation "+str(agent.generation + 1)+" was born")
+                        self.generations = agent.generation + 1
 
 
 

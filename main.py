@@ -36,6 +36,7 @@ class App:
         self.manager.random_add_plants(400)
 
     def on_event(self, event):
+
         if event.type == pygame.QUIT:
             self._running = False
 
@@ -51,12 +52,15 @@ class App:
 
             self.manager.predator_attacker()
 
-            #self.manager.plant_grower()
-            self.manager.plant_optimized_grower()
+            self.manager.plant_grower()
 
             self.manager.agent_killer()
 
-            self.manager.agent_reproducer()
+
+
+            self.manager.plant_reproducer()
+
+            self.manager.predator_reproducer()
 
             self.manager.wood_manager()
 
@@ -108,7 +112,9 @@ class App:
         m, s = divmod((time.time() - self.start_time), 60)
         h, m = divmod(m, 60)
         d, h = divmod(h, 24)
-        print("[%d days - %02d hours - %02d min - %02d sec]\n" % (d, h, m, s))
+        print("[%d days - %02d hours - %02d min - %02d sec]" % (d, h, m, s))
+
+        print("Generations: "+str(self.manager.generations)+"\n")
 
 
 if __name__ == "__main__":
