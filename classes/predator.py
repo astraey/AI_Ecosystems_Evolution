@@ -38,8 +38,26 @@ class Predator:
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, (int(self.xPos + self.camera.xpos), int(self.yPos + self.camera.ypos)), self.size)
 
+    #Update environment information
+    def update_genome_environment_information(self):
+
+        self.genome.plantsDir = (self.plantNorth, self.plantSouth, self.plantEast, self.plantWest)
+        self.genome.predatorsDir = (self.predatorNorth, self.predatorSouth, self.predatorEast, self.predatorWest)
+
+        if not True in self.genome.plantsDir and not True in self.genome.predatorsDir:
+            self.genome.nothingDetected = True
+            #print("Nothing Detected")
+
+        else:
+            self.genome.nothingDetected = False
+            #print(".")
 
     def move(self):
+        return self.genome.get_move()
+
+    def move_old(self):
+
+        #print(self.predatorNorth, self.predatorSouth, self.predatorEast, self.predatorWest, self.plantNorth, self.plantSouth, self.plantEast, self.plantWest)
 
         caosVar = randint(0,10)
         if caosVar != 0:

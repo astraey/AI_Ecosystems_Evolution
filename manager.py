@@ -26,11 +26,11 @@ class Manager:
 
         self.predator_range = 10
 
-        self.grey = (100, 100, 100)
+        #Modify this variable to adjust the initial position of the camera, in order
+        #to center the grid.
+        self.camera_focus = 20
 
-        self.camera_focus = 0
-
-        self.camera = Camera(0, 0)
+        self.camera = Camera(0 + self.camera_focus, 0 + self.camera_focus)
 
         #Defines the size of the grid
         self.grid_size = 195
@@ -250,7 +250,7 @@ class Manager:
 
             color = (randint(0,255),randint(0,255),randint(0,255))
 
-            self.add_agent_predator(Predator(targetCell, color, self.camera, 0, Genome()), xIndex, yIndex)
+            self.add_agent_predator(Predator(targetCell, color, self.camera, 0, Genome(True)), xIndex, yIndex)
 
     def random_add_plants(self, amount):
 
@@ -330,6 +330,7 @@ class Manager:
         for predator in self.grid.predators:
             #update predators radars
             self.update_predator_radar(predator)
+            predator.update_genome_environment_information()
 
 
     def update_predator_radar(self, agent):
@@ -660,7 +661,6 @@ class Manager:
             agent.predatorEast = False
             agent.predatorWest = False
             #print("------------------RESULTS: NO NEARBY PREDATORS")
-
 
 
 

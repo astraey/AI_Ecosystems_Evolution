@@ -48,6 +48,8 @@ class App:
 
         if not self.manager.pause:
 
+            self.manager.update_predators_radar()
+
             self.manager.move_agents()
 
             self.manager.predator_attacker()
@@ -64,9 +66,8 @@ class App:
 
             self.manager.wood_manager()
 
-            self.manager.update_predators_radar()
 
-            self.stats_printer()
+            #self.stats_printer()
 
 
 
