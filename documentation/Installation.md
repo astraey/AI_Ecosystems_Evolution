@@ -22,6 +22,6 @@ pip --version
 pip list
 ```
 
-<p>To pause the simulation, press <b>p</b>. To move the camera, press the <b>arrow keys</b>.</p>
+<p>To pause the simulation, press <b>p</b>. To move the camera, press the <b>arrow keys</b>. Press <b>r</b> to add a random entity and press <b>e</b> to remove it</p>
 
 [Back to README.md](../README.md)
