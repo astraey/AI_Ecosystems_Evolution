@@ -739,10 +739,13 @@ class Manager:
                     agent.biomaterial -= 100
                     newColor = self.generateNewColor(agent.color)
                     self.add_agent_predator(Predator(free_cells[randomFreeCellIndex], newColor, self.camera, agent.generation + 1, agent.genome.mutate_genome()), free_cells[randomFreeCellIndex].xIndex, free_cells[randomFreeCellIndex].yIndex)
+
                     if agent.generation + 1 > self.generations:
 
-                        #print("Generation "+str(agent.generation + 1)+" was born")
+                        print("Generation [Latest]: "+str(agent.generation + 1)+"\n")
                         self.generations = agent.generation + 1
+                    else:
+                        print("Generation: "+str(agent.generation + 1)+"\n")
 
 
 

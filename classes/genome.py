@@ -196,7 +196,7 @@ class Genome:
             print("Generated predator with attributes: ")
             print("["+str(mutated_genome.plantNorthBehaviour)+", "+str(mutated_genome.plantSouthBehaviour)+", "+str(mutated_genome.plantEastBehaviour)+", "+str(mutated_genome.plantWestBehaviour)+"]")
             print("["+str(mutated_genome.predatorNorthBehaviour)+", "+str(mutated_genome.predatorSouthBehaviour)+", "+str(mutated_genome.predatorEastBehaviour)+", "+str(mutated_genome.predatorWestBehaviour)+"]")
-            print("["+str(mutated_genome.notMovePlantDetected)+", "+str(mutated_genome.notMovePredatorDetected)+"]\n")
+            print("["+str(mutated_genome.notMovePlantDetected)+", "+str(mutated_genome.notMovePredatorDetected)+"]")
 
         else:
 
