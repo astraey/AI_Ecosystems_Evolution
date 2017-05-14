@@ -22,6 +22,9 @@ class Genome:
         self.mutationChance = 100
         self.valueScale = 100
 
+        self.randomCounterCompass = 0
+        self.randomDirectionCompass = randint(0,4)
+
         #Variables that reflect the agent's behaviour towards plants and predators.
         #Varies from 1 to 100
 
@@ -36,8 +39,8 @@ class Genome:
             self.predatorEastBehaviour = randint(-100,100)
             self.predatorWestBehaviour = randint(-100,100)
 
-            self.notMovePlantDetected = randint(-100,100)
-            self.notMovePredatorDetected = randint(-100,100)
+            self.notMovePlantDetected = randint(0,100)
+            self.notMovePredatorDetected = randint(0,100)
 
         else:
             self.plantNorthBehaviour = 0
@@ -73,34 +76,81 @@ class Genome:
         predatorResult = self.direction_corrector(predatorDir, valuePredator)
 
 
-        print(plantDir, predatorDir, valuePlant, valuePredator)
-        print(plantResult, predatorResult)
-        print("************")
-
-        #(direction, value)
+        #print(plantDir, predatorDir, valuePlant, valuePredator)
+        #print(plantResult, predatorResult)
+        #print("************")
 
 
-        if plantResult[0] == -1 and predatorResult[0] == -1:
-            print("RANDOM MOVE")
-            print("************")
-            return randint(0,3)
+        ###################################################
+        #Behaviour for the situations when not plants nor predators are detected.
+        #At the moment, just
 
-        if plantResult[0] != -1 and predatorResult[0] == -1:
-            print("Move made depending on plant")
-            print("************")
-            return randint(0,3)
+        #Add some randomness to the mix to make sure that the entity won't get stuck.
+        #Currently, the entity adopts a random behaviour in case that it doens't detect anything or once every 20 moves
+        if 0 != randint(0,30):
+            if plantResult[0] == -1 and predatorResult[0] == -1:
+                #print("RANDOM MOVE")
+                #print("************")
+                return self.random_movement()
+
+            if plantResult[0] != -1 and predatorResult[0] == -1:
+                #print("Move made depending on plant")
+                #print("************")
+
+                total = plantResult[1] + self.notMovePlantDetected
+                randomNum = randint(0, total)
+
+                if randomNum <= plantResult[1]:
+                    #We follow the plant behaviour
+                    return plantResult[0]
+
+                if plantResult[1] < randomNum <= total:
+                    #We follow the predator behaviour
+                    return 4
 
 
-        if plantResult[0] == -1 and predatorResult[0] != -1:
-            print("Move made depending on predator")
-            print("************")
-            return randint(0,3)
+            if plantResult[0] == -1 and predatorResult[0] != -1:
+                #print("Move made depending on predator")
+                #print("************")
+
+                total = predatorResult[1] + self.notMovePredatorDetected
+                randomNum = randint(0, total)
+
+                if randomNum <= predatorResult[1]:
+                    #We follow the plant behaviour
+                    return predatorResult[0]
+
+                if predatorResult[1] < randomNum <= total:
+                    #We follow the predator behaviour
+                    return 4
 
 
-        if plantResult[0] != -1 and predatorResult[0] != -1:
-            print("MOVE MADE DEPENDING ON BOTH PLANTS AND PREDATORS")
-            print("************")
-            return randint(0,3)
+            if plantResult[0] != -1 and predatorResult[0] != -1:
+                #print("MOVE MADE DEPENDING ON BOTH PLANTS AND PREDATORS")
+                #print("************")
+
+                total = plantResult[1] + predatorResult[1] + self.notMovePlantDetected + self.notMovePredatorDetected
+                total = 100
+                randomNum = randint(0, total)
+
+                if randomNum <= plantResult[1]:
+                    #We follow the plant behaviour
+                    return plantResult[0]
+
+                if plantResult[1] < randomNum <= plantResult[1] + predatorResult[1]:
+                    #We follow the predator behaviour
+                    return predatorResult[0]
+
+                if plantResult[1] + predatorResult[1] < randomNum <= plantResult[1] + predatorResult[1] + self.notMovePlantDetected:
+                    #We follow the stop Plant behaviour
+                    return 4
+
+                if  plantResult[1] + predatorResult[1] + self.notMovePlantDetected < randomNum <= total:
+                    #We follow the stop Predator behaviour
+                    return 4
+
+        else:
+            return self.random_movement()
 
 
 
@@ -127,6 +177,7 @@ class Genome:
             mutated_genome.notMovePlantDetected = self.notMovePlantDetected + randint(-self.mutationFactor,self.mutationFactor)
             mutated_genome.notMovePredatorDetected = self.notMovePredatorDetected + randint(-self.mutationFactor,self.mutationFactor)
 
+
             mutated_genome.plantNorthBehaviour = self.mutation_corrector(mutated_genome.plantNorthBehaviour)
             mutated_genome.plantSouthBehaviour = self.mutation_corrector(mutated_genome.plantSouthBehaviour)
             mutated_genome.plantEastBehaviour = self.mutation_corrector(mutated_genome.plantEastBehaviour)
@@ -142,10 +193,10 @@ class Genome:
             mutated_genome.notMovePredatorDetected = self.mutation_corrector_positives(mutated_genome.notMovePredatorDetected)
 
 
-            #print("Generated predator with attributes: ")
-            #print("["+str(mutated_genome.plantNorthBehaviour)+", "+str(mutated_genome.plantSouthBehaviour)+", "+str(mutated_genome.plantEastBehaviour)+", "+str(mutated_genome.plantWestBehaviour)+"]")
-            #print("["+str(mutated_genome.predatorNorthBehaviour)+", "+str(mutated_genome.predatorSouthBehaviour)+", "+str(mutated_genome.predatorEastBehaviour)+", "+str(mutated_genome.predatorWestBehaviour)+"]")
-            #print("["+str(mutated_genome.nothingDetectedBeaviour)+", "+str(mutated_genome.notMovePlantDetected)+", "+str(mutated_genome.notMovePredatorDetected)+"]\n")
+            print("Generated predator with attributes: ")
+            print("["+str(mutated_genome.plantNorthBehaviour)+", "+str(mutated_genome.plantSouthBehaviour)+", "+str(mutated_genome.plantEastBehaviour)+", "+str(mutated_genome.plantWestBehaviour)+"]")
+            print("["+str(mutated_genome.predatorNorthBehaviour)+", "+str(mutated_genome.predatorSouthBehaviour)+", "+str(mutated_genome.predatorEastBehaviour)+", "+str(mutated_genome.predatorWestBehaviour)+"]")
+            print("["+str(mutated_genome.notMovePlantDetected)+", "+str(mutated_genome.notMovePredatorDetected)+"]\n")
 
         else:
 
@@ -269,3 +320,16 @@ class Genome:
             return self.predatorWestBehaviour
 
         return 999
+
+    def random_movement(self):
+
+        if self.randomCounterCompass < 250:
+            self.randomCounterCompass += self.randomCounterCompass
+            temp = randint(0,4)
+            if temp != self.randomDirectionCompass:
+                return randint(0,4)
+            return temp
+
+        else:
+            self.randomDirectionCompass = randing(0,4)
+            self.randomCounterCompass = 0
