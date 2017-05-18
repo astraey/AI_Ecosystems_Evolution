@@ -1,4 +1,5 @@
 from random import randint
+from fractions import gcd
 from classes.plant import Plant
 from classes.predator import Predator
 from classes.camera import Camera
@@ -6,9 +7,11 @@ from classes.cell import Cell
 from classes.grid import Grid
 from classes.genome import Genome
 
+
 import pygame
 import sys
 import numpy
+import functools
 
 
 
@@ -21,6 +24,7 @@ class Manager:
         self.height = height
         self.width = width
         self.pause = False
+        self.print_stats = False
 
         self.growingCounter = 0
 
@@ -742,10 +746,12 @@ class Manager:
 
                     if agent.generation + 1 > self.generations:
 
-                        print("Generation [Latest]: "+str(agent.generation + 1)+"\n")
+                        print("Generation [Latest]: "+str(agent.generation + 1))
                         self.generations = agent.generation + 1
                     else:
-                        print("Generation: "+str(agent.generation + 1)+"\n")
+                        print("Generation: "+str(agent.generation + 1))
+
+                    self.print_stats = True
 
 
 
@@ -789,3 +795,13 @@ class Manager:
             print("Game has been resumed")
 
         self.pause = not self.pause
+
+    #Function that simplifies the ratio of Plants:Predators
+    def simplify_ratio(self, ratio):
+        denominater = functools.reduce(gcd,ratio)
+        solved = [i/denominater for i in ratio]
+        return ':'.join(str(int(i)) for i in solved)
+
+    def approximate_ratio(self, ratio):
+        solved = int(ratio[1]/ratio[0])
+        return '1:'+str(solved)

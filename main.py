@@ -3,6 +3,7 @@ from manager import Manager
 
 
 
+
 class App:
     def __init__(self):
 
@@ -31,7 +32,7 @@ class App:
         self._running = True
 
 
-        self.manager.random_add_predators(3)
+        self.manager.random_add_predators(6)
 
         self.manager.random_add_plants(400)
 
@@ -66,9 +67,10 @@ class App:
 
             self.manager.wood_manager()
 
-
-            #self.stats_printer()
-
+            #Only printed when a predator has been updated
+            if self.manager.print_stats:
+                self.stats_printer()
+                self.manager.print_stats = False
 
 
     def on_render(self):
@@ -105,17 +107,23 @@ class App:
 
     def stats_printer(self):
 
+        ratio = [len(self.manager.grid.predators), len(self.manager.grid.plants)]
+
+
         #Prints the number of agents alive in the simulation
 
         print("Agents: %d, Predators: %d, Plants: %d" %(len(self.manager.grid.agents), len(self.manager.grid.predators), len(self.manager.grid.plants)))
 
+
+        #print("Exact Predators:Plants Ratio ["+self.manager.simplify_ratio(ratio)+"]")
+        print("Predators:Plants Ratio ["+self.manager.approximate_ratio(ratio)+"]")
 
         m, s = divmod((time.time() - self.start_time), 60)
         h, m = divmod(m, 60)
         d, h = divmod(h, 24)
         print("[%d days - %02d hours - %02d min - %02d sec]" % (d, h, m, s))
 
-        print("Generations: "+str(self.manager.generations)+"\n")
+        #print("Generations: "+str(self.manager.generations)+"\n")
 
 
 if __name__ == "__main__":
