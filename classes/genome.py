@@ -19,7 +19,9 @@ class Genome:
 
         #Mutation Factor, in %
         self.mutationFactor = 5
-        self.mutationChance = 100
+
+        #There is a 1% chance that the genome mutates
+        self.mutationChance = 1
         self.valueScale = 100
 
         self.randomCounterCompass = 0
