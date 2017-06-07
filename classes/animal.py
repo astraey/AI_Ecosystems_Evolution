@@ -2,7 +2,7 @@ import pygame
 
 from random import randint
 
-class Predator:
+class Animal:
 
     def __init__(self, cell, color, camera, generation, genome):
 

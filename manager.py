@@ -1,7 +1,7 @@
 from random import randint
 from fractions import gcd
 from classes.plant import Plant
-from classes.predator import Predator
+from classes.animal import Animal
 from classes.camera import Camera
 from classes.cell import Cell
 from classes.grid import Grid
@@ -254,7 +254,7 @@ class Manager:
 
             color = (randint(0,255),randint(0,255),randint(0,255))
 
-            self.add_agent_predator(Predator(targetCell, color, self.camera, 0, Genome(True)), xIndex, yIndex)
+            self.add_agent_predator(Animal(targetCell, color, self.camera, 0, Genome(True)), xIndex, yIndex)
 
     def random_add_plants(self, amount):
 
@@ -742,7 +742,7 @@ class Manager:
                     randomFreeCellIndex = 0
                     agent.biomaterial -= 100
                     newColor = self.generateNewColor(agent.color)
-                    self.add_agent_predator(Predator(free_cells[randomFreeCellIndex], newColor, self.camera, agent.generation + 1, agent.genome.mutate_genome()), free_cells[randomFreeCellIndex].xIndex, free_cells[randomFreeCellIndex].yIndex)
+                    self.add_agent_predator(Animal(free_cells[randomFreeCellIndex], newColor, self.camera, agent.generation + 1, agent.genome.mutate_genome()), free_cells[randomFreeCellIndex].xIndex, free_cells[randomFreeCellIndex].yIndex)
 
                     if agent.generation + 1 > self.generations:
 

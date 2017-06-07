@@ -1,7 +1,7 @@
 import pygame, numpy, copy
 from classes.cell import Cell
 from classes.plant import Plant
-from classes.predator import Predator
+from classes.animal import Animal
 
 class Grid:
 
