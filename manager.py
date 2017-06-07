@@ -28,7 +28,7 @@ class Manager:
 
         self.growingCounter = 0
 
-        self.predator_range = 10
+        self.animal_range = 10
 
         #Modify this variable to adjust the initial position of the camera, in order
         #to center the grid.
@@ -78,51 +78,51 @@ class Manager:
 
     def entity_up(self, index):
 
-        xIndex = self.grid.predators[index].cell.xIndex
-        yIndex = self.grid.predators[index].cell.yIndex -1
+        xIndex = self.grid.animals[index].cell.xIndex
+        yIndex = self.grid.animals[index].cell.yIndex -1
 
-        self.grid.grid[xIndex][yIndex].occupant = self.grid.predators[index]
-        self.grid.predators[index].cell.occupant = 0
-        self.grid.predators[index].cell = self.grid.grid[xIndex][yIndex]
+        self.grid.grid[xIndex][yIndex].occupant = self.grid.animals[index]
+        self.grid.animals[index].cell.occupant = 0
+        self.grid.animals[index].cell = self.grid.grid[xIndex][yIndex]
 
-        self.grid.predators[index].xPos = self.grid.grid[xIndex][yIndex].xPos
-        self.grid.predators[index].yPos = self.grid.grid[xIndex][yIndex].yPos
+        self.grid.animals[index].xPos = self.grid.grid[xIndex][yIndex].xPos
+        self.grid.animals[index].yPos = self.grid.grid[xIndex][yIndex].yPos
 
     def entity_down(self, index):
 
-        xIndex = self.grid.predators[index].cell.xIndex
-        yIndex = self.grid.predators[index].cell.yIndex +1
+        xIndex = self.grid.animals[index].cell.xIndex
+        yIndex = self.grid.animals[index].cell.yIndex +1
 
-        self.grid.grid[xIndex][yIndex].occupant = self.grid.predators[index]
-        self.grid.predators[index].cell.occupant = 0
-        self.grid.predators[index].cell = self.grid.grid[xIndex][yIndex]
+        self.grid.grid[xIndex][yIndex].occupant = self.grid.animals[index]
+        self.grid.animals[index].cell.occupant = 0
+        self.grid.animals[index].cell = self.grid.grid[xIndex][yIndex]
 
-        self.grid.predators[index].xPos = self.grid.grid[xIndex][yIndex].xPos
-        self.grid.predators[index].yPos = self.grid.grid[xIndex][yIndex].yPos
+        self.grid.animals[index].xPos = self.grid.grid[xIndex][yIndex].xPos
+        self.grid.animals[index].yPos = self.grid.grid[xIndex][yIndex].yPos
 
     def entity_left(self, index):
 
-        xIndex = self.grid.predators[index].cell.xIndex -1
-        yIndex = self.grid.predators[index].cell.yIndex
+        xIndex = self.grid.animals[index].cell.xIndex -1
+        yIndex = self.grid.animals[index].cell.yIndex
 
-        self.grid.grid[xIndex][yIndex].occupant = self.grid.predators[index]
-        self.grid.predators[index].cell.occupant = 0
-        self.grid.predators[index].cell = self.grid.grid[xIndex][yIndex]
+        self.grid.grid[xIndex][yIndex].occupant = self.grid.animals[index]
+        self.grid.animals[index].cell.occupant = 0
+        self.grid.animals[index].cell = self.grid.grid[xIndex][yIndex]
 
-        self.grid.predators[index].xPos = self.grid.grid[xIndex][yIndex].xPos
-        self.grid.predators[index].yPos = self.grid.grid[xIndex][yIndex].yPos
+        self.grid.animals[index].xPos = self.grid.grid[xIndex][yIndex].xPos
+        self.grid.animals[index].yPos = self.grid.grid[xIndex][yIndex].yPos
 
     def entity_right(self, index):
 
-        xIndex = self.grid.predators[index].cell.xIndex +1
-        yIndex = self.grid.predators[index].cell.yIndex
+        xIndex = self.grid.animals[index].cell.xIndex +1
+        yIndex = self.grid.animals[index].cell.yIndex
 
-        self.grid.grid[xIndex][yIndex].occupant = self.grid.predators[index]
-        self.grid.predators[index].cell.occupant = 0
-        self.grid.predators[index].cell = self.grid.grid[xIndex][yIndex]
+        self.grid.grid[xIndex][yIndex].occupant = self.grid.animals[index]
+        self.grid.animals[index].cell.occupant = 0
+        self.grid.animals[index].cell = self.grid.grid[xIndex][yIndex]
 
-        self.grid.predators[index].xPos = self.grid.grid[xIndex][yIndex].xPos
-        self.grid.predators[index].yPos = self.grid.grid[xIndex][yIndex].yPos
+        self.grid.animals[index].xPos = self.grid.grid[xIndex][yIndex].xPos
+        self.grid.animals[index].yPos = self.grid.grid[xIndex][yIndex].yPos
 
     # agent_dir receives an agent as a parameter and moves it in the grid
 
@@ -184,7 +184,7 @@ class Manager:
             if agent.isPlant:
                 self.grid.plants.remove(agent)
             else:
-                self.grid.predators.remove(agent)
+                self.grid.animals.remove(agent)
             #print("Agent KILLED")
 
     def event_management(self, event):
@@ -215,10 +215,10 @@ class Manager:
                 self.entity_down(0)
 
             if event.key == pygame.K_e:
-                self.agent_remove(self.grid.predators[0])
+                self.agent_remove(self.grid.animals[0])
                 #print("Agent Deleted")
             if event.key == pygame.K_r:
-                self.random_add_predators(1)
+                self.random_add_animals(1)
 
             if event.key == pygame.K_p:
                 self.pause_button()
@@ -240,7 +240,7 @@ class Manager:
                 self.camera.moving_up = False
 
 
-    def random_add_predators(self, amount):
+    def random_add_animals(self, amount):
 
         for i in range(0, amount):
             xIndex = randint(0, self.grid_size -1)
@@ -254,7 +254,7 @@ class Manager:
 
             color = (randint(0,255),randint(0,255),randint(0,255))
 
-            self.add_agent_predator(Animal(targetCell, color, self.camera, 0, Genome(True)), xIndex, yIndex)
+            self.add_agent_animal(Animal(targetCell, color, self.camera, 0, Genome(True)), xIndex, yIndex)
 
     def random_add_plants(self, amount):
 
@@ -296,11 +296,11 @@ class Manager:
         self.grid.agents.append(agent)
         self.grid.plants.append(agent)
 
-    def add_agent_predator(self, agent, xPos, yPos):
+    def add_agent_animal(self, agent, xPos, yPos):
 
         self.grid.grid[xPos][yPos].occupant = agent
         self.grid.agents.append(agent)
-        self.grid.predators.append(agent)
+        self.grid.animals.append(agent)
 
 
     def agent_mover(self, agent):
@@ -325,38 +325,34 @@ class Manager:
         else:
             agent.movementCounter += 1
 
-    def movement_cost(self):
+    def update_animals_radar(self):
 
-        return True
-
-    def update_predators_radar(self):
-
-        for predator in self.grid.predators:
-            #update predators radars
-            self.update_predator_radar(predator)
-            predator.update_genome_environment_information()
+        for animal in self.grid.animals:
+            #update animals radars
+            self.update_animal_radar(animal)
+            animal.update_genome_environment_information()
 
 
-    def update_predator_radar(self, agent):
+    def update_animal_radar(self, agent):
         #The closest of each type should be selected.
         xIndex = agent.cell.xIndex
         yIndex = agent.cell.yIndex
 
         #A base distance, so big that doesn't interfere with the algorithm
         closestPlantDistance = 300
-        closestPredatorDistance = 300
+        closestAnimalDistance = 300
 
         #Each position correspond to the directions North, South, East and West respectively
         closestPlantDirection = (False, False, False, False)
-        closestPredatorDirection = (False, False, False, False)
+        closestAnimalDirection = (False, False, False, False)
 
 
-        #print("*******************Predator North Radar Update STARTED*******************")
+        #print("*******************Animal North Radar Update STARTED*******************")
         #print("Starting pos: ["+str(xIndex)+", "+str(yIndex)+"]")
 
 
         #North
-        for i in range(1, self.predator_range + 1):
+        for i in range(1, self.animal_range + 1):
 
 
             targetXIndex = xIndex
@@ -378,13 +374,13 @@ class Manager:
                                 closestPlantDirection = (True, False, False, False)
                                 closestPlantDistance = dist
 
-                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPredator:
-                            #print("We have detected a predator!!!")
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isAnimal:
+                            #print("We have detected a animal!!!")
                             dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
-                            if closestPredatorDistance > dist:
-                                #print("++++++++++++NEW CLOSEST PREDATOR AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
-                                closestPredatorDirection = (True, False, False, False)
-                                closestPredatorDistance = dist
+                            if closestAnimalDistance > dist:
+                                #print("++++++++++++NEW CLOSEST ANIMAL AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestAnimalDirection = (True, False, False, False)
+                                closestAnimalDistance = dist
 
             #Left, starts from 1 instad of 0 so it doesn't check the middle cell again
             for j in range(1,i):
@@ -402,23 +398,23 @@ class Manager:
                                 closestPlantDirection = (True, False, False, False)
                                 closestPlantDistance = dist
 
-                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPredator:
-                            #print("We have detected a predator!!!")
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isAnimal:
+                            #print("We have detected a animal!!!")
                             dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
-                            if closestPredatorDistance > dist:
-                                #print("++++++++++++NEW CLOSEST PREDATOR AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
-                                closestPredatorDirection = (True, False, False, False)
-                                closestPredatorDistance = dist
+                            if closestAnimalDistance > dist:
+                                #print("++++++++++++NEW CLOSEST ANIMAL AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestAnimalDirection = (True, False, False, False)
+                                closestAnimalDistance = dist
 
 
-        #print("*******************Predator North Radar Update FINISHED*******************\n")
+        #print("*******************Animal North Radar Update FINISHED*******************\n")
 
-        #print("*******************Predator South Radar Update STARTED*******************")
+        #print("*******************Animal South Radar Update STARTED*******************")
         #print("Starting pos: ["+str(xIndex)+", "+str(yIndex)+"]")
 
 
         #South
-        for i in range(1, self.predator_range + 1):
+        for i in range(1, self.animal_range + 1):
 
 
             targetXIndex = xIndex
@@ -440,13 +436,13 @@ class Manager:
                                 closestPlantDirection = (False, True, False, False)
                                 closestPlantDistance = dist
 
-                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPredator:
-                            #print("We have detected a predator!!!")
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isAnimal:
+                            #print("We have detected a animal!!!")
                             dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
-                            if closestPredatorDistance > dist:
-                                #print("++++++++++++NEW CLOSEST PREDATOR AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
-                                closestPredatorDirection = (False, True, False, False)
-                                closestPredatorDistance = dist
+                            if closestAnimalDistance > dist:
+                                #print("++++++++++++NEW CLOSEST ANIMAL AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestAnimalDirection = (False, True, False, False)
+                                closestAnimalDistance = dist
 
 
             #Left, starts from 1 instad of 0 so it doesn't check the middle cell again
@@ -465,23 +461,23 @@ class Manager:
                                 closestPlantDirection = (False, True, False, False)
                                 closestPlantDistance = dist
 
-                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPredator:
-                            #print("We have detected a predator!!!")
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isAnimal:
+                            #print("We have detected a Animal!!!")
                             dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
-                            if closestPredatorDistance > dist:
-                                #print("++++++++++++NEW CLOSEST PREDATOR AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
-                                closestPredatorDirection = (False, True, False, False)
-                                closestPredatorDistance = dist
+                            if closestAnimalDistance > dist:
+                                #print("++++++++++++NEW CLOSEST ANIMAL AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestAnimalDirection = (False, True, False, False)
+                                closestAnimalDistance = dist
 
 
-        #print("*******************Predator South Radar Update FINISHED*******************\n")
+        #print("*******************Animal South Radar Update FINISHED*******************\n")
 
-        #print("*******************Predator East Radar Update STARTED*******************")
+        #print("*******************Animal East Radar Update STARTED*******************")
         #print("Starting pos: ["+str(xIndex)+", "+str(yIndex)+"]")
 
 
         #East
-        for i in range(1, self.predator_range + 1):
+        for i in range(1, self.animal_range + 1):
 
 
             targetXIndex = xIndex + i
@@ -503,13 +499,13 @@ class Manager:
                                 closestPlantDirection = (False, False, True, False)
                                 closestPlantDistance = dist
 
-                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPredator:
-                            #print("We have detected a predator!!!")
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isAnimal:
+                            #print("We have detected an animal!!!")
                             dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
-                            if closestPredatorDistance > dist:
-                                #print("++++++++++++NEW CLOSEST PREDATOR AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
-                                closestPredatorDirection = (False, False, True, False)
-                                closestPredatorDistance = dist
+                            if closestAnimalDistance > dist:
+                                #print("++++++++++++NEW CLOSEST ANIMAL AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestAnimalDirection = (False, False, True, False)
+                                closestAnimalDistance = dist
 
 
             #Up, starts from 1 instad of 0 so it doesn't check the middle cell again
@@ -528,23 +524,23 @@ class Manager:
                                 closestPlantDirection = (False, False, True, False)
                                 closestPlantDistance = dist
 
-                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPredator:
-                            #print("We have detected a predator!!!")
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isAnimal:
+                            #print("We have detected a animal!!!")
                             dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
-                            if closestPredatorDistance > dist:
-                                #print("++++++++++++NEW CLOSEST PREDATOR AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
-                                closestPredatorDirection = (False, False, True, False)
-                                closestPredatorDistance = dist
+                            if closestAnimalDistance > dist:
+                                #print("++++++++++++NEW CLOSEST ANIMAL AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestAnimalDirection = (False, False, True, False)
+                                closestAnimalDistance = dist
 
 
-        #print("*******************Predator East Radar Update FINISHED*******************\n")
+        #print("*******************Animal East Radar Update FINISHED*******************\n")
 
-        #print("*******************Predator West Radar Update STARTED*******************")
+        #print("*******************Animal West Radar Update STARTED*******************")
         #print("Starting pos: ["+str(xIndex)+", "+str(yIndex)+"]")
 
 
         #West
-        for i in range(1, self.predator_range + 1):
+        for i in range(1, self.animal_range + 1):
 
 
             targetXIndex = xIndex - i
@@ -566,13 +562,13 @@ class Manager:
                                 closestPlantDirection = (False, False, False, True)
                                 closestPlantDistance = dist
 
-                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPredator:
-                            #print("We have detected a predator!!!")
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isAnimal:
+                            #print("We have detected a animal!!!")
                             dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
-                            if closestPredatorDistance > dist:
-                                #print("++++++++++++NEW CLOSEST PREDATOR AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
-                                closestPredatorDirection = (False, False, False, True)
-                                closestPredatorDistance = dist
+                            if closestAnimalDistance > dist:
+                                #print("++++++++++++NEW CLOSEST ANIMAL AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestAnimalDirection = (False, False, False, True)
+                                closestAnimalDistance = dist
 
             #Up, starts from 1 instad of 0 so it doesn't check the middle cell again
             for j in range(1,i):
@@ -590,17 +586,17 @@ class Manager:
                                 closestPlantDirection = (False, False, False, True)
                                 closestPlantDistance = dist
 
-                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isPredator:
-                            #print("We have detected a predator!!!")
+                        if self.grid.grid[targetXIndex][targetYIndex].occupant.isAnimal:
+                            #print("We have detected a animal!!!")
                             dist = abs(xIndex - targetXIndex) + abs(yIndex - targetYIndex)
-                            if closestPredatorDistance > dist:
-                                #print("++++++++++++NEW CLOSEST PREDATOR AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
-                                closestPredatorDirection = (False, False, False, True)
-                                closestPredatorDistance = dist
+                            if closestAnimalDistance > dist:
+                                #print("++++++++++++NEW CLOSEST ANIMAL AT: ["+str(targetXIndex)+", "+str(targetYIndex)+"]+++++++++++++")
+                                closestAnimalDirection = (False, False, False, True)
+                                closestAnimalDistance = dist
 
 
 
-        #print("*******************Predator West Radar Update FINISHED*******************\n")
+        #print("*******************Animal West Radar Update FINISHED*******************\n")
 
         if closestPlantDirection[0]:
             agent.plantNorth = True
@@ -635,45 +631,45 @@ class Manager:
 
 
 
-        if closestPredatorDirection[0]:
-            agent.predatorNorth = True
-            agent.predatorSouth = False
-            agent.predatorEast = False
-            agent.predatorWest = False
+        if closestAnimalDirection[0]:
+            agent.animalNorth = True
+            agent.animalSouth = False
+            agent.animalEast = False
+            agent.animalWest = False
             #print("------------------RESULTS: North")
-        elif closestPredatorDirection[1]:
-            agent.predatorNorth = False
-            agent.predatorSouth = True
-            agent.predatorEast = False
-            agent.predatorWest = False
+        elif closestAnimalDirection[1]:
+            agent.animalNorth = False
+            agent.animalSouth = True
+            agent.animalEast = False
+            agent.animalWest = False
             #print("------------------RESULTS: South")
-        elif closestPredatorDirection[2]:
-            agent.predatorNorth = False
-            agent.predatorSouth = False
-            agent.predatorEast = True
-            agent.predatorWest = False
+        elif closestAnimalDirection[2]:
+            agent.animalNorth = False
+            agent.animalSouth = False
+            agent.animalEast = True
+            agent.animalWest = False
             #print("------------------RESULTS: East")
-        elif closestPredatorDirection[3]:
-            agent.predatorNorth = False
-            agent.predatorSouth = False
-            agent.predatorEast = False
-            agent.predatorWest = True
+        elif closestAnimalDirection[3]:
+            agent.animalNorth = False
+            agent.animalSouth = False
+            agent.animalEast = False
+            agent.animalWest = True
             #print("------------------RESULTS: West")
         else:
-            agent.predatorNorth = False
-            agent.predatorSouth = False
-            agent.predatorEast = False
-            agent.predatorWest = False
-            #print("------------------RESULTS: NO NEARBY PREDATORS")
+            agent.animalNorth = False
+            agent.animalSouth = False
+            agent.animalEast = False
+            agent.animalWest = False
+            #print("------------------RESULTS: NO NEARBY Animals")
 
 
 
     def move_agents(self):
-        for agent in self.grid.predators:
+        for agent in self.grid.animals:
             self.agent_mover(agent)
 
-    def predator_attacker(self):
-        for agent in self.grid.predators:
+    def animal_attacker(self):
+        for agent in self.grid.animals:
 
             neighbours = self.grid.neighbour_agent(agent)
 
@@ -730,9 +726,9 @@ class Manager:
                     agent.biomaterial -= 10
                     self.add_agent_plant(Plant(free_cells[randomFreeCellIndex], self.camera), free_cells[randomFreeCellIndex].xIndex, free_cells[randomFreeCellIndex].yIndex)
 
-    def predator_reproducer(self):
+    def animal_reproducer(self):
 
-        for agent in self.grid.predators:
+        for agent in self.grid.animals:
 
             if agent.biomaterial >= 200:
 
@@ -742,7 +738,7 @@ class Manager:
                     randomFreeCellIndex = 0
                     agent.biomaterial -= 100
                     newColor = self.generateNewColor(agent.color)
-                    self.add_agent_predator(Animal(free_cells[randomFreeCellIndex], newColor, self.camera, agent.generation + 1, agent.genome.mutate_genome()), free_cells[randomFreeCellIndex].xIndex, free_cells[randomFreeCellIndex].yIndex)
+                    self.add_agent_animal(Animal(free_cells[randomFreeCellIndex], newColor, self.camera, agent.generation + 1, agent.genome.mutate_genome()), free_cells[randomFreeCellIndex].xIndex, free_cells[randomFreeCellIndex].yIndex)
 
                     if agent.generation + 1 > self.generations:
 
@@ -796,7 +792,7 @@ class Manager:
 
         self.pause = not self.pause
 
-    #Function that simplifies the ratio of Plants:Predators
+    #Function that simplifies the ratio of Plants:Animals
     def simplify_ratio(self, ratio):
         denominater = functools.reduce(gcd,ratio)
         solved = [i/denominater for i in ratio]

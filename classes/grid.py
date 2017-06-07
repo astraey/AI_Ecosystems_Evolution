@@ -8,7 +8,7 @@ class Grid:
     def __init__(self, size, camera, screen):
 
         self.agents = []
-        self.predators = []
+        self.animals = []
         self.plants = []
         self.size = size
         self.cellSize = 5

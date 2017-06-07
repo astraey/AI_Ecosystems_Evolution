@@ -14,7 +14,7 @@ class Genome:
 
 
         self.plantsDir = (False, False, False, False)
-        self.predatorsDir = (False, False, False, False)
+        self.animalsDir = (False, False, False, False)
         self.nothingDetected = False
 
         #Mutation Factor, in %
@@ -27,7 +27,7 @@ class Genome:
         self.randomCounterCompass = 0
         self.randomDirectionCompass = randint(0,4)
 
-        #Variables that reflect the agent's behaviour towards plants and predators.
+        #Variables that reflect the agent's behaviour towards plants and animals.
         #Varies from 1 to 100
 
         if randomlyGenerated:
@@ -36,13 +36,13 @@ class Genome:
             self.plantEastBehaviour = randint(-100,100)
             self.plantWestBehaviour = randint(-100,100)
 
-            self.predatorNorthBehaviour = randint(-100,100)
-            self.predatorSouthBehaviour = randint(-100,100)
-            self.predatorEastBehaviour = randint(-100,100)
-            self.predatorWestBehaviour = randint(-100,100)
+            self.animalNorthBehaviour = randint(-100,100)
+            self.animalSouthBehaviour = randint(-100,100)
+            self.animalEastBehaviour = randint(-100,100)
+            self.animalWestBehaviour = randint(-100,100)
 
             self.notMovePlantDetected = randint(0,100)
-            self.notMovePredatorDetected = randint(0,100)
+            self.notMoveAnimalDetected = randint(0,100)
 
         else:
             self.plantNorthBehaviour = 0
@@ -50,52 +50,52 @@ class Genome:
             self.plantEastBehaviour = 0
             self.plantWestBehaviour = 0
 
-            self.predatorNorthBehaviour = 0
-            self.predatorSouthBehaviour = 0
-            self.predatorEastBehaviour = 0
-            self.predatorWestBehaviour = 0
+            self.animalNorthBehaviour = 0
+            self.animalSouthBehaviour = 0
+            self.animalEastBehaviour = 0
+            self.animalWestBehaviour = 0
 
             self.notMovePlantDetected = 0
-            self.notMovePredatorDetected = 0
+            self.notMoveAnimalDetected = 0
 
 
-        #print("Generated predator with attributes: ")
+        #print("Generated animal with attributes: ")
         #print("["+str(self.plantNorthBehaviour)+", "+str(self.plantSouthBehaviour)+", "+str(self.plantEastBehaviour)+", "+str(self.plantWestBehaviour)+"]")
-        #print("["+str(self.predatorNorthBehaviour)+", "+str(self.predatorSouthBehaviour)+", "+str(self.predatorEastBehaviour)+", "+str(self.predatorWestBehaviour)+"]")
-        #print("["+str(self.nothingDetectedBeaviour)+", "+str(self.notMovePlantDetected)+", "+str(self.notMovePredatorDetected)+"]\n")
+        #print("["+str(self.animalNorthBehaviour)+", "+str(self.animalSouthBehaviour)+", "+str(self.animalEastBehaviour)+", "+str(self.animalWestBehaviour)+"]")
+        #print("["+str(self.nothingDetectedBeaviour)+", "+str(self.notMovePlantDetected)+", "+str(self.notMoveAnimalDetected)+"]\n")
 
 
     #Genome's Logic
     def get_move(self):
 
         plantDir = self.get_direction_plant()
-        predatorDir = self.get_direction_predator()
+        animalDir = self.get_direction_animal()
         valuePlant = self.value_for_direction_plant(plantDir)
-        valuePredator = self.value_for_direction_predator(predatorDir)
+        valueAnimal = self.value_for_direction_animal(animalDir)
 
-        #Direction = -1 and value = 999 mean that no plant/predator was detected
+        #Direction = -1 and value = 999 mean that no plant/animal was detected
         plantResult = self.direction_corrector(plantDir, valuePlant)
-        predatorResult = self.direction_corrector(predatorDir, valuePredator)
+        animalResult = self.direction_corrector(animalDir, valueAnimal)
 
 
-        #print(plantDir, predatorDir, valuePlant, valuePredator)
-        #print(plantResult, predatorResult)
+        #print(plantDir, animalDir, valuePlant, valueAnimal)
+        #print(plantResult, animalResult)
         #print("************")
 
 
         ###################################################
-        #Behaviour for the situations when not plants nor predators are detected.
+        #Behaviour for the situations when not plants nor animals are detected.
         #At the moment, just
 
         #Add some randomness to the mix to make sure that the entity won't get stuck.
         #Currently, the entity adopts a random behaviour in case that it doens't detect anything or once every 20 moves
         if 0 != randint(0,30):
-            if plantResult[0] == -1 and predatorResult[0] == -1:
+            if plantResult[0] == -1 and animalResult[0] == -1:
                 #print("RANDOM MOVE")
                 #print("************")
                 return self.random_movement()
 
-            if plantResult[0] != -1 and predatorResult[0] == -1:
+            if plantResult[0] != -1 and animalResult[0] == -1:
                 #print("Move made depending on plant")
                 #print("************")
 
@@ -107,31 +107,31 @@ class Genome:
                     return plantResult[0]
 
                 if plantResult[1] < randomNum <= total:
-                    #We follow the predator behaviour
+                    #We follow the animal behaviour
                     return 4
 
 
-            if plantResult[0] == -1 and predatorResult[0] != -1:
-                #print("Move made depending on predator")
+            if plantResult[0] == -1 and animalResult[0] != -1:
+                #print("Move made depending on animal")
                 #print("************")
 
-                total = predatorResult[1] + self.notMovePredatorDetected
+                total = animalResult[1] + self.notMoveAnimalDetected
                 randomNum = randint(0, total)
 
-                if randomNum <= predatorResult[1]:
+                if randomNum <= animalResult[1]:
                     #We follow the plant behaviour
-                    return predatorResult[0]
+                    return animalResult[0]
 
-                if predatorResult[1] < randomNum <= total:
-                    #We follow the predator behaviour
+                if animalResult[1] < randomNum <= total:
+                    #We follow the animal behaviour
                     return 4
 
 
-            if plantResult[0] != -1 and predatorResult[0] != -1:
-                #print("MOVE MADE DEPENDING ON BOTH PLANTS AND PREDATORS")
+            if plantResult[0] != -1 and animalResult[0] != -1:
+                #print("MOVE MADE DEPENDING ON BOTH PLANTS AND ANIMALS")
                 #print("************")
 
-                total = plantResult[1] + predatorResult[1] + self.notMovePlantDetected + self.notMovePredatorDetected
+                total = plantResult[1] + animalResult[1] + self.notMovePlantDetected + self.notMoveAnimalDetected
                 total = 100
                 randomNum = randint(0, total)
 
@@ -139,16 +139,16 @@ class Genome:
                     #We follow the plant behaviour
                     return plantResult[0]
 
-                if plantResult[1] < randomNum <= plantResult[1] + predatorResult[1]:
-                    #We follow the predator behaviour
-                    return predatorResult[0]
+                if plantResult[1] < randomNum <= plantResult[1] + animalResult[1]:
+                    #We follow the animal behaviour
+                    return animalResult[0]
 
-                if plantResult[1] + predatorResult[1] < randomNum <= plantResult[1] + predatorResult[1] + self.notMovePlantDetected:
+                if plantResult[1] + animalResult[1] < randomNum <= plantResult[1] + animalResult[1] + self.notMovePlantDetected:
                     #We follow the stop Plant behaviour
                     return 4
 
-                if  plantResult[1] + predatorResult[1] + self.notMovePlantDetected < randomNum <= total:
-                    #We follow the stop Predator behaviour
+                if  plantResult[1] + animalResult[1] + self.notMovePlantDetected < randomNum <= total:
+                    #We follow the stop Animal behaviour
                     return 4
 
         else:
@@ -171,13 +171,13 @@ class Genome:
             mutated_genome.plantEastBehaviour = self.plantNorthBehaviour + randint(-self.mutationFactor,self.mutationFactor)
             mutated_genome.plantWestBehaviour = self.plantNorthBehaviour + randint(-self.mutationFactor,self.mutationFactor)
 
-            mutated_genome.predatorNorthBehaviour = self.predatorNorthBehaviour + randint(-self.mutationFactor,self.mutationFactor)
-            mutated_genome.predatorSouthBehaviour = self.predatorNorthBehaviour + randint(-self.mutationFactor,self.mutationFactor)
-            mutated_genome.predatorEastBehaviour = self.predatorNorthBehaviour + randint(-self.mutationFactor,self.mutationFactor)
-            mutated_genome.predatorWestBehaviour = self.predatorNorthBehaviour + randint(-self.mutationFactor,self.mutationFactor)
+            mutated_genome.animalNorthBehaviour = self.animalNorthBehaviour + randint(-self.mutationFactor,self.mutationFactor)
+            mutated_genome.animalSouthBehaviour = self.animalNorthBehaviour + randint(-self.mutationFactor,self.mutationFactor)
+            mutated_genome.animalEastBehaviour = self.animalNorthBehaviour + randint(-self.mutationFactor,self.mutationFactor)
+            mutated_genome.animalWestBehaviour = self.animalNorthBehaviour + randint(-self.mutationFactor,self.mutationFactor)
 
             mutated_genome.notMovePlantDetected = self.notMovePlantDetected + randint(-self.mutationFactor,self.mutationFactor)
-            mutated_genome.notMovePredatorDetected = self.notMovePredatorDetected + randint(-self.mutationFactor,self.mutationFactor)
+            mutated_genome.notMoveAnimalDetected = self.notMoveAnimalDetected + randint(-self.mutationFactor,self.mutationFactor)
 
 
             mutated_genome.plantNorthBehaviour = self.mutation_corrector(mutated_genome.plantNorthBehaviour)
@@ -185,20 +185,20 @@ class Genome:
             mutated_genome.plantEastBehaviour = self.mutation_corrector(mutated_genome.plantEastBehaviour)
             mutated_genome.plantWestBehaviour = self.mutation_corrector(mutated_genome.plantWestBehaviour)
 
-            mutated_genome.predatorNorthBehaviour = self.mutation_corrector(mutated_genome.predatorNorthBehaviour)
-            mutated_genome.predatorSouthBehaviour = self.mutation_corrector(mutated_genome.predatorSouthBehaviour)
-            mutated_genome.predatorEastBehaviour = self.mutation_corrector(mutated_genome.predatorEastBehaviour)
-            mutated_genome.predatorWestBehaviour = self.mutation_corrector(mutated_genome.predatorWestBehaviour)
+            mutated_genome.animalNorthBehaviour = self.mutation_corrector(mutated_genome.animalNorthBehaviour)
+            mutated_genome.animalSouthBehaviour = self.mutation_corrector(mutated_genome.animalSouthBehaviour)
+            mutated_genome.animalEastBehaviour = self.mutation_corrector(mutated_genome.animalEastBehaviour)
+            mutated_genome.animalWestBehaviour = self.mutation_corrector(mutated_genome.animalWestBehaviour)
 
 
             mutated_genome.notMovePlantDetected = self.mutation_corrector_positives(mutated_genome.notMovePlantDetected)
-            mutated_genome.notMovePredatorDetected = self.mutation_corrector_positives(mutated_genome.notMovePredatorDetected)
+            mutated_genome.notMoveAnimalDetected = self.mutation_corrector_positives(mutated_genome.notMoveAnimalDetected)
 
 
-            print("Generated predator with attributes: ")
+            print("Generated animal with attributes: ")
             print("["+str(mutated_genome.plantNorthBehaviour)+", "+str(mutated_genome.plantSouthBehaviour)+", "+str(mutated_genome.plantEastBehaviour)+", "+str(mutated_genome.plantWestBehaviour)+"]")
-            print("["+str(mutated_genome.predatorNorthBehaviour)+", "+str(mutated_genome.predatorSouthBehaviour)+", "+str(mutated_genome.predatorEastBehaviour)+", "+str(mutated_genome.predatorWestBehaviour)+"]")
-            print("["+str(mutated_genome.notMovePlantDetected)+", "+str(mutated_genome.notMovePredatorDetected)+"]")
+            print("["+str(mutated_genome.animalNorthBehaviour)+", "+str(mutated_genome.animalSouthBehaviour)+", "+str(mutated_genome.animalEastBehaviour)+", "+str(mutated_genome.animalWestBehaviour)+"]")
+            print("["+str(mutated_genome.notMovePlantDetected)+", "+str(mutated_genome.notMoveAnimalDetected)+"]")
 
         else:
 
@@ -208,13 +208,13 @@ class Genome:
             mutated_genome.plantEastBehaviour = self.plantNorthBehaviour
             mutated_genome.plantWestBehaviour = self.plantNorthBehaviour
 
-            mutated_genome.predatorNorthBehaviour = self.predatorNorthBehaviour
-            mutated_genome.predatorSouthBehaviour = self.predatorNorthBehaviour
-            mutated_genome.predatorEastBehaviour = self.predatorNorthBehaviour
-            mutated_genome.predatorWestBehaviour = self.predatorNorthBehaviour
+            mutated_genome.animalNorthBehaviour = self.animalNorthBehaviour
+            mutated_genome.animalSouthBehaviour = self.animalNorthBehaviour
+            mutated_genome.animalEastBehaviour = self.animalNorthBehaviour
+            mutated_genome.animalWestBehaviour = self.animalNorthBehaviour
 
             mutated_genome.notMovePlantDetected = self.notMovePlantDetected
-            mutated_genome.notMovePredatorDetected = self.notMovePredatorDetected
+            mutated_genome.notMoveAnimalDetected = self.notMoveAnimalDetected
 
             #print("Same genome has been passed down to the next generation")
 
@@ -222,7 +222,7 @@ class Genome:
 
         return mutated_genome
 
-    def mutation_corrector(self,value):
+    def mutation_corrector(self, value):
 
         if value < - self.valueScale:
             return - self.valueScale
@@ -231,7 +231,7 @@ class Genome:
 
         return value
 
-    def mutation_corrector_positives(self,value):
+    def mutation_corrector_positives(self, value):
 
         if value < 0:
             return 0
@@ -279,19 +279,19 @@ class Genome:
 
         return -1
 
-    def get_direction_predator(self):
+    def get_direction_animal(self):
 
         #North
-        if self.predatorsDir[0]:
+        if self.animalsDir[0]:
             return 0
         #South
-        if self.predatorsDir[1]:
+        if self.animalsDir[1]:
             return 1
         #East
-        if self.predatorsDir[2]:
+        if self.animalsDir[2]:
             return 2
         #West
-        if self.predatorsDir[3]:
+        if self.animalsDir[3]:
             return 3
 
         return -1
@@ -310,16 +310,16 @@ class Genome:
 
         return 999
 
-    def value_for_direction_predator(self, direction):
+    def value_for_direction_animal(self, direction):
 
         if direction == 0:
-            return self.predatorNorthBehaviour
+            return self.animalNorthBehaviour
         if direction == 1:
-            return self.predatorSouthBehaviour
+            return self.animalSouthBehaviour
         if direction == 2:
-            return self.predatorEastBehaviour
+            return self.animalEastBehaviour
         if direction == 3:
-            return self.predatorWestBehaviour
+            return self.animalWestBehaviour
 
         return 999
 

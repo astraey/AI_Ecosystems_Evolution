@@ -14,7 +14,7 @@ class Animal:
         self.color = color
         self.cell = cell
         self.isPlant = False
-        self.isPredator = True
+        self.isAnimal = True
         self.wood = False
         self.compass = randint(0,3)
         self.biomaterial = 100
@@ -24,10 +24,10 @@ class Animal:
         self.generation = generation
         self.genome = genome
 
-        self.predatorNorth = False
-        self.predatorSouth = False
-        self.predatorEast = False
-        self.predatorWest = False
+        self.animalNorth = False
+        self.animalSouth = False
+        self.animalEast = False
+        self.animalWest = False
 
         self.plantNorth = False
         self.plantSouth = False
@@ -38,69 +38,9 @@ class Animal:
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, (int(self.xPos + self.camera.xpos), int(self.yPos + self.camera.ypos)), self.size)
 
-    #Update environment information
-    def update_genome_environment_information(self):
-
-        self.genome.plantsDir = (self.plantNorth, self.plantSouth, self.plantEast, self.plantWest)
-        self.genome.predatorsDir = (self.predatorNorth, self.predatorSouth, self.predatorEast, self.predatorWest)
-
-        if not True in self.genome.plantsDir and not True in self.genome.predatorsDir:
-            self.genome.nothingDetected = True
-            #print("Nothing Detected")
-
-        else:
-            self.genome.nothingDetected = False
-            #print(".")
 
     def move(self):
         return self.genome.get_move()
-
-    def move_old(self):
-
-        #print(self.predatorNorth, self.predatorSouth, self.predatorEast, self.predatorWest, self.plantNorth, self.plantSouth, self.plantEast, self.plantWest)
-
-        caosVar = randint(0,10)
-        if caosVar != 0:
-
-            # Predator goes North
-            if self.plantNorth:
-                return 0
-            # Predator goes South
-            elif self.plantSouth:
-                return 1
-            # Predator goes East
-            elif self.plantEast:
-                return 2
-            # Predator goes West
-            elif self.plantWest:
-                return 3
-
-            # Predator goes South
-            if self.predatorNorth:
-                return 1
-            # Predator goes North
-            elif self.predatorSouth:
-                    return 0
-            # Predator goes West
-            elif self.predatorEast:
-                    return 3
-            # Predator goes East
-            elif self.predatorWest:
-                    return 2
-
-
-        self.counter +=1
-
-        temp = randint(0,3)
-
-        if temp != self.compass:
-            temp = randint(0,3)
-
-        if self.counter >= 250:
-            self.counter = 0
-            self.compass = randint(0, 3)
-
-        return temp
 
 
     def attack_agent(self, defender_agent):
@@ -119,3 +59,17 @@ class Animal:
 
             #print("[Attacker Agent Biomaterial] "+ str(self.biomaterial))
             #print("[Defender Agent Biomaterial] "+ str(defender_agent.biomaterial))
+
+    #Update environment information
+    def update_genome_environment_information(self):
+
+        self.genome.plantsDir = (self.plantNorth, self.plantSouth, self.plantEast, self.plantWest)
+        self.genome.predatorsDir = (self.animalNorth, self.animalSouth, self.animalEast, self.animalWest)
+
+        if not True in self.genome.plantsDir and not True in self.genome.predatorsDir:
+            self.genome.nothingDetected = True
+            #print("Nothing Detected")
+
+        else:
+            self.genome.nothingDetected = False
+            #print(".")

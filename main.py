@@ -10,7 +10,6 @@ class App:
         self.start_time = time.time()
 
         self._running = True
-        self._display_surf = None
 
         #Times that the loop is executed every second
         self.masterLoopController = 30
@@ -32,7 +31,7 @@ class App:
         self._running = True
 
 
-        self.manager.random_add_predators(6)
+        self.manager.random_add_animals(6)
 
         self.manager.random_add_plants(400)
 
@@ -49,11 +48,11 @@ class App:
 
         if not self.manager.pause:
 
-            self.manager.update_predators_radar()
+            self.manager.update_animals_radar()
 
             self.manager.move_agents()
 
-            self.manager.predator_attacker()
+            self.manager.animal_attacker()
 
             self.manager.plant_grower()
 
@@ -63,7 +62,7 @@ class App:
 
             self.manager.plant_reproducer()
 
-            self.manager.predator_reproducer()
+            self.manager.animal_reproducer()
 
             self.manager.wood_manager()
 
@@ -107,16 +106,16 @@ class App:
 
     def stats_printer(self):
 
-        ratio = [len(self.manager.grid.predators), len(self.manager.grid.plants)]
+        ratio = [len(self.manager.grid.animals), len(self.manager.grid.plants)]
 
 
         #Prints the number of agents alive in the simulation
 
-        print("Agents: %d, Predators: %d, Plants: %d" %(len(self.manager.grid.agents), len(self.manager.grid.predators), len(self.manager.grid.plants)))
+        print("Agents: %d, Animals: %d, Plants: %d" %(len(self.manager.grid.agents), len(self.manager.grid.animals), len(self.manager.grid.plants)))
 
 
-        #print("Exact Predators:Plants Ratio ["+self.manager.simplify_ratio(ratio)+"]")
-        print("Predators:Plants Ratio ["+self.manager.approximate_ratio(ratio)+"]")
+        #print("Exact Animals:Plants Ratio ["+self.manager.simplify_ratio(ratio)+"]")
+        print("Animals:Plants Ratio ["+self.manager.approximate_ratio(ratio)+"]")
 
         m, s = divmod((time.time() - self.start_time), 60)
         h, m = divmod(m, 60)
