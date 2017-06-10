@@ -31,9 +31,9 @@ class App:
         self._running = True
 
 
-        self.manager.random_add_animals(6)
+        self.manager.random_add_animals(30)
 
-        self.manager.random_add_plants(400)
+        self.manager.random_add_plants(500)
 
     def on_event(self, event):
 
