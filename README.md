@@ -8,4 +8,4 @@
 
 [How to run the project](documentation/Installation.md)
 
-
+[Link to Full Paper](documentation/paper.pdf)
